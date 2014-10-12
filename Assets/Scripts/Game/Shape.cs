@@ -10,6 +10,7 @@ namespace Game
         public const string PrefabCommon = "Common";
         public const string PrefabCommonDpBlueBulletC = PrefabCommon + "/DpBlueBulletC";
         public const string PrefabCommonDpRedBulletC = PrefabCommon + "/DpRedBulletC";
+        public const string PrefabCommonPsNeedleC = PrefabCommon + "/PsNeedleC";
 
         public static string GetPrefabFullPath(string subPath)
         {
@@ -22,8 +23,11 @@ namespace Game
         // 충돌 판정 크기. 반경
         public float _hit;
 
+        [HideInInspector]
         public GameObject _go;
+        [HideInInspector]
         public Transform _trans;
+        [HideInInspector]
         public string _subPath; // pool 구분용
 
         private void Awake()

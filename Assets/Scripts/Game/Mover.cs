@@ -8,7 +8,7 @@ namespace Game
     {
         public Shape _shape;
         public float _x, _y;
-        public float _angle; // 현재 회전. 단위 도.
+        public float _angle; // 현재 회전. 단위 0.0f~1.0f
         public float _scale;
         public bool _alive;
         private MoverPoolManager _poolManager = null; // 어떤 풀 매니저에서 생성되었는가?
@@ -36,7 +36,7 @@ namespace Game
         public void Draw()
         {
             _shape._trans.position = new Vector2(_x, _y);
-            _shape._trans.rotation = Quaternion.Euler(0.0f, 0.0f, _angle);
+            _shape._trans.rotation = Quaternion.Euler(0.0f, 0.0f, 360.0f * _angle);
         }
 
         // 충돌 판정. 충돌여부를 리턴

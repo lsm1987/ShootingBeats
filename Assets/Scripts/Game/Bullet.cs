@@ -30,7 +30,7 @@ namespace Game
         
         public override void Move()
         {
-            float rad = _angle * Mathf.Deg2Rad; // 각도를 라디안으로 변환
+            float rad = _angle * Mathf.PI * 2.0f; // 라디안으로 변환
             
             _x += _speed * Mathf.Cos(rad); // 이동
             _y += _speed * Mathf.Sin(rad);

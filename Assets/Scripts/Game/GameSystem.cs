@@ -21,7 +21,7 @@ namespace Game
         private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄 목록
         private int testFrame = 0;
         float testShotAngle = 0;
-        float testShotAngleRate = 10f;
+        float testShotAngleRate = 0.02f;
 
         private void Awake()
         {
@@ -50,11 +50,11 @@ namespace Game
             if (testFrame == 5)
             {
                 Bullet b = CreateBaseBullet<Bullet>(BaseBulletType.Base);
-                b.Init(Shape.PrefabCommonDpBlueBulletC, 0.0f, 0.0f, testShotAngle
+                b.Init(Shape.PrefabCommonPsNeedleC, 0.0f, 0.0f, testShotAngle
                     , 0.0f, 0.01f, 0.0f);
 
                 testShotAngle += testShotAngleRate;
-                //testShotAngle = Mathf.Floor(testShotAngle);
+                testShotAngle -= Mathf.Floor(testShotAngle);
 
                 testFrame = 0;
             }
