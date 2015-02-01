@@ -1,20 +1,18 @@
 ﻿using UnityEngine;
+using System.Collections.Generic;
 
 namespace Game
 {
+    // 외양 리소스
     public class Shape : MonoBehaviour
     {
         #region Static Define
         // 전역 정의
-        public const string PrefabRoot = "Shape";
-        public const string PrefabCommon = "Common";
-        public const string PrefabCommonDpBlueBulletC = PrefabCommon + "/DpBlueBulletC";
-        public const string PrefabCommonDpRedBulletC = PrefabCommon + "/DpRedBulletC";
-        public const string PrefabCommonPsNeedleC = PrefabCommon + "/PsNeedleC";
+        public const string _prefabRoot = "Shape";
 
         public static string GetPrefabFullPath(string subPath)
         {
-            return PrefabRoot + "/" + subPath;
+            return _prefabRoot + "/" + subPath;
         }
         #endregion // Static Define
 
@@ -23,32 +21,41 @@ namespace Game
         // 충돌 판정 크기. 반경
         public float _hit;
 
-        [HideInInspector]
-        public GameObject _go;
+        // GameObject는 자주 접근하지 않으므로 캐싱하지 않음
         [HideInInspector]
         public Transform _trans;
-        [HideInInspector]
-        public string _subPath; // pool 구분용
+        public Stack<Shape> _pool { get; private set; } // 이 인스턴스가 되돌아갈 풀
 
+        /// <summary>
+        /// 최초 오브젝트 생성시
+        /// </summary>
         private void Awake()
         {
-            _go = gameObject;
             _trans = transform;
         }
 
-        public void Init()
+        /// <summary>
+        /// 풀 내에서 처음 생성되었을 때
+        /// </summary>
+        public void OnFirstCreatedInPool(Stack<Shape> pool)
         {
-            _go.SetActive(true);
+            _pool = pool;
         }
 
-        public void OnFirstCreatedInPool(string subPath)
+        /// <summary>
+        /// 풀에서 생성 직전에 호출
+        /// </summary>
+        public void OnBeforeCreatedFromPool()
         {
-            _subPath = subPath;
+            gameObject.SetActive(true);
         }
 
-        public void OnDestroy()
+        /// <summary>
+        /// 삭제되어 풀에 들어간 직후 호출
+        /// </summary>
+        public void OnAfterDestroyedToPool()
         {
-            _go.SetActive(false);
+            gameObject.SetActive(false);
         }
 
         #region Debug

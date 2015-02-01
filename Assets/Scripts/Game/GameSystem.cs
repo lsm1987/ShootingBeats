@@ -4,19 +4,20 @@ using System.Collections.Generic;
 
 namespace Game
 {
+    // 게임 진행 관리
     public class GameSystem : MonoBehaviour
     {
         private static GameSystem _instance;
         public static GameSystem Instance { get { return _instance; } }
 
-        // 게임 경계. 좌하단 min, 우상단 max
-        public float _maxX = 1.0f;
-        public float _minX = -1.0f;
-        public float _maxY = 1.0f;
-        public float _minY = -1.0f;
+        // 게임 경계. 좌하단 min(-,-), 우상단 max(+,+)
+        public float _maxX { get { return 1.0f; } }
+        public float _minX { get { return -1.0f; } }
+        public float _maxY { get { return 1.0f; } }
+        public float _minY { get { return -1.0f; } }
 
-        private ShapePoolManager _shapePoolManager = new ShapePoolManager();
-        private MoverPoolManager _baseBulletPoolManager = new MoverPoolManager();
+        private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
+        private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
 
         private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄 목록
         private int testFrame = 0;
@@ -49,8 +50,8 @@ namespace Game
             testFrame++;
             if (testFrame == 5)
             {
-                Bullet b = CreateBaseBullet<Bullet>(BaseBulletType.Base);
-                b.Init(Shape.PrefabCommonPsNeedleC, 0.0f, 0.0f, testShotAngle
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/PsNeedleC", 0.0f, 0.0f, testShotAngle
                     , 0.0f, 0.01f, 0.0f);
 
                 testShotAngle += testShotAngleRate;
@@ -75,12 +76,13 @@ namespace Game
         #endregion // Shape
 
         #region Bullet
-        // 풀에서 탄을 생성하고, 업데이트 목록의 가장 뒤에 추가한다.
-        // 생성된 탄을 리턴
-        public T CreateBaseBullet<T>(BaseBulletType moverType)
-            where T : Bullet, new()
+        /// <summary>
+        /// 풀에서 탄을 생성하고, 탄 업데이트 목록의 가장 뒤에 추가한다.
+        /// <para>생성된 탄을 리턴</para>
+        /// </summary>
+        public T CreateBullet<T>() where T : Bullet, new()
         {
-            T bullet = _baseBulletPoolManager.Create<T>((int)moverType);
+            T bullet = _moverPoolManager.Create<T>();
             if (bullet != null)
             {
                 _bullets.Add(bullet);
@@ -88,6 +90,9 @@ namespace Game
             return bullet;
         }
 
+        /// <summary>
+        /// 탄 업데이트 목록 순회하며 갱신
+        /// </summary>
         private void UpdateBullet()
         {
             // 갱신 도중에 새 탄이 생길 수 있으므로 인덱스 순회
@@ -102,8 +107,10 @@ namespace Game
             {
                 if (!_bullets[i]._alive)
                 {
-                    _bullets[i].OnDestroy();
+                    Bullet bullet = _bullets[i];
+                    bullet.OnDestroy();
                     _bullets.RemoveAt(i);
+                    _moverPoolManager.Delete(bullet);
                 }
             }
 

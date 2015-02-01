@@ -11,15 +11,23 @@ namespace Game
         public float _angle; // 현재 회전. 단위 0.0f~1.0f
         public float _scale;
         public bool _alive;
-        private MoverPoolManager _poolManager = null; // 어떤 풀 매니저에서 생성되었는가?
+        public Stack<Mover> _pool { get; private set; } // 이 인스턴스가 되돌아갈 풀
 
         public Mover()
         {
         }
 
-        // 상속받은 non abstract 클래스들은 모두 개별지정 필요
-        public abstract int MoverType { get; }
+        /// <summary>
+        /// 풀 내에서 처음 생성되었을 때
+        /// </summary>
+        public void OnFirstCreatedInPool(Stack<Mover> pool)
+        {
+            _pool = pool;
+        }
 
+        /// <summary>
+        /// 스테이지에 배치되었을 떄 초기화
+        /// </summary>
         public void Init(string shapeSubPath, float x, float y, float angle)
         {
             SetShape(shapeSubPath);
@@ -27,6 +35,24 @@ namespace Game
             _y = y;
             _angle = angle;
             _alive = true;
+        }
+
+        /// <summary>
+        /// 기존에 적용중이던 외양이 있다면 삭제
+        /// </summary>
+        private void ClearShape()
+        {
+            if (_shape != null)
+            {
+                GameSystem.Instance.DeleteShape(_shape);
+                _shape = null;
+            }
+        }
+
+        private void SetShape(string shapeSubPath)
+        {
+            ClearShape();
+            _shape = GameSystem.Instance.CreateShape(shapeSubPath);
         }
         
         // 이동
@@ -64,25 +90,10 @@ namespace Game
             }
         }
 
-        public void SetShape(string shapeSubPath)
-        {
-            _shape = GameSystem.Instance.CreateShape(shapeSubPath);
-            _shape.Init();
-        }
-
-        // 풀에서 최초 생성시 1회 호출
-        public void OnFirstCreatedInPool(MoverPoolManager poolManager)
-        {
-            _poolManager = poolManager;
-        }
-
         // 순회에 의한 삭제 전 호출
         public void OnDestroy()
         {
-            _shape.OnDestroy();
-            GameSystem.Instance.DeleteShape(_shape);
-            _shape = null;
-            _poolManager.Delete(this);
+            ClearShape();
         }
     }
 }

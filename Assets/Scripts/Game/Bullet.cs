@@ -14,11 +14,6 @@ namespace Game
         {
         }
 
-        public override int MoverType
-        {
-            get { return (int)BaseBulletType.Base; }
-        }
-        
         public void Init(string shapeSubPath, float x, float y, float angle
             , float angleRate, float speed, float speedRate)
         {
