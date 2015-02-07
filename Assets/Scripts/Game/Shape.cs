@@ -40,6 +40,7 @@ namespace Game
         public void OnFirstCreatedInPool(Stack<Shape> pool)
         {
             _pool = pool;
+            gameObject.SetActive(false);
         }
 
         /// <summary>

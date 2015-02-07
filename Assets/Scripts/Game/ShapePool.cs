@@ -10,9 +10,9 @@ namespace Game
         private Dictionary<string, Stack<Shape>> _pools = new Dictionary<string, Stack<Shape>>();
 
         /// <summary>
-        /// 지정한 subPath의 외양을 생성한다.
+        /// 지정한 풀을 찾거나, 없으면 생성하여 리턴한다.
         /// </summary>
-        public Shape Create(string subPath)
+        private Stack<Shape> GetOrCreatePool(string subPath)
         {
             Stack<Shape> pool = null;
             if (!_pools.TryGetValue(subPath, out pool))
@@ -21,6 +21,52 @@ namespace Game
                 pool = new Stack<Shape>();
                 _pools.Add(subPath, pool);
             }
+            return pool;
+        }
+
+        /// <summary>
+        /// 새 인스턴스 생성 및 초기화
+        /// </summary>
+        private Shape CreateInstance(string subPath, Stack<Shape> pool)
+        {
+            string prefabPath = Shape._prefabRoot + "/" + subPath;
+            UnityEngine.Object prefab = Resources.Load(prefabPath);
+            if (prefab != null)
+            {
+                // 최초 한번만 지정할 정보
+                GameObject obj = (GameObject.Instantiate(prefab) as GameObject);
+                obj.name = subPath;
+                Shape instance = obj.GetComponent<Shape>();
+                instance.OnFirstCreatedInPool(pool);
+                return instance;
+            }
+            else
+            {
+                Debug.LogError("[ShapePoolManager] invalid path:" + subPath);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// 인스턴스를 생성해 풀에 쌓아둔다.
+        /// </summary>
+        public void PoolStack(string subPath, int count)
+        {
+            Stack<Shape> pool = GetOrCreatePool(subPath);
+
+            for (int i = 0; i < count; ++i)
+            {
+                Shape instance = CreateInstance(subPath, pool);
+                pool.Push(instance);
+            }
+        }
+
+        /// <summary>
+        /// 지정한 subPath의 외양을 생성한다.
+        /// </summary>
+        public Shape Create(string subPath)
+        {
+            Stack<Shape> pool = GetOrCreatePool(subPath);
 
             Shape instance = null;
             if (pool.Count > 0)
@@ -30,17 +76,7 @@ namespace Game
             }
             else
             {
-                // 인스턴스 생성
-                string prefabPath = Shape._prefabRoot + "/" + subPath;
-                UnityEngine.Object prefab = Resources.Load(prefabPath);
-                if (prefab != null)
-                {
-                    // 최초 한번만 지정할 정보
-                    GameObject obj = (GameObject.Instantiate(prefab) as GameObject);
-                    obj.name = subPath;
-                    instance = obj.GetComponent<Shape>();
-                    instance.OnFirstCreatedInPool(pool);
-                }
+                instance = CreateInstance(subPath, pool);
             }
 
             // 생성 전 항상 지정할 정보

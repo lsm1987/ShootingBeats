@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Game
@@ -12,6 +13,8 @@ namespace Game
 
         private int _oriVSyncCount = 0; // 유니티 설정 복원용
         private const int _fps = 60; // 갱신주기
+        private bool _isLoading = false;    // 로딩중인가?
+        private bool _isLoadingLastFrame = false;
 
         // 게임 경계. 좌하단 min(-,-), 우상단 max(+,+). 짧은 쪽이 1
         // 3:4 -> 1:1.3
@@ -23,7 +26,7 @@ namespace Game
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
 
-        private AudioSource srcSong;    // 노래 재생할 소스
+        private AudioSource _srcSong;    // 노래 재생할 소스
         private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄 목록
         private int testFrame = 0;
         float testShotAngle = 0;
@@ -43,8 +46,8 @@ namespace Game
             Camera cam = Camera.main;
             cam.orthographicSize = _maxY;
 
-            // 로딩
-            Loading();
+            // 로딩 시작
+            StartCoroutine(Loading());
         }
 
         /// <summary>
@@ -60,6 +63,64 @@ namespace Game
         // 고정 프레임 간격으로 갱신
         private void Update()
         {
+            if (_isLoading)
+            {
+                _isLoadingLastFrame = true;
+            }
+            else if (_isLoadingLastFrame)
+            {
+                _isLoadingLastFrame = false;
+                StartStage();
+            }
+
+            if (!_isLoading)
+            {
+                UpdateFrame();
+            }
+        }
+
+        #region Loading
+        // 로딩
+        private IEnumerator Loading()
+        {
+            // 로딩 시작
+            _isLoading = true;
+
+            // 노래 로딩
+            GameObject go = gameObject;
+            _srcSong = go.AddComponent<AudioSource>();
+            _srcSong.playOnAwake = false;
+            _srcSong.clip = Resources.Load<AudioClip>("Sounds/RainbowSocialism");
+            yield return new WaitForEndOfFrame();
+
+            // 외양 로딩
+            PoolStackShape("Common/DpBlueBulletC", 50);
+            yield return new WaitForEndOfFrame();
+            PoolStackShape("Common/DpRedBulletC", 50);
+            yield return new WaitForEndOfFrame();
+
+            // 탄 로딩
+            PoolStackBullet<Bullet>(100);
+            yield return new WaitForEndOfFrame();
+
+            // 로딩 끝
+            _isLoading = false;
+        }
+        #endregion // Loading
+
+        // 스테이지 시작
+        private void StartStage()
+        {
+            // 노래 시작
+            _srcSong.Play();
+
+            // 진행 초기화
+            testFrame = 0;
+        }
+
+        // 고정 프레임 간격으로 갱신
+        private void UpdateFrame()
+        {
             /*
             if (testFrame == 60)
             {
@@ -74,7 +135,7 @@ namespace Game
             if (testFrame == 5)
             {
                 Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/PsNeedleC", 0.0f, 0.0f, testShotAngle
+                b.Init("Common/DpBlueBulletC", 0.0f, 0.0f, testShotAngle
                     , 0.0f, 0.01f, 0.0f);
 
                 testShotAngle += testShotAngleRate;
@@ -86,22 +147,12 @@ namespace Game
             UpdateBullet();
         }
 
-        // 로딩
-        private void Loading()
-        {
-            GameObject go = gameObject;
-            srcSong = go.AddComponent<AudioSource>();
-            srcSong.playOnAwake = false;
-            srcSong.clip = Resources.Load<AudioClip>("Sounds/RainbowSocialism");
-        }
-
-        // 고정 프레임 간격으로 갱신
-        private void UpdateFrame()
-        {
-
-        }
-
         #region Shape
+        public void PoolStackShape(string subPath, int count)
+        {
+            _shapePoolManager.PoolStack(subPath, count);
+        }
+
         public Shape CreateShape(string subPath)
         {
             return _shapePoolManager.Create(subPath);
@@ -114,6 +165,11 @@ namespace Game
         #endregion // Shape
 
         #region Bullet
+        public void PoolStackBullet<T>(int count) where T : Bullet, new()
+        {
+            _moverPoolManager.PoolStack<T>(count);
+        }
+
         /// <summary>
         /// 풀에서 탄을 생성하고, 탄 업데이트 목록의 가장 뒤에 추가한다.
         /// <para>생성된 탄을 리턴</para>

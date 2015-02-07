@@ -11,9 +11,9 @@ namespace Game
         private Dictionary<Type, Stack<Mover>> _pools = new Dictionary<Type, Stack<Mover>>();
 
         /// <summary>
-        /// 특정 타입의 Mover를 생성한다.
+        /// 지정한 풀을 찾거나, 없으면 생성하여 리턴한다.
         /// </summary>
-        public T Create<T>() where T : Mover, new()
+        private Stack<Mover> GetOrCreatePool<T>() where T : Mover, new()
         {
             Stack<Mover> pool = null;
             if (!_pools.TryGetValue(typeof(T), out pool))
@@ -22,6 +22,39 @@ namespace Game
                 pool = new Stack<Mover>();
                 _pools.Add(typeof(T), pool);
             }
+            return pool;
+        }
+
+        /// <summary>
+        /// 새 인스턴스 생성 및 초기화
+        /// </summary>
+        private T CreateInstance<T>(Stack<Mover> pool) where T : Mover, new()
+        {
+            T instance = new T();
+            instance.OnFirstCreatedInPool(pool); // 이 풀에서 생성되었음을 기억
+            return instance;
+        }
+
+        /// <summary>
+        /// 인스턴스를 생성해 풀에 쌓아둔다.
+        /// </summary>
+        public void PoolStack<T>(int count) where T : Mover, new()
+        {
+            Stack<Mover> pool = GetOrCreatePool<T>();
+
+            for (int i = 0; i < count; ++i)
+            {
+                T instance = CreateInstance<T>(pool);
+                pool.Push(instance);
+            }
+        }
+
+        /// <summary>
+        /// 특정 타입의 Mover를 생성한다.
+        /// </summary>
+        public T Create<T>() where T : Mover, new()
+        {
+            Stack<Mover> pool = GetOrCreatePool<T>();
 
             T instance = null;
             if (pool.Count > 0)
@@ -32,13 +65,7 @@ namespace Game
             else
             {
                 // 인스턴스 생성
-                instance = new T();
-                instance.OnFirstCreatedInPool(pool); // 이 풀 매니저에서 생성되었음을 기억
-            }
-
-            if (instance == null)
-            {
-                Debug.LogError("[MoverPoolManager] Instance is null. T:" + typeof(T).ToString());
+                instance = CreateInstance<T>(pool);
             }
 
             // 여기까지 왔으면 인스턴스 리턴
