@@ -10,32 +10,55 @@ namespace Game
         private static GameSystem _instance;
         public static GameSystem Instance { get { return _instance; } }
 
-        // 게임 경계. 좌하단 min(-,-), 우상단 max(+,+)
+        private int _oriVSyncCount = 0; // 유니티 설정 복원용
+        private const int _fps = 60; // 갱신주기
+
+        // 게임 경계. 좌하단 min(-,-), 우상단 max(+,+). 짧은 쪽이 1
+        // 3:4 -> 1:1.3
         public float _maxX { get { return 1.0f; } }
         public float _minX { get { return -1.0f; } }
-        public float _maxY { get { return 1.0f; } }
-        public float _minY { get { return -1.0f; } }
+        public float _maxY { get { return 1.3f; } }
+        public float _minY { get { return -1.3f; } }
 
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
 
+        private AudioSource srcSong;    // 노래 재생할 소스
         private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄 목록
         private int testFrame = 0;
         float testShotAngle = 0;
         float testShotAngleRate = 0.02f;
 
+        /// <summary>
+        ///  씬 진입 시
+        /// </summary>
         private void Awake()
         {
             _instance = this;
+            _oriVSyncCount = QualitySettings.vSyncCount;
+            QualitySettings.vSyncCount = 0;
+            Application.targetFrameRate = _fps;
+
+            // 카메라
+            Camera cam = Camera.main;
+            cam.orthographicSize = _maxY;
+
+            // 로딩
+            Loading();
         }
 
+        /// <summary>
+        /// 씬 변경 시
+        /// </summary>
         private void OnDestroy()
         {
             _instance = null;
+            QualitySettings.vSyncCount = _oriVSyncCount;
+            Application.targetFrameRate = -1;
         }
 
         // 고정 프레임 간격으로 갱신
-        private void FixedUpdate()
+        private void Update()
         {
             /*
             if (testFrame == 60)
@@ -61,6 +84,21 @@ namespace Game
             }
 
             UpdateBullet();
+        }
+
+        // 로딩
+        private void Loading()
+        {
+            GameObject go = gameObject;
+            srcSong = go.AddComponent<AudioSource>();
+            srcSong.playOnAwake = false;
+            srcSong.clip = Resources.Load<AudioClip>("Sounds/RainbowSocialism");
+        }
+
+        // 고정 프레임 간격으로 갱신
+        private void UpdateFrame()
+        {
+
         }
 
         #region Shape

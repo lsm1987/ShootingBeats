@@ -8,7 +8,7 @@ namespace Game
     {
         #region Static Define
         // 전역 정의
-        public const string _prefabRoot = "Shape";
+        public const string _prefabRoot = "Shapes";
 
         public static string GetPrefabFullPath(string subPath)
         {
