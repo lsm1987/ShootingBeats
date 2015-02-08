@@ -19,7 +19,7 @@ namespace Game
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
         private AudioSource _srcSong;    // 노래 재생할 소스
         private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄 목록
-        private int testFrame = 0;
+        protected int _Frame { get; private set; }
 
         // 자식 클래스에서 재정의 가능한 멤버변수 /////////////////////////////////
         // 게임 경계. 좌하단 min(-,-), 우상단 max(+,+). 짧은 쪽이 1
@@ -114,211 +114,23 @@ namespace Game
             _srcSong.Play();
 
             // 진행 초기화
-            testFrame = -1; // 첫 갱신 시 0프레임 되도록
+            _Frame = -1; // 첫 갱신 시 0프레임 되도록
         }
 
         // 고정 프레임 간격으로 갱신
         public void UpdatePlay()
         {
-            testFrame++;
+            // 프레임 갱신
+            _Frame++;
 
-            if (testFrame == 64)
-            {
-                AddTestNormalBullet();
-            }
-            else if (testFrame == 75)
-            {
-                AddTestNormalBullet();
-            }
-            //
-            else if (testFrame == 87)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 1.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 93)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 2.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 100)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 3.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 108)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 4.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 114)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 5.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 120)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 6.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            //
-            else if (testFrame == 64 + 84)
-            {
-                AddTestNormalBullet();
-            }
-            else if (testFrame == 75 + 84)
-            {
-                AddTestNormalBullet();
-            }
-            //
-            else if (testFrame == 87 + 84)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 1.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 93 + 84)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 2.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 100 + 84)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 3.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 108 + 84)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 4.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 114 + 84)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 5.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 120 + 84)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 6.0f)
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            //
-            else if (testFrame == 249)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpRedBulletC", -0.2f, 1.0f, 0.75f
-                    , 0.0f, 0.03f, 0.0f);
-                b = CreateBullet<Bullet>();
-                b.Init("Common/DpRedBulletC", 0.2f, 1.0f, 0.75f
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 274)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpRedBulletC", -0.4f, 1.0f, 0.75f
-                    , 0.0f, 0.03f, 0.0f);
-                b = CreateBullet<Bullet>();
-                b.Init("Common/DpRedBulletC", 0.4f, 1.0f, 0.75f
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 312)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpRedBulletC", -0.6f, 1.0f, 0.75f
-                    , 0.0f, 0.03f, 0.0f);
-                b = CreateBullet<Bullet>();
-                b.Init("Common/DpRedBulletC", 0.6f, 1.0f, 0.75f
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            else if (testFrame == 329)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpRedBulletC", -0.8f, 1.0f, 0.75f
-                    , 0.0f, 0.03f, 0.0f);
-                b = CreateBullet<Bullet>();
-                b.Init("Common/DpRedBulletC", 0.8f, 1.0f, 0.75f
-                    , 0.0f, 0.03f, 0.0f);
-            }
-            //
-            else if (testFrame == 356)  // 1
-            {
-                AddTestCircleBlueBullet();
-            }
-            else if (testFrame == 369)  // 3
-            {
-                AddTestCircleRedBullet();
-            }
-            else if (testFrame == 380)  // 5
-            {
-                AddTestCircleBlueBullet();
-            }
-            else if (testFrame == 391)  // 7
-            {
-                AddTestCircleRedBullet();
-            }
-            else if (testFrame == 403)  // 9
-            {
-                AddTestCircleBlueBullet();
-            }
-            else if (testFrame == 417)  // 11
-            {
-                AddTestCircleRedBullet();
-            }
-            else if (testFrame == 429)  // 13
-            {
-                AddTestCircleBlueBullet();
-            }
-            else if (testFrame == 441)  // 15
-            {
-                AddTestCircleRedBullet();
-            }
-            else if (testFrame == 459)  // 17
-            {
-                AddTestCircleBlueBullet();
-            }
+            // 세부 갱신
+            UpdatePlayContext();
 
+            // 탄환 갱신
             UpdateBullet();
         }
 
-        private void AddTestNormalBullet()
-        {
-            Bullet b = CreateBullet<Bullet>();
-            b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, 0.75f
-                , 0.0f, 0.03f, 0.0f);
-        }
-
-        private void AddTestCircleBlueBullet()
-        {
-            const int count = 20;
-            for (int i = 0; i < count; ++i)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 0.5f, (1.0f / count * i)
-                    , 0.0f, 0.01f, 0.0f);
-            }
-        }
-
-        private void AddTestCircleRedBullet()
-        {
-            const int count = 20;
-            for (int i = 0; i < count; ++i)
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpRedBulletC", 0.0f, 0.5f, (1.0f / count * i) + (1.0f / count / 2.0f)
-                    , 0.0f, 0.01f, 0.0f);
-            }
-        }
+        protected abstract void UpdatePlayContext();
 
         #region Shape
         public void PoolStackShape(string subPath, int count)

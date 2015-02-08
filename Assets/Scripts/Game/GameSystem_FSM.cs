@@ -169,6 +169,9 @@ namespace Game
 
                 // 진입 시 플레이 시작
                 _GameSystem.StartPlay();
+
+                // 시작 직후 바로 0프레임째 업데이트 수행
+                _GameSystem.Update();
             }
 
             public override void OnUpdate()
