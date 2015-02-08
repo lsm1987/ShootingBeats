@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Game
 {
     // 게임 진행 관리
-    public class GameSystem : MonoBehaviour
+    public partial class GameSystem : MonoBehaviour
     {
         private static GameSystem _instance;
         public static GameSystem Instance { get { return _instance; } }
@@ -21,7 +21,7 @@ namespace Game
         public float _maxY { get { return 1.3f; } }
         public float _minY { get { return -1.3f; } }
 
-        private GameSystemFSM _fsm = new GameSystemFSM();
+        private FSM _fsm = new FSM();
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
 
@@ -44,11 +44,11 @@ namespace Game
             cam.orthographicSize = _maxY;
 
             // FSM 초기화
-            _fsm.AddState(new GameSystemLoadState());
-            _fsm.AddState(new GameSystemPlayState());
+            _fsm.AddState(new LoadState(this));
+            _fsm.AddState(new PlayState(this));
 
             // 로딩 시작
-            _fsm.SetState(GameSystemStateType.Load);
+            _fsm.SetState(StateType.Load);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Game
             yield return null;
 
             // 로딩 종료
-            _fsm.SetState(GameSystemStateType.Play);
+            _fsm.SetState(StateType.Play);
         }
         #endregion // Loading
 
