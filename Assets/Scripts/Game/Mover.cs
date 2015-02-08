@@ -44,7 +44,7 @@ namespace Game
         {
             if (_shape != null)
             {
-                GameSystem.Instance.DeleteShape(_shape);
+                GameSystem._Instance.DeleteShape(_shape);
                 _shape = null;
             }
         }
@@ -52,7 +52,7 @@ namespace Game
         private void SetShape(string shapeSubPath)
         {
             ClearShape();
-            _shape = GameSystem.Instance.CreateShape(shapeSubPath);
+            _shape = GameSystem._Instance.CreateShape(shapeSubPath);
         }
         
         // 이동
@@ -77,10 +77,10 @@ namespace Game
         // 게임 영역 안에 있는지 여부 리턴
         public bool IsInStage()
         {
-            if ((_x + _shape._size) <= GameSystem.Instance._minX
-                || (_x - _shape._size) >= GameSystem.Instance._maxX
-                || (_y + _shape._size) <= GameSystem.Instance._minY
-                || (_y - _shape._size) >= GameSystem.Instance._maxY)
+            if ((_x + _shape._size) <= GameSystem._Instance._MinX
+                || (_x - _shape._size) >= GameSystem._Instance._MaxX
+                || (_y + _shape._size) <= GameSystem._Instance._MinY
+                || (_y - _shape._size) >= GameSystem._Instance._MaxY)
             {
                 return false; // 벗어남
             }

@@ -6,28 +6,30 @@ using System.Collections.Generic;
 namespace Game
 {
     // 게임 진행 관리
-    public partial class GameSystem : MonoBehaviour
+    // 진행 세부는 상속 클래스에서 지정
+    public abstract partial class GameSystem : MonoBehaviour
     {
         private static GameSystem _instance;
-        public static GameSystem Instance { get { return _instance; } }
+        public static GameSystem _Instance { get { return _instance; } }
 
         private int _oriVSyncCount = 0; // 유니티 설정 복원용
         private const int _fps = 60; // 갱신주기
-
-        // 게임 경계. 좌하단 min(-,-), 우상단 max(+,+). 짧은 쪽이 1
-        // 3:4 -> 1:1.3
-        public float _maxX { get { return 1.0f; } }
-        public float _minX { get { return -1.0f; } }
-        public float _maxY { get { return 1.3f; } }
-        public float _minY { get { return -1.3f; } }
-
-        private FSM _fsm = new FSM();
+        public FSM _FSM { get; private set; }
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
-
         private AudioSource _srcSong;    // 노래 재생할 소스
         private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄 목록
         private int testFrame = 0;
+
+        // 자식 클래스에서 재정의 가능한 멤버변수 /////////////////////////////////
+        // 게임 경계. 좌하단 min(-,-), 우상단 max(+,+). 짧은 쪽이 1
+        // 3:4 -> 1:1.3
+        public float _MaxX { get { return 1.0f; } }
+        public float _MinX { get { return -1.0f; } }
+        public float _MaxY { get { return 1.3f; } }
+        public float _MinY { get { return -1.3f; } }
+
+        protected abstract string _SongPath { get; }
 
         /// <summary>
         ///  씬 진입 시
@@ -41,14 +43,15 @@ namespace Game
 
             // 카메라
             Camera cam = Camera.main;
-            cam.orthographicSize = _maxY;
+            cam.orthographicSize = _MaxY;
 
             // FSM 초기화
-            _fsm.AddState(new LoadState(this));
-            _fsm.AddState(new PlayState(this));
+            _FSM = new FSM(this);
+            _FSM.AddState(new LoadState(this));
+            _FSM.AddState(new PlayState(this));
 
             // 로딩 시작
-            _fsm.SetState(StateType.Load);
+            _FSM.SetState(StateType.Load);
         }
 
         /// <summary>
@@ -64,43 +67,44 @@ namespace Game
         // 고정 프레임 간격으로 갱신
         private void Update()
         {
-            if (_fsm._CurrentState != null)
-            {
-                _fsm._CurrentState.OnUpdate();
-            }
+            _FSM._CurrentState.OnUpdate();
         }
 
         #region Loading
-        public void StartLoading()
-        {
-            StartCoroutine(Loading());
-        }
-
-        // 로딩
+        // 로딩 전체 감싸기
         private IEnumerator Loading()
         {
             // 노래 로딩
+            {
+                IEnumerator loadSong = LoadSong();
+                while (loadSong.MoveNext())
+                {
+                    yield return loadSong.Current;
+                }
+            }
+
+            // 특화 정보 로딩
+            {
+                IEnumerator loadContext = LoadContext();
+                while (loadContext.MoveNext())
+                {
+                    yield return loadContext.Current;
+                }
+            }
+        }
+
+        // 노래 로딩
+        private IEnumerator LoadSong()
+        {
             GameObject go = gameObject;
             _srcSong = go.AddComponent<AudioSource>();
             _srcSong.playOnAwake = false;
-            _srcSong.clip = Resources.Load<AudioClip>("Sounds/RainbowSocialism");
-            yield return new WaitForEndOfFrame();
-
-            // 외양 로딩
-            PoolStackShape("Common/DpBlueBulletC", 50);
-            yield return new WaitForEndOfFrame();
-            PoolStackShape("Common/DpRedBulletC", 50);
-            yield return new WaitForEndOfFrame();
-
-            // 탄 로딩
-            PoolStackBullet<Bullet>(100);
-            yield return new WaitForEndOfFrame();
+            _srcSong.clip = Resources.Load<AudioClip>(_SongPath);
             yield return null;
-            yield return null;
-
-            // 로딩 종료
-            _fsm.SetState(StateType.Play);
         }
+
+        // 특화 정보 로딩
+        protected abstract IEnumerator LoadContext();
         #endregion // Loading
 
         // 플레이 시작
@@ -390,10 +394,10 @@ namespace Game
         {
             // 경계
             {
-                Vector2 lt = new Vector2(_minX, _maxY);
-                Vector2 lb = new Vector2(_minX, _minY);
-                Vector2 rb = new Vector2(_maxX, _minY);
-                Vector2 rt = new Vector2(_maxX, _maxY);
+                Vector2 lt = new Vector2(_MinX, _MaxY);
+                Vector2 lb = new Vector2(_MinX, _MinY);
+                Vector2 rb = new Vector2(_MaxX, _MinY);
+                Vector2 rt = new Vector2(_MaxX, _MaxY);
                 Gizmos.color = Color.white;
                 Gizmos.DrawLine(lt, lb);
                 Gizmos.DrawLine(lb, rb);
