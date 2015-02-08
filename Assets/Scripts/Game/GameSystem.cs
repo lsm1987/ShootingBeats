@@ -28,8 +28,6 @@ namespace Game
         private AudioSource _srcSong;    // 노래 재생할 소스
         private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄 목록
         private int testFrame = 0;
-        float testShotAngle = 0;
-        float testShotAngleRate = 0.02f;
 
         /// <summary>
         ///  씬 진입 시
@@ -97,6 +95,8 @@ namespace Game
             // 탄 로딩
             PoolStackBullet<Bullet>(100);
             yield return new WaitForEndOfFrame();
+            yield return null;
+            yield return null;
 
             // 로딩 종료
             _fsm.SetState(GameSystemStateType.Play);
@@ -110,36 +110,210 @@ namespace Game
             _srcSong.Play();
 
             // 진행 초기화
-            testFrame = 0;
+            testFrame = -1; // 첫 갱신 시 0프레임 되도록
         }
 
         // 고정 프레임 간격으로 갱신
         public void UpdatePlay()
         {
-            /*
-            if (testFrame == 60)
-            {
-                Bullet b = CreateBaseBullet<Bullet>(BaseBulletType.Base);
-                b.Init(Shape.PrefabCommonDpBlueBulletC, 0.0f, 0.0f, 270.0f
-                    , 0.0f, 0.02f, 0.0f);
-                testFrame = 0;
-            }
-            */
-
             testFrame++;
-            if (testFrame == 5)
+
+            if (testFrame == 64)
+            {
+                AddTestNormalBullet();
+            }
+            else if (testFrame == 75)
+            {
+                AddTestNormalBullet();
+            }
+            //
+            else if (testFrame == 87)
             {
                 Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 0.0f, testShotAngle
-                    , 0.0f, 0.01f, 0.0f);
-
-                testShotAngle += testShotAngleRate;
-                testShotAngle -= Mathf.Floor(testShotAngle);
-
-                testFrame = 0;
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 1.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 93)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 2.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 100)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 3.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 108)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 4.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 114)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 5.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 120)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 6.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            //
+            else if (testFrame == 64 + 84)
+            {
+                AddTestNormalBullet();
+            }
+            else if (testFrame == 75 + 84)
+            {
+                AddTestNormalBullet();
+            }
+            //
+            else if (testFrame == 87 + 84)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 1.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 93 + 84)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 2.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 100 + 84)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 3.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 108 + 84)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 4.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 114 + 84)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 5.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 120 + 84)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 6.0f)
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            //
+            else if (testFrame == 249)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpRedBulletC", -0.2f, 1.0f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                b = CreateBullet<Bullet>();
+                b.Init("Common/DpRedBulletC", 0.2f, 1.0f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 274)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpRedBulletC", -0.4f, 1.0f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                b = CreateBullet<Bullet>();
+                b.Init("Common/DpRedBulletC", 0.4f, 1.0f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 312)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpRedBulletC", -0.6f, 1.0f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                b = CreateBullet<Bullet>();
+                b.Init("Common/DpRedBulletC", 0.6f, 1.0f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            else if (testFrame == 329)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpRedBulletC", -0.8f, 1.0f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                b = CreateBullet<Bullet>();
+                b.Init("Common/DpRedBulletC", 0.8f, 1.0f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+            }
+            //
+            else if (testFrame == 356)  // 1
+            {
+                AddTestCircleBlueBullet();
+            }
+            else if (testFrame == 369)  // 3
+            {
+                AddTestCircleRedBullet();
+            }
+            else if (testFrame == 380)  // 5
+            {
+                AddTestCircleBlueBullet();
+            }
+            else if (testFrame == 391)  // 7
+            {
+                AddTestCircleRedBullet();
+            }
+            else if (testFrame == 403)  // 9
+            {
+                AddTestCircleBlueBullet();
+            }
+            else if (testFrame == 417)  // 11
+            {
+                AddTestCircleRedBullet();
+            }
+            else if (testFrame == 429)  // 13
+            {
+                AddTestCircleBlueBullet();
+            }
+            else if (testFrame == 441)  // 15
+            {
+                AddTestCircleRedBullet();
+            }
+            else if (testFrame == 459)  // 17
+            {
+                AddTestCircleBlueBullet();
             }
 
             UpdateBullet();
+        }
+
+        private void AddTestNormalBullet()
+        {
+            Bullet b = CreateBullet<Bullet>();
+            b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, 0.75f
+                , 0.0f, 0.03f, 0.0f);
+        }
+
+        private void AddTestCircleBlueBullet()
+        {
+            const int count = 20;
+            for (int i = 0; i < count; ++i)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpBlueBulletC", 0.0f, 0.5f, (1.0f / count * i)
+                    , 0.0f, 0.01f, 0.0f);
+            }
+        }
+
+        private void AddTestCircleRedBullet()
+        {
+            const int count = 20;
+            for (int i = 0; i < count; ++i)
+            {
+                Bullet b = CreateBullet<Bullet>();
+                b.Init("Common/DpRedBulletC", 0.0f, 0.5f, (1.0f / count * i) + (1.0f / count / 2.0f)
+                    , 0.0f, 0.01f, 0.0f);
+            }
         }
 
         #region Shape
