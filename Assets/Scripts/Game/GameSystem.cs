@@ -13,8 +13,6 @@ namespace Game
 
         private int _oriVSyncCount = 0; // 유니티 설정 복원용
         private const int _fps = 60; // 갱신주기
-        private bool _isLoading = false;    // 로딩중인가?
-        private bool _isLoadingLastFrame = false;
 
         // 게임 경계. 좌하단 min(-,-), 우상단 max(+,+). 짧은 쪽이 1
         // 3:4 -> 1:1.3
@@ -23,6 +21,7 @@ namespace Game
         public float _maxY { get { return 1.3f; } }
         public float _minY { get { return -1.3f; } }
 
+        private GameSystemFSM _fsm = new GameSystemFSM();
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
 
@@ -46,8 +45,12 @@ namespace Game
             Camera cam = Camera.main;
             cam.orthographicSize = _maxY;
 
+            // FSM 초기화
+            _fsm.AddState(new GameSystemLoadState());
+            _fsm.AddState(new GameSystemPlayState());
+
             // 로딩 시작
-            StartCoroutine(Loading());
+            _fsm.SetState(GameSystemStateType.Load);
         }
 
         /// <summary>
@@ -63,29 +66,21 @@ namespace Game
         // 고정 프레임 간격으로 갱신
         private void Update()
         {
-            if (_isLoading)
+            if (_fsm._CurrentState != null)
             {
-                _isLoadingLastFrame = true;
-            }
-            else if (_isLoadingLastFrame)
-            {
-                _isLoadingLastFrame = false;
-                StartStage();
-            }
-
-            if (!_isLoading)
-            {
-                UpdateFrame();
+                _fsm._CurrentState.OnUpdate();
             }
         }
 
         #region Loading
+        public void StartLoading()
+        {
+            StartCoroutine(Loading());
+        }
+
         // 로딩
         private IEnumerator Loading()
         {
-            // 로딩 시작
-            _isLoading = true;
-
             // 노래 로딩
             GameObject go = gameObject;
             _srcSong = go.AddComponent<AudioSource>();
@@ -103,13 +98,13 @@ namespace Game
             PoolStackBullet<Bullet>(100);
             yield return new WaitForEndOfFrame();
 
-            // 로딩 끝
-            _isLoading = false;
+            // 로딩 종료
+            _fsm.SetState(GameSystemStateType.Play);
         }
         #endregion // Loading
 
-        // 스테이지 시작
-        private void StartStage()
+        // 플레이 시작
+        public void StartPlay()
         {
             // 노래 시작
             _srcSong.Play();
@@ -119,7 +114,7 @@ namespace Game
         }
 
         // 고정 프레임 간격으로 갱신
-        private void UpdateFrame()
+        public void UpdatePlay()
         {
             /*
             if (testFrame == 60)
