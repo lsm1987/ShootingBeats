@@ -42,8 +42,7 @@ namespace Game
             Application.targetFrameRate = _fps;
 
             // 카메라
-            Camera cam = Camera.main;
-            cam.orthographicSize = _MaxY;
+            InitializeCamera();
 
             // FSM 초기화
             _FSM = new FSM(this);
@@ -69,6 +68,42 @@ namespace Game
         {
             _FSM._CurrentState.OnUpdate();
         }
+
+        #region Camera
+        private void InitializeCamera()
+        {
+            // 기기 화면 비율
+            int deviceW = Screen.width;
+            int deviceH = Screen.height;
+            float deviceR = (float)deviceW / (float)deviceH;    // 가로/세로
+
+            // 게임 화면 비율
+            float gameR = (_MaxX - _MinX) / (_MaxY - _MinY);
+            Debug.Log("deviceR:" + deviceR.ToString() + " gameR:" + gameR.ToString());
+
+            // 메인 카메라를 게임 카메라로 사용
+            Camera gameCam = Camera.main;
+            
+            // 게임 카메라 뷰포트 영역 지정
+            if (gameR >= deviceR)
+            {
+                // 게임 화면 가로를 기기 가로에 가득 채움
+                // 세로 상단
+                float h = (1 / gameR) / (1 / deviceR);
+                gameCam.rect = new Rect(0.0f, 1.0f - h, 1.0f, h);
+            }
+            else
+            {
+                // 게임 화면 세로를 기기 세로에 가득 채움
+                // 가로 중앙
+                float w = gameR / deviceR;
+                gameCam.rect = new Rect(0.5f - w / 2.0f, 0.0f, w, 1.0f);
+            }
+            
+            // 게임 세로 범위가 게임 카메라가 보여주는 세로 범위가 되도록 맞춤
+            gameCam.orthographicSize = _MaxY;
+        }
+        #endregion // Camera
 
         #region Loading
         // 로딩 전체 감싸기
