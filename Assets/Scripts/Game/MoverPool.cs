@@ -31,7 +31,7 @@ namespace Game
         private T CreateInstance<T>(Stack<Mover> pool) where T : Mover, new()
         {
             T instance = new T();
-            instance.OnFirstCreatedInPool(pool); // 이 풀에서 생성되었음을 기억
+            instance.OnFirstCreatedInPool(typeof(T)); // 이 풀에서 생성되었음을 기억
             return instance;
         }
 
@@ -82,10 +82,15 @@ namespace Game
                 return;
             }
 
-            if (instance._pool != null)
+            Stack<Mover> pool = null;
+            if (_pools.TryGetValue(instance._poolKey, out pool))
             {
                 // 되돌아갈 풀이 지정되어있다면 풀로 되돌림
-                instance._pool.Push(instance);
+                pool.Push(instance);
+            }
+            else
+            {
+                instance = null;
             }
         }
 

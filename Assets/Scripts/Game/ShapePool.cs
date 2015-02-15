@@ -37,7 +37,7 @@ namespace Game
                 GameObject obj = (GameObject.Instantiate(prefab) as GameObject);
                 obj.name = subPath;
                 Shape instance = obj.GetComponent<Shape>();
-                instance.OnFirstCreatedInPool(pool);
+                instance.OnFirstCreatedInPool(subPath);
                 return instance;
             }
             else
@@ -101,15 +101,16 @@ namespace Game
                 return;
             }
 
-            if (instance._pool != null)
+            Stack<Shape> pool = null;
+            if (_pools.TryGetValue(instance._poolKey, out pool))
             {
                 // 되돌아갈 풀이 지정되어있다면 풀로 되돌림
-                instance._pool.Push(instance);
+                pool.Push(instance);
                 instance.OnAfterDestroyedToPool();
             }
             else
             {
-                // 풀이 지정되어있지 않으면 바로 삭제
+                // 풀이 존재하지 않으면 않으면 바로 삭제
                 GameObject.Destroy(instance);
             }
         }

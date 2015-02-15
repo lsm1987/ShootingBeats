@@ -24,7 +24,7 @@ namespace Game
         // GameObject는 자주 접근하지 않으므로 캐싱하지 않음
         [HideInInspector]
         public Transform _trans;
-        public Stack<Shape> _pool { get; private set; } // 이 인스턴스가 되돌아갈 풀
+        public string _poolKey { get; private set; } // 이 인스턴스가 되돌아갈 풀의 구분자
 
         /// <summary>
         /// 최초 오브젝트 생성시
@@ -37,9 +37,9 @@ namespace Game
         /// <summary>
         /// 풀 내에서 처음 생성되었을 때
         /// </summary>
-        public void OnFirstCreatedInPool(Stack<Shape> pool)
+        public void OnFirstCreatedInPool(string poolKey_)
         {
-            _pool = pool;
+            _poolKey = poolKey_;
             gameObject.SetActive(false);
         }
 

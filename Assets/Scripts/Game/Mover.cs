@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+using System;
+
 namespace Game
 {
     // 게임 내의 이동 물체
@@ -11,7 +13,7 @@ namespace Game
         public float _angle; // 현재 회전. 단위 0.0f~1.0f
         public float _scale;
         public bool _alive;
-        public Stack<Mover> _pool { get; private set; } // 이 인스턴스가 되돌아갈 풀
+        public Type _poolKey { get; private set; } // 이 인스턴스가 되돌아갈 풀의 구분자
 
         public Mover()
         {
@@ -20,9 +22,9 @@ namespace Game
         /// <summary>
         /// 풀 내에서 처음 생성되었을 때
         /// </summary>
-        public void OnFirstCreatedInPool(Stack<Mover> pool)
+        public void OnFirstCreatedInPool(Type poolKey_)
         {
-            _pool = pool;
+            _poolKey = poolKey_;
         }
 
         /// <summary>
