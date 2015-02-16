@@ -18,9 +18,9 @@ namespace Game
             protected override IEnumerator LoadContext()
             {
                 // 외양 로딩
-                PoolStackShape("Common/DpBlueBulletC", 50);
+                PoolStackShape("Common/Bullet_Blue", 50);
                 yield return null;
-                PoolStackShape("Common/DpRedBulletC", 50);
+                PoolStackShape("Common/Bullet_Red", 50);
                 yield return null;
 
                 // 탄 로딩
@@ -43,37 +43,37 @@ namespace Game
                 else if (_Frame == 87)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 1.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 1.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 93)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 2.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 2.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 100)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 3.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 3.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 108)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 4.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 4.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 114)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 5.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 5.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 120)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 6.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.625f + 0.25f / 6.0f * 6.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 //
@@ -89,74 +89,74 @@ namespace Game
                 else if (_Frame == 87 + 84)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 1.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 1.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 93 + 84)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 2.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 2.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 100 + 84)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 3.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 3.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 108 + 84)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 4.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 4.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 114 + 84)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 5.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 5.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 120 + 84)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 6.0f)
+                    b.Init("Common/Bullet_Blue", 0.0f, 1.0f, (0.875f - 0.25f / 6.0f * 6.0f)
                         , 0.0f, 0.03f, 0.0f);
                 }
                 //
                 else if (_Frame == 249)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpRedBulletC", -0.2f, 1.0f, 0.75f
+                    b.Init("Common/Bullet_Red", -0.2f, 1.0f, 0.75f
                         , 0.0f, 0.03f, 0.0f);
                     b = CreateBullet<Bullet>();
-                    b.Init("Common/DpRedBulletC", 0.2f, 1.0f, 0.75f
+                    b.Init("Common/Bullet_Red", 0.2f, 1.0f, 0.75f
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 274)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpRedBulletC", -0.4f, 1.0f, 0.75f
+                    b.Init("Common/Bullet_Red", -0.4f, 1.0f, 0.75f
                         , 0.0f, 0.03f, 0.0f);
                     b = CreateBullet<Bullet>();
-                    b.Init("Common/DpRedBulletC", 0.4f, 1.0f, 0.75f
+                    b.Init("Common/Bullet_Red", 0.4f, 1.0f, 0.75f
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 312)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpRedBulletC", -0.6f, 1.0f, 0.75f
+                    b.Init("Common/Bullet_Red", -0.6f, 1.0f, 0.75f
                         , 0.0f, 0.03f, 0.0f);
                     b = CreateBullet<Bullet>();
-                    b.Init("Common/DpRedBulletC", 0.6f, 1.0f, 0.75f
+                    b.Init("Common/Bullet_Red", 0.6f, 1.0f, 0.75f
                         , 0.0f, 0.03f, 0.0f);
                 }
                 else if (_Frame == 329)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpRedBulletC", -0.8f, 1.0f, 0.75f
+                    b.Init("Common/Bullet_Red", -0.8f, 1.0f, 0.75f
                         , 0.0f, 0.03f, 0.0f);
                     b = CreateBullet<Bullet>();
-                    b.Init("Common/DpRedBulletC", 0.8f, 1.0f, 0.75f
+                    b.Init("Common/Bullet_Red", 0.8f, 1.0f, 0.75f
                         , 0.0f, 0.03f, 0.0f);
                 }
                 //
@@ -201,7 +201,7 @@ namespace Game
             private void AddTestNormalBullet()
             {
                 Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/DpBlueBulletC", 0.0f, 1.0f, 0.75f
+                b.Init("Common/Bullet_Blue", 0.0f, 1.0f, 0.75f
                     , 0.0f, 0.03f, 0.0f);
             }
 
@@ -211,7 +211,7 @@ namespace Game
                 for (int i = 0; i < count; ++i)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpBlueBulletC", 0.0f, 0.5f, (1.0f / count * i)
+                    b.Init("Common/Bullet_Blue", 0.0f, 0.5f, (1.0f / count * i)
                         , 0.0f, 0.01f, 0.0f);
                 }
             }
@@ -222,7 +222,7 @@ namespace Game
                 for (int i = 0; i < count; ++i)
                 {
                     Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/DpRedBulletC", 0.0f, 0.5f, (1.0f / count * i) + (1.0f / count / 2.0f)
+                    b.Init("Common/Bullet_Red", 0.0f, 0.5f, (1.0f / count * i) + (1.0f / count / 2.0f)
                         , 0.0f, 0.01f, 0.0f);
                 }
             }
