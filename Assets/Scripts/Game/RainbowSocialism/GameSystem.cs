@@ -22,6 +22,11 @@ namespace Game
                 PoolStackMover<Player>(1);
                 yield return null;
 
+                // 샷 로딩 ///////////////////////
+                PoolStackShape("Common/Shot_Black", 20);
+                PoolStackMover<Bullet>(20);
+                yield return null;
+
                 // 적기 로딩 /////////////////////
                 PoolStackShape("Common/Boss_Orange", 1);
                 PoolStackMover<Boss>(1);

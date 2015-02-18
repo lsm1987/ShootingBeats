@@ -22,7 +22,7 @@ namespace Game
         private List<Bullet> _shots = new List<Bullet>();   // 살아있는 샷(플레이어기가 발사) 목록
         private List<Enemy> _enemys = new List<Enemy>();    // 살아있는 적기 목록
         private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄(적기가 발사) 목록
-        protected int _Frame { get; private set; }
+        public int _Frame { get; private set; }
 
         // 게임 옵션으로 지정 //////////////////////////////
         public float _PlayerSpeed { get { return 0.02f; } }
@@ -255,6 +255,17 @@ namespace Game
         #endregion //Player
 
         #region Shot
+        /// <summary>
+        /// 풀에서 샷을 생성하고, 샷 업데이트 목록의 가장 뒤에 추가한다.
+        /// <para>생성된 탄을 리턴</para>
+        /// </summary>
+        public T CreateShot<T>() where T : Bullet, new()
+        {
+            T shot = _moverPoolManager.Create<T>();
+            _shots.Add(shot);
+            return shot;
+        }
+
         private void UpdateShot()
         {
             UpdateMoverList(_shots);

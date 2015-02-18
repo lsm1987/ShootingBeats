@@ -5,8 +5,20 @@ namespace Game
     // 플레이어기
     public class Player : Mover
     {
+        private const int _shotInterval = 6;    // 몇 프레임 간격으로 샷 발사하는가?
+        private int _shotCounter = 0; // 샷 발사 체크용 프레임 카운터
+
+        // new: base 클래스의 함수를 숨김
+        new public void Init(string shapeSubPath, float x, float y, float angle)
+        {
+            base.Init(shapeSubPath, x, y, angle);
+            _shotCounter = 0;
+        }
+
         public override void Move()
         {
+            TryShot();
+
             float speed = (Input.GetButton("Slow")) ? GameSystem._Instance._PlayerSlowSpeed : GameSystem._Instance._PlayerSpeed;
             // 입력
             float vx = Input.GetAxis("Horizontal");
@@ -38,6 +50,28 @@ namespace Game
             // 실제 이동
             _x += dx;
             _y += dy;
+        }
+
+        /// <summary>
+        /// 샷 발사 시도
+        /// </summary>
+        private void TryShot()
+        {
+            if (_shotCounter == 0)
+            {
+                CreateShot(true);
+                CreateShot(false);
+            }
+
+            // 카운터 갱신
+            _shotCounter = (_shotCounter + 1) % _shotInterval;
+        }
+
+        private void CreateShot(bool left)
+        {
+            Bullet shot = GameSystem._Instance.CreateShot<Bullet>();
+            shot.Init("Common/Shot_Black", _x + 0.05f * ((left) ? -1.0f : 1.0f), _y + 0.05f, 0.25f
+                , 0.0f, 0.03f, 0.0f);
         }
     }
 }
