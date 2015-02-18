@@ -17,20 +17,30 @@ namespace Game
             // 특화 정보 로딩
             protected override IEnumerator LoadContext()
             {
+                // 적기 로딩 /////////////////////
+                PoolStackShape("Common/Boss_Orange", 1);
+                PoolStackMover<Boss>(1);
+                yield return null;
+
+                // 탄 로딩 ///////////////////
                 // 외양 로딩
                 PoolStackShape("Common/Bullet_Blue", 50);
                 yield return null;
                 PoolStackShape("Common/Bullet_Red", 50);
                 yield return null;
-
-                // 탄 로딩
-                PoolStackBullet<Bullet>(100);
+                // 클래스 로딩
+                PoolStackMover<Bullet>(100);
                 yield return null;
             }
 
             // 특화 정보 갱신
             protected override void UpdatePlayContext()
             {
+                if (_Frame == 0)
+                {
+                    Boss boss = CreateEnemy<Boss>();
+                    boss.Init("Common/Boss_Orange", 0.0f, 1.0f, 0.0f);
+                }
                 if (_Frame == 64)
                 {
                     AddTestNormalBullet();

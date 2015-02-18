@@ -18,7 +18,10 @@ namespace Game
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
         private AudioSource _srcSong;    // 노래 재생할 소스
-        private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄 목록
+        private Player _player = null;  // 플레이어기는 단일
+        private List<Bullet> _shots = new List<Bullet>();   // 살아있는 샷(플레이어기가 발사) 목록
+        private List<Enemy> _enemys = new List<Enemy>();    // 살아있는 적기 목록
+        private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄(적기가 발사) 목록
         protected int _Frame { get; private set; }
 
         // 자식 클래스에서 재정의 가능한 멤버변수 /////////////////////////////////
@@ -161,7 +164,11 @@ namespace Game
             // 세부 갱신
             UpdatePlayContext();
 
-            // 탄환 갱신
+            // 이동 물체들 갱신
+            // 보통 플레이어기가 샷을 생성하고 적기가 탄을 생성하므로 이 순서로 갱신
+            UpdatePlayer();
+            UpdateShot();
+            UpdateEnemy();
             UpdateBullet();
         }
 
@@ -184,12 +191,86 @@ namespace Game
         }
         #endregion // Shape
 
-        #region Bullet
-        public void PoolStackBullet<T>(int count) where T : Bullet, new()
+        #region Mover
+        /// <summary>
+        /// 특정 타입의 Mover를 풀에 미리 생성한다.
+        /// </summary>
+        /// <typeparam name="T">Mover 타입</typeparam>
+        /// <param name="count">미리 생성할 수</param>
+        protected void PoolStackMover<T>(int count) where T : Mover, new()
         {
             _moverPoolManager.PoolStack<T>(count);
         }
 
+        private void UpdateMoverList<T>(List<T> movers) where T : Mover
+        {
+            // 갱신 도중에 새 무버가 생길 수 있으므로 인덱스 순회
+            for (int i = 0; i < movers.Count; ++i)
+            {
+                movers[i].Move();
+            }
+
+            // 역순 순회하며 삭제
+            // 삭제 도중에 새 무버가 생기면 안됨
+            for (int i = movers.Count - 1; i >= 0; --i)
+            {
+                if (!movers[i]._alive)
+                {
+                    T mover = movers[i];
+                    mover.OnDestroy();
+                    movers.RemoveAt(i);
+                    _moverPoolManager.Delete(mover);
+                }
+            }
+
+            // 그리기
+            foreach (T mover in movers)
+            {
+                mover.Draw();
+            }
+        }
+
+        #endregion //Mover
+
+        #region Player
+        private void UpdatePlayer()
+        {
+            if (_player != null)
+            {
+                _player.Move();
+            }
+        }
+        #endregion //Player
+
+        #region Shot
+        private void UpdateShot()
+        {
+            UpdateMoverList(_shots);
+        }
+        #endregion //Shot
+
+        #region Enemy
+        /// <summary>
+        /// 풀에서 적기를 생성하고, 적기 업데이트 목록의 가장 뒤에 추가한다.
+        /// <para>생성된 적기를 리턴</para>
+        /// </summary>
+        public T CreateEnemy<T>() where T : Enemy, new()
+        {
+            T enemy = _moverPoolManager.Create<T>();
+            _enemys.Add(enemy);
+            return enemy;
+        }
+
+        /// <summary>
+        /// 적기 목록 순회하며 갱신
+        /// </summary>
+        private void UpdateEnemy()
+        {
+            UpdateMoverList(_enemys);
+        }
+        #endregion //Enemy
+
+        #region Bullet
         /// <summary>
         /// 풀에서 탄을 생성하고, 탄 업데이트 목록의 가장 뒤에 추가한다.
         /// <para>생성된 탄을 리턴</para>
@@ -197,42 +278,16 @@ namespace Game
         public T CreateBullet<T>() where T : Bullet, new()
         {
             T bullet = _moverPoolManager.Create<T>();
-            if (bullet != null)
-            {
-                _bullets.Add(bullet);
-            }
+            _bullets.Add(bullet);
             return bullet;
         }
 
         /// <summary>
-        /// 탄 업데이트 목록 순회하며 갱신
+        /// 탄 목록 순회하며 갱신
         /// </summary>
         private void UpdateBullet()
         {
-            // 갱신 도중에 새 탄이 생길 수 있으므로 인덱스 순회
-            for (int i = 0; i < _bullets.Count; ++i)
-            {
-                _bullets[i].Move();
-            }
-
-            // 역순 순회하며 삭제
-            // 삭제 도중에 새 탄이 생기면 안됨
-            for (int i = _bullets.Count - 1; i >= 0; --i)
-            {
-                if (!_bullets[i]._alive)
-                {
-                    Bullet bullet = _bullets[i];
-                    bullet.OnDestroy();
-                    _bullets.RemoveAt(i);
-                    _moverPoolManager.Delete(bullet);
-                }
-            }
-
-            // 그리기
-            foreach (Bullet bullet in _bullets)
-            {
-                bullet.Draw();
-            }
+            UpdateMoverList(_bullets);
         }
         #endregion // Bullet
 

@@ -3,13 +3,11 @@
 namespace Game
 {
     // 플레이어기
-    /*
-    public class MyShip : Mover
+    public class Player : Mover
     {
         public override void Move()
         {
 
         }
     }
-    */
 }

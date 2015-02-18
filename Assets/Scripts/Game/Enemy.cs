@@ -3,13 +3,8 @@
 namespace Game
 {
     // 적기
-    /*
-    public class Enemy : Mover
+    // 세부 구현은 자식 클래스에서
+    public abstract class Enemy : Mover
     {
-        public override void Move()
-        {
-
-        }
     }
-    */
 }
