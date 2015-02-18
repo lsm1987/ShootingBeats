@@ -62,8 +62,8 @@ namespace Game
         #region Debug
         private void OnDrawGizmos()
         {
-            DrawGizmoCircle(Color.white, transform.position, _size);
-            DrawGizmoCircle(Color.yellow, transform.position, _hit);
+            DrawGizmoCircle(Color.cyan, transform.position, _size);
+            DrawGizmoCircle(Color.green, transform.position, _hit);
         }
 
         private void DrawGizmoCircle(Color color, Vector2 c, float r)
