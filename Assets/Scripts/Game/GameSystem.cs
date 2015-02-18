@@ -24,6 +24,10 @@ namespace Game
         private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄(적기가 발사) 목록
         protected int _Frame { get; private set; }
 
+        // 게임 옵션으로 지정 //////////////////////////////
+        public float _PlayerSpeed { get { return 0.02f; } }
+        public float _PlayerSlowSpeed { get { return 0.01f; } }
+
         // 자식 클래스에서 재정의 가능한 멤버변수 /////////////////////////////////
         // 게임 경계. 좌하단 min(-,-), 우상단 max(+,+). 짧은 쪽이 1
         // 3:4 -> 1:1.3
@@ -233,11 +237,19 @@ namespace Game
         #endregion //Mover
 
         #region Player
+        public T CreatePlayer<T>() where T : Player, new()
+        {
+            T player = _moverPoolManager.Create<T>();
+            _player = player;
+            return player;
+        }
+
         private void UpdatePlayer()
         {
             if (_player != null)
             {
                 _player.Move();
+                _player.Draw();
             }
         }
         #endregion //Player
