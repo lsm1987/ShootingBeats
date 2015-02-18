@@ -41,3 +41,19 @@ TagManager:
     userID: 0
     uniqueID: 0
     locked: 0
+  - name: Shot
+    userID: 1
+    uniqueID: 2730246329
+    locked: 0
+  - name: Player
+    userID: 2
+    uniqueID: 922417103
+    locked: 0
+  - name: Enemy
+    userID: 3
+    uniqueID: 1529883227
+    locked: 0
+  - name: Bullet
+    userID: 4
+    uniqueID: 2643978333
+    locked: 0
