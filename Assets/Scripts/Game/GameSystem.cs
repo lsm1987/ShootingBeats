@@ -19,9 +19,9 @@ namespace Game
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
         private AudioSource _srcSong;    // 노래 재생할 소스
         private Player _player = null;  // 플레이어기는 단일
-        private List<Bullet> _shots = new List<Bullet>();   // 살아있는 샷(플레이어기가 발사) 목록
-        private List<Enemy> _enemys = new List<Enemy>();    // 살아있는 적기 목록
-        private List<Bullet> _bullets = new List<Bullet>(); // 살아있는 탄(적기가 발사) 목록
+        public List<Shot> _Shots { get; private set; }    // 살아있는 샷(플레이어기가 발사) 목록
+        public List<Enemy> _Enemys { get; private set; }    // 살아있는 적기 목록
+        public List<Bullet> _Bullets { get; private set; }  // 살아있는 탄(적기가 발사) 목록
         public int _Frame { get; private set; }
 
         // 게임 옵션으로 지정 //////////////////////////////
@@ -47,6 +47,9 @@ namespace Game
             _oriVSyncCount = QualitySettings.vSyncCount;
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = _fps;
+            _Shots = new List<Shot>();
+            _Enemys = new List<Enemy>();
+            _Bullets = new List<Bullet>();
 
             // 카메라
             InitializeCamera();
@@ -170,6 +173,7 @@ namespace Game
 
             // 이동 물체들 갱신
             // 보통 플레이어기가 샷을 생성하고 적기가 탄을 생성하므로 이 순서로 갱신
+            // Hit 체크도 업데이트 순서대로 수행
             UpdatePlayer();
             UpdateShot();
             UpdateEnemy();
@@ -259,16 +263,16 @@ namespace Game
         /// 풀에서 샷을 생성하고, 샷 업데이트 목록의 가장 뒤에 추가한다.
         /// <para>생성된 탄을 리턴</para>
         /// </summary>
-        public T CreateShot<T>() where T : Bullet, new()
+        public T CreateShot<T>() where T : Shot, new()
         {
             T shot = _moverPoolManager.Create<T>();
-            _shots.Add(shot);
+            _Shots.Add(shot);
             return shot;
         }
 
         private void UpdateShot()
         {
-            UpdateMoverList(_shots);
+            UpdateMoverList(_Shots);
         }
         #endregion //Shot
 
@@ -280,7 +284,7 @@ namespace Game
         public T CreateEnemy<T>() where T : Enemy, new()
         {
             T enemy = _moverPoolManager.Create<T>();
-            _enemys.Add(enemy);
+            _Enemys.Add(enemy);
             return enemy;
         }
 
@@ -289,7 +293,7 @@ namespace Game
         /// </summary>
         private void UpdateEnemy()
         {
-            UpdateMoverList(_enemys);
+            UpdateMoverList(_Enemys);
         }
         #endregion //Enemy
 
@@ -301,7 +305,7 @@ namespace Game
         public T CreateBullet<T>() where T : Bullet, new()
         {
             T bullet = _moverPoolManager.Create<T>();
-            _bullets.Add(bullet);
+            _Bullets.Add(bullet);
             return bullet;
         }
 
@@ -310,7 +314,7 @@ namespace Game
         /// </summary>
         private void UpdateBullet()
         {
-            UpdateMoverList(_bullets);
+            UpdateMoverList(_Bullets);
         }
         #endregion // Bullet
 

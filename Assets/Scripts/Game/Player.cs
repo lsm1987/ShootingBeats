@@ -69,7 +69,7 @@ namespace Game
 
         private void CreateShot(bool left)
         {
-            Bullet shot = GameSystem._Instance.CreateShot<Bullet>();
+            Shot shot = GameSystem._Instance.CreateShot<Shot>();
             shot.Init("Common/Shot_Black", _x + 0.05f * ((left) ? -1.0f : 1.0f), _y + 0.05f, 0.25f
                 , 0.0f, 0.03f, 0.0f);
         }

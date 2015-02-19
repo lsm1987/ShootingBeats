@@ -24,7 +24,7 @@ namespace Game
 
                 // 샷 로딩 ///////////////////////
                 PoolStackShape("Common/Shot_Black", 20);
-                PoolStackMover<Bullet>(20);
+                PoolStackMover<Shot>(20);
                 yield return null;
 
                 // 적기 로딩 /////////////////////

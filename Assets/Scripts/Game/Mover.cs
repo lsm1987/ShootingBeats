@@ -76,6 +76,22 @@ namespace Game
             return (dx * dx + dy * dy) < (hit * hit);
         }
 
+        /// <summary>
+        /// 이 무버가 지정한 무버 목록 중 하나에라도 충돌하는가?
+        /// <para>충돌했다면 그 무버 리턴</para>
+        /// </summary>
+        public T IsHit<T>(List<T> movers) where T : Mover
+        {
+            foreach (T mover in movers)
+            {
+                if (IsHit(mover))
+                {
+                    return mover;
+                }
+            }
+            return null;
+        }
+
         // 게임 영역 안에 있는지 여부 리턴
         public bool IsInStage()
         {
