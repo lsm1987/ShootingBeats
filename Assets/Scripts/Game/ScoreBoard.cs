@@ -6,6 +6,7 @@ namespace Game
 {
     public class ScoreBoard : MonoBehaviour
     {
+        const float _spriteWidth = 0.11f;    // 숫자 너비
         public GameObject _prefabDigit = null;
         public Sprite[] _sprites = new Sprite[10]; // 0 ~ 9 까지의 숫자 스프라이트
 
@@ -50,16 +51,15 @@ namespace Game
             } while (true);
 
             // 오브젝트 정렬
-            const float spriteWidth = 0.1f;
-            float totalWidth = spriteWidth * digitCount;    // 모든 자리 너비 합
-            float rightMostX = totalWidth / 2.0f - spriteWidth / 2.0f;  // 스프라이트 중앙이 기준점
+            float totalWidth = _spriteWidth * digitCount;    // 모든 자리 너비 합
+            float rightMostX = totalWidth / 2.0f - _spriteWidth / 2.0f;  // 스프라이트 중앙이 기준점
             for (int i = 0; i < _digits.Count; ++i)
             {
                 if (i < digitCount)
                 {
                     // 유효한 자리
                     _digits[i].gameObject.SetActive(true);
-                    _digits[i].transform.localPosition = new Vector3(rightMostX - spriteWidth * i, 0.0f, 0.0f); // 오른쪽에서 왼쪽으로 채워나감
+                    _digits[i].transform.localPosition = new Vector3(rightMostX - _spriteWidth * i, 0.0f, 0.0f); // 오른쪽에서 왼쪽으로 채워나감
                 }
                 else
                 {
