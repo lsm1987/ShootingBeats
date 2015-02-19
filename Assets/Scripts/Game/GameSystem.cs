@@ -23,6 +23,9 @@ namespace Game
         public List<Enemy> _Enemys { get; private set; }    // 살아있는 적기 목록
         public List<Bullet> _Bullets { get; private set; }  // 살아있는 탄(적기가 발사) 목록
         public int _Frame { get; private set; }
+        [SerializeField]
+        private ScoreBoard _scoreBoard;
+        private int _score = 0;
 
         // 게임 옵션으로 지정 //////////////////////////////
         public float _PlayerSpeed { get { return 0.02f; } }
@@ -50,6 +53,7 @@ namespace Game
             _Shots = new List<Shot>();
             _Enemys = new List<Enemy>();
             _Bullets = new List<Bullet>();
+            SetScore(0);
 
             // 카메라
             InitializeCamera();
@@ -317,6 +321,25 @@ namespace Game
             UpdateMoverList(_Bullets);
         }
         #endregion // Bullet
+
+        #region Score
+        /// <summary>
+        /// 점수 지정
+        /// </summary>
+        private void SetScore(int score)
+        {
+            _score = score;
+            _scoreBoard.SetScore(_score);
+        }
+
+        /// <summary>
+        /// 점수 변화량 지정
+        /// </summary>
+        public void SetScoreDelta(int delta)
+        {
+            SetScore(_score + delta);
+        }
+        #endregion // Score
 
         #region Debug
         private void OnDrawGizmos()

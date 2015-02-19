@@ -21,7 +21,8 @@ namespace Game
                 Enemy enemy = IsHit(GameSystem._Instance._Enemys);
                 if (enemy != null)
                 {
-                    _alive = false;
+                    _alive = false; // 샷 소멸
+                    enemy.OnHit();  // 적 피격 처리
                 }
             }
         }

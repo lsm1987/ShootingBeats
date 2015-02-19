@@ -41,6 +41,10 @@ TagManager:
     userID: 0
     uniqueID: 0
     locked: 0
+  - name: BackgroundUI
+    userID: 5
+    uniqueID: 3525472351
+    locked: 0
   - name: Shot
     userID: 1
     uniqueID: 2730246329
