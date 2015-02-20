@@ -113,5 +113,27 @@ namespace Game
         {
             ClearShape();
         }
+
+        public Vector2 _Pos
+        {
+            get
+            {
+                return new Vector2(_x, _y);
+            }
+
+            set
+            {
+                _x = value.x;
+                _y = value.y;
+            }
+        }
+
+        public int _Frame
+        {
+            get
+            {
+                return GameSystem._Instance._Frame;
+            }
+        }
     }
 }
