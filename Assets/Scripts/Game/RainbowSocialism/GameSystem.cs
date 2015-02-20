@@ -54,45 +54,7 @@ namespace Game
 
                     // 보스 생성
                     Boss boss = CreateEnemy<Boss>();
-                    boss.Init("Common/Boss_Orange", 0.0f, 1.3f, 0.0f);
-                }
-               
-                //
-                else if (_Frame == 249)
-                {
-                    Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", -0.2f, 1.0f, 0.75f
-                        , 0.0f, 0.03f, 0.0f);
-                    b = CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", 0.2f, 1.0f, 0.75f
-                        , 0.0f, 0.03f, 0.0f);
-                }
-                else if (_Frame == 274)
-                {
-                    Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", -0.4f, 1.0f, 0.75f
-                        , 0.0f, 0.03f, 0.0f);
-                    b = CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", 0.4f, 1.0f, 0.75f
-                        , 0.0f, 0.03f, 0.0f);
-                }
-                else if (_Frame == 312)
-                {
-                    Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", -0.6f, 1.0f, 0.75f
-                        , 0.0f, 0.03f, 0.0f);
-                    b = CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", 0.6f, 1.0f, 0.75f
-                        , 0.0f, 0.03f, 0.0f);
-                }
-                else if (_Frame == 329)
-                {
-                    Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", -0.8f, 1.0f, 0.75f
-                        , 0.0f, 0.03f, 0.0f);
-                    b = CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", 0.8f, 1.0f, 0.75f
-                        , 0.0f, 0.03f, 0.0f);
+                    boss.Init("Common/Boss_Orange", -0.5f, 1.3f, 0.0f);
                 }
                 //
                 else if (_Frame == 356)  // 1
@@ -131,13 +93,6 @@ namespace Game
                 {
                     AddTestCircleBlueBullet();
                 }
-            }
-
-            private void AddTestNormalBullet()
-            {
-                Bullet b = CreateBullet<Bullet>();
-                b.Init("Common/Bullet_Blue", 0.0f, 1.0f, 0.75f
-                    , 0.0f, 0.03f, 0.0f);
             }
 
             private void AddTestCircleBlueBullet()

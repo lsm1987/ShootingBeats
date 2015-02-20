@@ -28,7 +28,7 @@ namespace Game
                 int frame = _Frame;
                 if (frame == 0)
                 {
-                    _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.75f), 10));
+                    _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.75f), 40));
                 }
                 else if (frame == 50)
                 {
@@ -37,6 +37,11 @@ namespace Game
                 else if (frame == 148)
                 {
                     _coroutineManager.StartCoroutine(Simple3Wave(false));
+                }
+                else if (frame == 249)
+                {
+                    _coroutineManager.StartCoroutine(Simple4Wave());
+                    _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.5f), 75));
                 }
             }
 
@@ -99,6 +104,41 @@ namespace Game
                         yield return new WaitForFrames(7);
                     }
                 }
+            }
+
+            // 단순 4파
+            private IEnumerator Simple4Wave()
+            {
+                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", -0.2f, 1.3f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", 0.2f, 1.3f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                yield return new WaitForFrames(25);
+
+                b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", -0.4f, 1.3f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", 0.4f, 1.3f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                yield return new WaitForFrames(25);
+
+                b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", -0.6f, 1.3f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", 0.6f, 1.3f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                yield return new WaitForFrames(25);
+
+                b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", -0.8f, 1.3f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
+                b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", 0.8f, 1.3f, 0.75f
+                    , 0.0f, 0.03f, 0.0f);
             }
             #endregion //Coroutine
         } // Boss
