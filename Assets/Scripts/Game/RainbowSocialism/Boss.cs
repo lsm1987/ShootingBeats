@@ -53,6 +53,7 @@ namespace Game
                 }
                 else if (frame == 799)
                 {
+                    // 왼쪽 코너로 이동
                     _coroutineManager.StartCoroutine(MoveDamp(new Vector2(-0.6f, 0.75f), 30, 0.1f));
                 }
                 else if (frame == 890)
@@ -61,6 +62,7 @@ namespace Game
                 }
                 else if (frame == 1230)
                 {
+                    // 오른쪽 코너로 이동
                     _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.6f, 0.75f), 60, 0.1f));
                 }
                 else if (frame == 1320)
@@ -69,6 +71,7 @@ namespace Game
                 }
                 else if (frame == 1660)
                 {
+                    // 중앙으로 이동
                     _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.0f), 40, 0.1f));
                 }
                 else if (frame == 1750)
@@ -82,6 +85,33 @@ namespace Game
                 else if (frame == 3026)
                 {
                     _coroutineManager.StartCoroutine(PigeonSolo());
+                }
+                else if (frame == 4700)
+                {
+                    // 왼쪽 코너로 이동
+                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(-0.6f, 0.75f), 30, 0.1f));
+                }
+                else if (frame == 4730)
+                {
+                    _coroutineManager.StartCoroutine(CornerWaves(true));
+                }
+                else if (frame == 5070)
+                {
+                    // 오른쪽 코너로 이동
+                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.6f, 0.75f), 60, 0.1f));
+                }
+                else if (frame == 5160)
+                {
+                    _coroutineManager.StartCoroutine(CornerWaves(false));
+                }
+                else if (frame == 5500)
+                {
+                    // 중앙으로 이동
+                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.0f), 40, 0.1f));
+                }
+                else if (frame == 5590)
+                {
+                    _coroutineManager.StartCoroutine(RotateCrossTwice());
                 }
             }
 
@@ -401,15 +431,16 @@ namespace Game
 
             private IEnumerator RotateCrossTwice_DirectionShot(bool clockwise)
             {
-                const int count = 4;
-                float startAngle = 0.75f + (0.125f * (clockwise ? -1.0f : 1.0f));
-                for (int i = 0; i < count; ++i)
+                const int repeatCount = 4;
+                const int directionCount = 4;
+                float startAngle = 0.75f;
+                for (int i = 0; i < repeatCount; ++i)
                 {
-                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", _x, _y, startAngle + 0.25f * (float)i * (clockwise ? -1.0f : 1.0f)
-                        , 0.0f, 0.01f, 0.0f);
+                    ShootNWay("Common/Bullet_Red", 0.01f, directionCount
+                        , startAngle + 0.25f * (float)i * (clockwise ? -1.0f : 1.0f)
+                        , 1.0f - 1.0f / directionCount);
 
-                    if (i < count - 1)
+                    if (i < repeatCount - 1)
                     {
                         yield return new WaitForFrames(105);
                     }
@@ -460,8 +491,9 @@ namespace Game
                 yield return new WaitForFrames(20);
                 // 중앙으로 이동
                 yield return _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.0f), 180));
+                yield return new WaitForFrames(30);
                 // 랜덤 뿌리기
-                yield return _coroutineManager.StartCoroutine(ShootRandomCircle("Common/Bullet_Blue", 0.01f, 3, 3, 240));
+                yield return _coroutineManager.StartCoroutine(ShootRandomCircle("Common/Bullet_Blue", 0.01f, 3, 3, 150));
             }
 
             // 랜덤 원형탄
