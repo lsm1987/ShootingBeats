@@ -51,6 +51,26 @@ namespace Game
                 {
                     _coroutineManager.StartCoroutine(AimAfterSimpleCircles());
                 }
+                else if (frame == 799)
+                {
+                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(-0.6f, 0.75f), 30, 0.1f));
+                }
+                else if (frame == 890)
+                {
+                    _coroutineManager.StartCoroutine(CornerWaves(true));
+                }
+                else if (frame == 1230)
+                {
+                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.6f, 0.75f), 60, 0.1f));
+                }
+                else if (frame == 1320)
+                {
+                    _coroutineManager.StartCoroutine(CornerWaves(false));
+                }
+                else if (frame == 1660)
+                {
+                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.75f), 30, 0.1f));
+                }
             }
 
             // 피격시
@@ -70,6 +90,21 @@ namespace Game
                 {
                     float time = (float)(_Frame - startFrame) / (float)duration;
                     _Pos = Vector2.Lerp(startPos, arrivePos, time);
+                    yield return null;
+                }
+
+                // 마지막 프레임
+                _Pos = arrivePos;
+            }
+
+            // 지정한 위치까지 비례감속 이동
+            private IEnumerator MoveDamp(Vector3 arrivePos, int duration, float damp)
+            {
+                int startFrame = _Frame;
+
+                while (_Frame < (startFrame + duration))
+                {
+                    _Pos = Vector2.Lerp(_Pos, arrivePos, damp);
                     yield return null;
                 }
 
@@ -149,7 +184,7 @@ namespace Game
                     , 0.0f, 0.03f, 0.0f);
             }
 
-            private void SpawnCircleBullet(string shape, int count, float speed, bool halfAngleOffset)
+            private void ShootCircleBullet(string shape, int count, float speed, bool halfAngleOffset)
             {
                 float angleOffset = (halfAngleOffset) ? (1.0f / count / 2.0f) : 0.0f;
                 for (int i = 0; i < count; ++i)
@@ -167,7 +202,7 @@ namespace Game
                 for (int i = 0; i < count; ++i)
                 {
                     bool halfAngleOffset = (i % 2) != 0;
-                    SpawnCircleBullet("Common/Bullet_Blue", 20, 0.005f, halfAngleOffset);
+                    ShootCircleBullet("Common/Bullet_Blue", 20, 0.005f, halfAngleOffset);
 
                     if (i < count - 1)
                     {
@@ -193,6 +228,53 @@ namespace Game
                 }
             }
 
+            // 각 모서리에서 진행할 웨이브들
+            private IEnumerator CornerWaves(bool leftCorner)
+            {
+                // 2파 1
+                yield return _coroutineManager.StartCoroutine(CornerWaves_2Wave(leftCorner));
+                // 3파 2
+                yield return _coroutineManager.StartCoroutine(CornerWaves_2Wave(leftCorner));
+                // 4파
+                {
+                    float x = (leftCorner) ? 1.0f : -1.0f;
+                    float angle = (leftCorner) ? 0.5f : 0.0f;
+                    for (int i = 0; i < 4; ++i)
+                    {
+                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                        b.Init("Common/Bullet_Red", x, 0.5f - 1.5f / 3.0f * i, angle
+                            , 0.0f, 0.01f, 0.0f);
+                        yield return new WaitForFrames(25);
+                    }
+                }
+                // 연타
+                ShootCircleBullet("Common/Bullet_Blue", 12, 0.02f, false);
+                yield return new WaitForFrames(26);
+                ShootCircleBullet("Common/Bullet_Blue", 12, 0.02f, true);
+            }
+
+            private IEnumerator CornerWaves_2Wave(bool leftCorner)
+            {
+                // 1탄
+                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Blue", _x, _y, 0.75f
+                    , 0.0f, 0.02f, 0.0f);
+                yield return new WaitForFrames(32);
+
+                float angle = ((leftCorner) ? 0.875f : 0.625f);
+                ShootNWay("Common/Bullet_Blue", 0.02f, 6, angle, 0.25f);
+                yield return new WaitForFrames(75);
+            }
+
+            private void ShootNWay(string shape, float speed, int count, float angle, float angleRange)
+            {
+                for (int i = 0; i < count; ++i)
+                {
+                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                    b.Init("Common/Bullet_Blue", _x, _y, angle + angleRange * ((float)i / (count - 1) - 0.5f)
+                        , 0.0f, 0.02f, 0.0f);
+                }
+            }
             #endregion //Coroutine
         } // Boss
     }
