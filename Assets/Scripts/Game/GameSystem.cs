@@ -29,6 +29,7 @@ namespace Game
         [SerializeField]
         private ScoreBoard _scoreBoard;
         private int _score = 0;
+        private System.Random _random = null;   // 게임 내에서 사용할 랜덤. 시드값 항상 동일
 
         // 테스트용 설정 //////////////////////////
         public bool _isTestInvincible = false;  // 무적모드인가?
@@ -62,6 +63,7 @@ namespace Game
             _Enemys = new List<Enemy>();
             _Bullets = new List<Bullet>();
             SetScore(0);
+            InitRandom();
 
             // 카메라
             InitializeCamera();
@@ -415,6 +417,23 @@ namespace Game
             SetScore(_score + delta);
         }
         #endregion // Score
+
+        #region Random
+        private void InitRandom()
+        {
+            // 항상 동일한 시드값으로 랜덤 초기화
+            _random = new System.Random(1);
+        }
+
+        /// <summary>
+        /// 0~1 사이의 무작위 실수 구함
+        /// </summary>
+        /// <returns>0~1 사이 실수</returns>
+        public float GetRandom01()
+        {
+            return (float)_random.NextDouble();
+        }
+        #endregion // Random
 
         #region Debug
         private void OnDrawGizmos()
