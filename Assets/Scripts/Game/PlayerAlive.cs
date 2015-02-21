@@ -53,11 +53,18 @@ namespace Game
             // 탄, 적기와 충돌 체크
             if (IsHit(GameSystem._Instance._Bullets) != null || IsHit(GameSystem._Instance._Enemys) != null)
             {
-                _alive = false;
-                
-                // 충돌 표시용 플레이어기 생성
-                PlayerCrash playerCrash = GameSystem._Instance.CreatePlayer<PlayerCrash>();
-                playerCrash.Init("Common/Player_Crash", _x, _y, _angle);
+                if (!GameSystem._Instance._isTestInvincible)
+                {
+                    _alive = false;
+
+                    // 충돌 표시용 플레이어기 생성
+                    PlayerCrash playerCrash = GameSystem._Instance.CreatePlayer<PlayerCrash>();
+                    playerCrash.Init("Common/Player_Crash", _x, _y, _angle);
+                }
+//                 else
+//                 {
+//                     Debug.Log("Player Crashed!");
+//                 }
             }
         }
 

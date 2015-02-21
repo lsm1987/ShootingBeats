@@ -63,7 +63,7 @@ namespace Game
         // 그리기
         public void Draw()
         {
-            _shape._trans.position = new Vector2(_x, _y);
+            _shape._trans.position = _Pos;
             _shape._trans.rotation = Quaternion.Euler(0.0f, 0.0f, 360.0f * _angle);
         }
 

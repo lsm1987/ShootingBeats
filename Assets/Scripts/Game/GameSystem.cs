@@ -14,7 +14,8 @@ namespace Game
 
         private int _oriVSyncCount = 0; // 유니티 설정 복원용
         private const int _fps = 60; // 갱신주기
-        private const int _songFrameOverInterval = 6;  // 노래 프레임이 게임 프레임을 지나쳤을 때 게임 프레임이 한 번에 따라갈 프레임 수
+        private const int _songFrameOverGap = 3;    // 노래 프레임이 게임 프레임을 지나쳤을 때 게임 프레임이 한 번에 따라갈 프레임 수
+        private const int _gameFrameOverGap = 6;    // 게임 프레임이 노래 프레임을 지나쳤을 때 이 차이 이내면 스킵하지 않는다.
         public FSM _FSM { get; private set; }
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
@@ -28,6 +29,9 @@ namespace Game
         [SerializeField]
         private ScoreBoard _scoreBoard;
         private int _score = 0;
+
+        // 테스트용 설정 //////////////////////////
+        public bool _isTestInvincible = false;  // 무적모드인가?
 
         // 게임 옵션으로 지정 //////////////////////////////
         public float _PlayerSpeed { get { return 0.02f; } }
@@ -178,22 +182,26 @@ namespace Game
                 int gameFrame = _Frame + 1;
                 //Debug.Log("songFrame:" + songFrame.ToString() + " gameFrame:" + gameFrame.ToString());
 
-                if (songFrame > gameFrame + _songFrameOverInterval)
+                if (songFrame > gameFrame + _songFrameOverGap)
                 {
                     //Debug.Log("[GameSystem] Song frame over occurred. Song:" + songFrame.ToString() + " Game:" + gameFrame.ToString());
                     // 기본 갱신 1회가 있으므로 -1회 따라잡음
-                    for (int i = 0; i < _songFrameOverInterval -1; ++i)
+                    for (int i = 0; i < _songFrameOverGap -1; ++i)
                     {
                         UpdatePlayFrame(true);
                     }
                     //Debug.Log("over occured!");
                 }
-                else if (songFrame < gameFrame)
+                else if (songFrame + _gameFrameOverGap < gameFrame)
                 {
                     //Debug.Log("[GameSystem] Game frame skip occurred. Song:" + songFrame.ToString() + " Game:" + gameFrame.ToString());
                     // 게임이 노래를 앞서나가면 갱신하지 않음
                     skipUpdateFrame = true;
                 }
+//                 else
+//                 {
+//                     Debug.Log("[GameSystem] Song:" + songFrame.ToString() + " Game:" + gameFrame.ToString() + " gap:" + (songFrame - gameFrame).ToString());
+//                 }
             }
 
             if (!skipUpdateFrame)
