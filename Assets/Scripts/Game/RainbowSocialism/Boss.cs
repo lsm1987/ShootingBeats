@@ -75,6 +75,10 @@ namespace Game
                 {
                     _coroutineManager.StartCoroutine(RotateCrossTwice());
                 }
+                else if (frame == 2580)
+                {
+                    _coroutineManager.StartCoroutine(BackwardStep());
+                }
             }
 
             // 피격시
@@ -272,11 +276,20 @@ namespace Game
 
             private void ShootNWay(string shape, float speed, int count, float angle, float angleRange)
             {
-                for (int i = 0; i < count; ++i)
+                if (count > 1)
+                {
+                    for (int i = 0; i < count; ++i)
+                    {
+                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                        b.Init(shape, _x, _y, angle + angleRange * ((float)i / (count - 1) - 0.5f)
+                            , 0.0f, speed, 0.0f);
+                    }
+                }
+                else if (count == 1)
                 {
                     Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Blue", _x, _y, angle + angleRange * ((float)i / (count - 1) - 0.5f)
-                        , 0.0f, 0.02f, 0.0f);
+                    b.Init(shape, _x, _y, angle + angleRange
+                        , 0.0f, speed, 0.0f);
                 }
             }
 
@@ -331,6 +344,39 @@ namespace Game
                         yield return new WaitForFrames(105);
                     }
                 }
+            }
+
+            private IEnumerator BackwardStep()
+            {
+                // 뒷걸음질 치기는 병렬로 수행
+                _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.75f), 360));
+
+                // 첫 탄 발사 전 딜레이
+                const int interval = 45;
+                yield return new WaitForFrames(interval);
+
+                const float speed = 0.01f;
+                const float angle = 0.75f;
+                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", _x, _y, angle, 0.0f, speed, 0.0f);
+                yield return new WaitForFrames(interval);
+
+                ShootNWay("Common/Bullet_Red", speed, 2, angle, 0.125f);
+                yield return new WaitForFrames(interval);
+
+                b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", _x, _y, angle, 0.0f, speed, 0.0f);
+                yield return new WaitForFrames(interval);
+
+                ShootNWay("Common/Bullet_Red", speed, 2, angle, 0.125f);
+                yield return new WaitForFrames(interval);
+
+                b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init("Common/Bullet_Red", _x, _y, angle, 0.0f, speed, 0.0f);
+                yield return new WaitForFrames(interval);
+
+                ShootNWay("Common/Bullet_Red", speed, 2, angle, 0.125f);
+                yield return new WaitForFrames(interval);
             }
             #endregion //Coroutine
         } // Boss
