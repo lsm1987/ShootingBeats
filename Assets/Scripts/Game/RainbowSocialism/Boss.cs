@@ -69,7 +69,11 @@ namespace Game
                 }
                 else if (frame == 1660)
                 {
-                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.75f), 30, 0.1f));
+                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.0f), 40, 0.1f));
+                }
+                else if (frame == 1750)
+                {
+                    _coroutineManager.StartCoroutine(RotateCrossTwice());
                 }
             }
 
@@ -273,6 +277,59 @@ namespace Game
                     Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
                     b.Init("Common/Bullet_Blue", _x, _y, angle + angleRange * ((float)i / (count - 1) - 0.5f)
                         , 0.0f, 0.02f, 0.0f);
+                }
+            }
+
+            private IEnumerator ShootIntervalMultipleSpiral(float angle, float angleRate, float speed, int count, int interval, int duration)
+            {
+                int frame = 0;
+                int startFrame = _Frame;
+                float shotAngle = angle;
+
+                while (_Frame < startFrame + duration)
+                {
+                    if (frame == 0)
+                    {
+                        // 지정된 발사 수 만큼 발사
+                        for (int i = 0; i < count; ++i)
+                        {
+                            Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                            b.Init("Common/Bullet_Blue", _x, _y, shotAngle + ((float)i / count)
+                                , 0.0f, speed, 0.0f);
+                        }
+
+                        shotAngle += angleRate;
+                        shotAngle -= Mathf.Floor(shotAngle);
+                    }
+
+                    // 타이머 갱신
+                    frame = (frame + 1) % interval;
+                    yield return null;
+                }
+            }
+
+            private IEnumerator RotateCrossTwice()
+            {
+                _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(false));
+                yield return _coroutineManager.StartCoroutine(ShootIntervalMultipleSpiral(0.125f, 0.005f, 0.05f, 4, 2, 410));
+                _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(true));
+                yield return _coroutineManager.StartCoroutine(ShootIntervalMultipleSpiral(0.125f, -0.005f, 0.05f, 4, 2, 410));
+            }
+
+            private IEnumerator RotateCrossTwice_DirectionShot(bool clockwise)
+            {
+                const int count = 4;
+                float startAngle = 0.75f + (0.125f * (clockwise ? -1.0f : 1.0f));
+                for (int i = 0; i < count; ++i)
+                {
+                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                    b.Init("Common/Bullet_Red", _x, _y, startAngle + 0.25f * (float)i * (clockwise ? -1.0f : 1.0f)
+                        , 0.0f, 0.01f, 0.0f);
+
+                    if (i < count - 1)
+                    {
+                        yield return new WaitForFrames(105);
+                    }
                 }
             }
             #endregion //Coroutine
