@@ -14,6 +14,7 @@ namespace Game
 
         private int _oriVSyncCount = 0; // 유니티 설정 복원용
         private const int _fps = 60; // 갱신주기
+        private const int _songFrameOverInterval = 6;  // 노래 프레임이 게임 프레임을 지나쳤을 때 게임 프레임이 한 번에 따라갈 프레임 수
         public FSM _FSM { get; private set; }
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
@@ -158,8 +159,47 @@ namespace Game
             _Frame = -1; // 첫 갱신 시 0프레임 되도록
         }
 
-        // 고정 프레임 간격으로 갱신
+        // 엔진에서 호출하는 플레이 갱신
         public void UpdatePlay()
+        {
+            // 프레임 갱신 하지 않을 것인가?
+            bool skipUpdateFrame = false;
+
+            // 노래 끝나면 isPlaying = false, time = 0, timeSamples = 0
+            // time 은 timeSamples / clip.frequency 와 소수점 정밀도 제외하고는 동일함
+            // 노래가 재생중일 때는 보정 발생할 수 있음
+            if (_srcSong.isPlaying)
+            {
+                // 현재 노래 재생 시점을 프레임 단위로 변경
+                int songFrame = (int)(_srcSong.time * (float)_fps);
+                // 이번에 갱신할 게임 프레임
+                int gameFrame = _Frame + 1;
+                //Debug.Log("songFrame:" + songFrame.ToString() + " gameFrame:" + gameFrame.ToString());
+
+                if (songFrame > gameFrame + _songFrameOverInterval)
+                {
+                    // 기본 갱신 1회가 있으므로 -1회 따라잡음
+                    for (int i = 0; i < _songFrameOverInterval -1 ; ++i)
+                    {
+                        UpdatePlayFrame();
+                    }
+                    //Debug.Log("over occured!");
+                }
+                else if (songFrame < gameFrame)
+                {
+                    // 게임이 노래를 앞서나가면 갱신하지 않음
+                    skipUpdateFrame = true;
+                }
+            }
+
+            if (!skipUpdateFrame)
+            {
+                UpdatePlayFrame();
+            }
+        }
+
+        // 한 프레임 갱신
+        private void UpdatePlayFrame()
         {
             // 프레임 갱신
             _Frame++;

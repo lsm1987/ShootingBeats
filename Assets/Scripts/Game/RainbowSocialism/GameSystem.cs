@@ -12,6 +12,7 @@ namespace Game
             protected override string _SongPath
             {
                 get { return "Sounds/RainbowSocialism"; }
+                //get { return "Sounds/Test"; }
             }
 
             // 특화 정보 로딩
