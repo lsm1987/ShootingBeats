@@ -114,8 +114,6 @@ namespace Game
         // 로딩 상태
         protected class LoadState : BaseState
         {
-            IEnumerator _loading = null;
-
             public override StateType _StateType
             {
                 get { return StateType.Load; }
@@ -129,24 +127,12 @@ namespace Game
             public override void OnEnter(StateType prevState)
             {
                 base.OnEnter(prevState);
-
-                // 진입 시 로딩 준비. 아직 실행되지는 않음
-                _loading = _GameSystem.Loading();
+                _GameSystem.StartLoading();
             }
 
             public override void OnUpdate()
             {
                 base.OnUpdate();
-
-                if (_loading.MoveNext())
-                {
-                    // 아직 로딩 끝나지 않음
-                }
-                else
-                {
-                    // 로딩 끝남
-                    _GameSystem._FSM.SetState(StateType.Play);
-                }
             }
         }
 

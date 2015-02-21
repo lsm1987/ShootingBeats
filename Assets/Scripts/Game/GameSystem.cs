@@ -120,36 +120,28 @@ namespace Game
         #endregion // Camera
 
         #region Loading
+        public void StartLoading()
+        {
+            StartCoroutine(Loading());
+        }
+
         // 로딩 전체 감싸기
         private IEnumerator Loading()
         {
             // 노래 로딩
-            {
-                IEnumerator loadSong = LoadSong();
-                while (loadSong.MoveNext())
-                {
-                    yield return loadSong.Current;
-                }
-            }
-
-            // 특화 정보 로딩
-            {
-                IEnumerator loadContext = LoadContext();
-                while (loadContext.MoveNext())
-                {
-                    yield return loadContext.Current;
-                }
-            }
-        }
-
-        // 노래 로딩
-        private IEnumerator LoadSong()
-        {
             GameObject go = gameObject;
             _srcSong = go.AddComponent<AudioSource>();
             _srcSong.playOnAwake = false;
             _srcSong.clip = Resources.Load<AudioClip>(_SongPath);
             yield return null;
+
+            // 특화 정보 로딩
+            yield return StartCoroutine(LoadContext());
+
+            // 여유시간
+            yield return new WaitForSeconds(1.0f);
+            // 로딩 끝
+            _FSM.SetState(StateType.Play);
         }
 
         // 특화 정보 로딩
