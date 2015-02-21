@@ -11,6 +11,7 @@ GameObject:
   - 198: {fileID: 19877396}
   - 199: {fileID: 19977396}
   - 114: {fileID: 11471942}
+  - 114: {fileID: 11473690}
   m_Layer: 0
   m_Name: Player_Crash
   m_TagString: Untagged
@@ -44,6 +45,19 @@ MonoBehaviour:
   _size: .0700000003
   _hit: 0
   _trans: {fileID: 0}
+--- !u!114 &11473690
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 177396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f79576be89c7c4c972c9afdd619a91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _sortingLayerName: PlayerCrash
+  _sortingOrder: 0
 --- !u!198 &19877396
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -426,7 +440,7 @@ ParticleSystem:
           rgba: 4278321666
         key1:
           serializedVersion: 2
-          rgba: 4294967295
+          rgba: 0
         key2:
           serializedVersion: 2
           rgba: 0
