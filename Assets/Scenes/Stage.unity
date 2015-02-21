@@ -238,8 +238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scoreBoard: {fileID: 1145558382}
-  _isTestInvincible: 1
-  _testStartFrame: 1100
+  _isTestInvincible: 0
+  _testStartFrame: 0
 --- !u!81 &1403484232
 AudioListener:
   m_ObjectHideFlags: 0

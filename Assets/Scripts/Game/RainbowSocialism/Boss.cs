@@ -113,6 +113,10 @@ namespace Game
                 {
                     _coroutineManager.StartCoroutine(RotateCrossTwice());
                 }
+                else if (frame == 6410)
+                {
+                    _alive = false;
+                }
             }
 
             // 피격시
