@@ -47,6 +47,10 @@ namespace Game
                 {
                     _coroutineManager.StartCoroutine(SimpleCircles());
                 }
+                else if (frame == 469)
+                {
+                    _coroutineManager.StartCoroutine(AimAfterSimpleCircles());
+                }
             }
 
             // 피격시
@@ -163,12 +167,28 @@ namespace Game
                 for (int i = 0; i < count; ++i)
                 {
                     bool halfAngleOffset = (i % 2) != 0;
-                    string shape = halfAngleOffset ? "Common/Bullet_Red" : "Common/Bullet_blue";
-                    SpawnCircleBullet(shape, 20, 0.01f, halfAngleOffset);
+                    SpawnCircleBullet("Common/Bullet_Blue", 20, 0.005f, halfAngleOffset);
 
                     if (i < count - 1)
                     {
                         yield return new WaitForFrames(13);
+                    }
+                }
+            }
+
+            private IEnumerator AimAfterSimpleCircles()
+            {
+                const int count = 6;
+                for (int i = 0; i < count; ++i)
+                {
+                    float playerAngle = GetPlayerAngle();
+                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                    b.Init("Common/Bullet_Red", _x, _y, playerAngle
+                        , 0.0f, 0.02f, 0.0f);
+
+                    if (i < count - 1)
+                    {
+                        yield return new WaitForFrames(55);
                     }
                 }
             }

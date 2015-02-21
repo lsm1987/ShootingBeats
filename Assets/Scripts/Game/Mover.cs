@@ -143,5 +143,12 @@ namespace Game
                 return GameSystem._Instance._Frame;
             }
         }
+
+        public float GetPlayerAngle()
+        {
+            // Atan2 의 결과가 라디안이므로 0~1로 변경
+            Vector2 playerPos = GameSystem._Instance._Player._Pos;
+            return Mathf.Atan2(playerPos.y - _y, playerPos.x - _x) / Mathf.PI / 2.0f;
+        }
     }
 }

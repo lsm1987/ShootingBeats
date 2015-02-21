@@ -38,5 +38,11 @@ namespace Game
                 _alive = false;
             }
         }
+
+        public void Draw(int order)
+        {
+            base.Draw();
+            _shape.SetSortingOrder(order);
+        }
     }
 }

@@ -24,6 +24,7 @@ namespace Game
         // GameObject는 자주 접근하지 않으므로 캐싱하지 않음
         [HideInInspector]
         public Transform _trans;
+        private SpriteRenderer _spriteRenderer = null;
         public string _poolKey { get; private set; } // 이 인스턴스가 되돌아갈 풀의 구분자
 
         /// <summary>
@@ -32,6 +33,7 @@ namespace Game
         private void Awake()
         {
             _trans = transform;
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         /// <summary>
@@ -57,6 +59,14 @@ namespace Game
         public void OnAfterDestroyedToPool()
         {
             gameObject.SetActive(false);
+        }
+
+        public void SetSortingOrder(int order)
+        {
+            if (_spriteRenderer != null)
+            {
+                _spriteRenderer.sortingOrder = order;
+            }
         }
 
         #region Debug

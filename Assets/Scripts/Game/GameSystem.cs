@@ -32,6 +32,7 @@ namespace Game
 
         // 테스트용 설정 //////////////////////////
         public bool _isTestInvincible = false;  // 무적모드인가?
+        public int _testStartFrame = -1;    // 몇 프레임부터 시작할 것인가?
 
         // 게임 옵션으로 지정 //////////////////////////////
         public float _PlayerSpeed { get { return 0.02f; } }
@@ -160,6 +161,10 @@ namespace Game
         {
             // 노래 시작
             _srcSong.Play();
+            if (_testStartFrame >= 0)
+            {
+                _srcSong.time = _testStartFrame / _fps;
+            }
 
             // 진행 초기화
             _Frame = -1; // 첫 갱신 시 0프레임 되도록
@@ -186,7 +191,7 @@ namespace Game
                 {
                     //Debug.Log("[GameSystem] Song frame over occurred. Song:" + songFrame.ToString() + " Game:" + gameFrame.ToString());
                     // 기본 갱신 1회가 있으므로 -1회 따라잡음
-                    for (int i = 0; i < _songFrameOverGap -1; ++i)
+                    while (songFrame > (_Frame + 1))
                     {
                         UpdatePlayFrame(true);
                     }
@@ -364,7 +369,31 @@ namespace Game
         /// </summary>
         private void UpdateBullet(bool byFrameOver)
         {
-            UpdateMoverList(_Bullets, byFrameOver);
+            // 특수 처리가 있어 공용 무버 갱신함수 사용하지 않음
+            for (int i = 0; i < _Bullets.Count; ++i)
+            {
+                _Bullets[i].Move();
+            }
+
+            for (int i = _Bullets.Count - 1; i >= 0; --i)
+            {
+                if (!_Bullets[i]._alive)
+                {
+                    Bullet bullet = _Bullets[i];
+                    bullet.OnDestroy();
+                    _Bullets.RemoveAt(i);
+                    _moverPoolManager.Delete(bullet);
+                }
+            }
+
+            if (!byFrameOver)
+            {
+                for (int i = 0; i < _Bullets.Count; ++i)
+                {
+                    // 뒤에 추가된 탄일수록 위에 그림
+                    _Bullets[i].Draw(i);
+                }
+            }
         }
         #endregion // Bullet
 
