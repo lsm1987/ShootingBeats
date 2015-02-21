@@ -180,15 +180,17 @@ namespace Game
 
                 if (songFrame > gameFrame + _songFrameOverInterval)
                 {
+                    //Debug.Log("[GameSystem] Song frame over occurred. Song:" + songFrame.ToString() + " Game:" + gameFrame.ToString());
                     // 기본 갱신 1회가 있으므로 -1회 따라잡음
                     for (int i = 0; i < _songFrameOverInterval -1; ++i)
                     {
-                        UpdatePlayFrame();
+                        UpdatePlayFrame(true);
                     }
                     //Debug.Log("over occured!");
                 }
                 else if (songFrame < gameFrame)
                 {
+                    //Debug.Log("[GameSystem] Game frame skip occurred. Song:" + songFrame.ToString() + " Game:" + gameFrame.ToString());
                     // 게임이 노래를 앞서나가면 갱신하지 않음
                     skipUpdateFrame = true;
                 }
@@ -196,12 +198,15 @@ namespace Game
 
             if (!skipUpdateFrame)
             {
-                UpdatePlayFrame();
+                UpdatePlayFrame(false);
             }
         }
 
-        // 한 프레임 갱신
-        private void UpdatePlayFrame()
+        /// <summary>
+        /// 한 프레임 갱신
+        /// </summary>
+        /// <param name="byFrameOver">노래 프레임 따라잡기용인가?</param>
+        private void UpdatePlayFrame(bool byFrameOver)
         {
             // 프레임 갱신
             _Frame++;
@@ -212,10 +217,10 @@ namespace Game
             // 이동 물체들 갱신
             // 보통 플레이어기가 샷을 생성하고 적기가 탄을 생성하므로 이 순서로 갱신
             // Hit 체크도 업데이트 순서대로 수행
-            UpdatePlayer();
-            UpdateShot();
-            UpdateEnemy();
-            UpdateBullet();
+            UpdatePlayer(byFrameOver);
+            UpdateShot(byFrameOver);
+            UpdateEnemy(byFrameOver);
+            UpdateBullet(byFrameOver);
         }
 
         protected abstract void UpdatePlayContext();
@@ -248,7 +253,7 @@ namespace Game
             _moverPoolManager.PoolStack<T>(count);
         }
 
-        private void UpdateMoverList<T>(List<T> movers) where T : Mover
+        private void UpdateMoverList<T>(List<T> movers, bool byFrameOver) where T : Mover
         {
             // 갱신 도중에 새 무버가 생길 수 있으므로 인덱스 순회
             for (int i = 0; i < movers.Count; ++i)
@@ -269,10 +274,13 @@ namespace Game
                 }
             }
 
-            // 그리기
-            foreach (T mover in movers)
+            // 그리기. 프레임 따라잡기용 업데이트에서는 그리지 않음
+            if (!byFrameOver)
             {
-                mover.Draw();
+                foreach (T mover in movers)
+                {
+                    mover.Draw();
+                }
             }
         }
 
@@ -286,9 +294,9 @@ namespace Game
             return player;
         }
 
-        private void UpdatePlayer()
+        private void UpdatePlayer(bool byFrameOver)
         {
-            UpdateMoverList(_Players);
+            UpdateMoverList(_Players, byFrameOver);
         }
         #endregion //Player
 
@@ -304,9 +312,9 @@ namespace Game
             return shot;
         }
 
-        private void UpdateShot()
+        private void UpdateShot(bool byFrameOver)
         {
-            UpdateMoverList(_Shots);
+            UpdateMoverList(_Shots, byFrameOver);
         }
         #endregion //Shot
 
@@ -325,9 +333,9 @@ namespace Game
         /// <summary>
         /// 적기 목록 순회하며 갱신
         /// </summary>
-        private void UpdateEnemy()
+        private void UpdateEnemy(bool byFrameOver)
         {
-            UpdateMoverList(_Enemys);
+            UpdateMoverList(_Enemys, byFrameOver);
         }
         #endregion //Enemy
 
@@ -346,9 +354,9 @@ namespace Game
         /// <summary>
         /// 탄 목록 순회하며 갱신
         /// </summary>
-        private void UpdateBullet()
+        private void UpdateBullet(bool byFrameOver)
         {
-            UpdateMoverList(_Bullets);
+            UpdateMoverList(_Bullets, byFrameOver);
         }
         #endregion // Bullet
 
