@@ -18,9 +18,11 @@ namespace Game
             // 특화 정보 로딩
             protected override IEnumerator LoadContext()
             {
-                // 플레이어 로딩 /////////////////
+                // 플레이어기 로딩 /////////////////
                 PoolStackShape("Common/Player_Black", 1);
-                PoolStackMover<Player>(1);
+                PoolStackMover<PlayerAlive>(1);
+                PoolStackShape("Common/Player_Crash", 1);
+                PoolStackMover<PlayerCrash>(1);
                 yield return null;
 
                 // 샷 로딩 ///////////////////////
@@ -50,7 +52,7 @@ namespace Game
                 if (_Frame == 0)
                 {
                     // 플레이어 생성
-                    Player player = CreatePlayer<Player>();
+                    PlayerAlive player = CreatePlayer<PlayerAlive>();
                     player.Init("Common/Player_Black", 0.0f, -0.7f, 0.0f);
 
                     // 보스 생성

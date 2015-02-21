@@ -68,15 +68,18 @@ namespace Game
 
         private void DrawGizmoCircle(Color color, Vector2 c, float r)
         {
-            Vector2 top = new Vector2(c.x, c.y + r);
-            Vector2 left = new Vector2(c.x - r, c.y);
-            Vector2 bottom = new Vector2(c.x, c.y - r);
-            Vector2 right = new Vector2(c.x + r, c.y);
-            Gizmos.color = color;
-            Gizmos.DrawLine(top, left);
-            Gizmos.DrawLine(left, bottom);
-            Gizmos.DrawLine(bottom, right);
-            Gizmos.DrawLine(right, top);
+            if (r > 0.0f)
+            {
+                Vector2 top = new Vector2(c.x, c.y + r);
+                Vector2 left = new Vector2(c.x - r, c.y);
+                Vector2 bottom = new Vector2(c.x, c.y - r);
+                Vector2 right = new Vector2(c.x + r, c.y);
+                Gizmos.color = color;
+                Gizmos.DrawLine(top, left);
+                Gizmos.DrawLine(left, bottom);
+                Gizmos.DrawLine(bottom, right);
+                Gizmos.DrawLine(right, top);
+            }
         }
         #endregion // Debug
     }

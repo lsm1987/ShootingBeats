@@ -30,7 +30,7 @@ namespace Game
         /// <summary>
         /// 스테이지에 배치되었을 떄 초기화
         /// </summary>
-        public void Init(string shapeSubPath, float x, float y, float angle)
+        public virtual void Init(string shapeSubPath, float x, float y, float angle)
         {
             SetShape(shapeSubPath);
             _x = x;
@@ -70,10 +70,18 @@ namespace Game
         // 충돌 판정. 충돌여부를 리턴
         public bool IsHit(Mover mover)
         {
-            float dx = mover._x - _x;
-            float dy = mover._y - _y;
-            float hit = mover._shape._hit + _shape._hit;
-            return (dx * dx + dy * dy) < (hit * hit);
+            // 대상 또는 자신의 hit 영역이 없다면 Hit 발생하지 않음
+            if (_shape._hit != 0.0f && mover._shape._hit != 0.0f)
+            {
+                float dx = mover._x - _x;
+                float dy = mover._y - _y;
+                float hit = mover._shape._hit + _shape._hit;
+                return (dx * dx + dy * dy) < (hit * hit);
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>

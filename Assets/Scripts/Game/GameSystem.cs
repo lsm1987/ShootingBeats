@@ -19,7 +19,8 @@ namespace Game
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
         private AudioSource _srcSong;    // 노래 재생할 소스
-        private Player _player = null;  // 플레이어기는 단일
+        public Player _Player { get; set; } // 활성화된 플레이어기
+        public List<Player> _Players { get; private set; }    // 살아있는 플레이어기 목록
         public List<Shot> _Shots { get; private set; }    // 살아있는 샷(플레이어기가 발사) 목록
         public List<Enemy> _Enemys { get; private set; }    // 살아있는 적기 목록
         public List<Bullet> _Bullets { get; private set; }  // 살아있는 탄(적기가 발사) 목록
@@ -51,6 +52,7 @@ namespace Game
             _oriVSyncCount = QualitySettings.vSyncCount;
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = _fps;
+            _Players = new List<Player>();
             _Shots = new List<Shot>();
             _Enemys = new List<Enemy>();
             _Bullets = new List<Bullet>();
@@ -179,7 +181,7 @@ namespace Game
                 if (songFrame > gameFrame + _songFrameOverInterval)
                 {
                     // 기본 갱신 1회가 있으므로 -1회 따라잡음
-                    for (int i = 0; i < _songFrameOverInterval -1 ; ++i)
+                    for (int i = 0; i < _songFrameOverInterval -1; ++i)
                     {
                         UpdatePlayFrame();
                     }
@@ -280,17 +282,13 @@ namespace Game
         public T CreatePlayer<T>() where T : Player, new()
         {
             T player = _moverPoolManager.Create<T>();
-            _player = player;
+            _Players.Add(player);
             return player;
         }
 
         private void UpdatePlayer()
         {
-            if (_player != null)
-            {
-                _player.Move();
-                _player.Draw();
-            }
+            UpdateMoverList(_Players);
         }
         #endregion //Player
 
