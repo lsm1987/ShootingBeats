@@ -56,65 +56,6 @@ namespace Game
                     Boss boss = CreateEnemy<Boss>();
                     boss.Init("Common/Boss_Orange", -0.5f, 1.3f, 0.0f);
                 }
-                //
-                else if (_Frame == 356)  // 1
-                {
-                    AddTestCircleBlueBullet();
-                }
-                else if (_Frame == 369)  // 3
-                {
-                    AddTestCircleRedBullet();
-                }
-                else if (_Frame == 380)  // 5
-                {
-                    AddTestCircleBlueBullet();
-                }
-                else if (_Frame == 391)  // 7
-                {
-                    AddTestCircleRedBullet();
-                }
-                else if (_Frame == 403)  // 9
-                {
-                    AddTestCircleBlueBullet();
-                }
-                else if (_Frame == 417)  // 11
-                {
-                    AddTestCircleRedBullet();
-                }
-                else if (_Frame == 429)  // 13
-                {
-                    AddTestCircleBlueBullet();
-                }
-                else if (_Frame == 441)  // 15
-                {
-                    AddTestCircleRedBullet();
-                }
-                else if (_Frame == 459)  // 17
-                {
-                    AddTestCircleBlueBullet();
-                }
-            }
-
-            private void AddTestCircleBlueBullet()
-            {
-                const int count = 20;
-                for (int i = 0; i < count; ++i)
-                {
-                    Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Blue", 0.0f, 0.5f, (1.0f / count * i)
-                        , 0.0f, 0.01f, 0.0f);
-                }
-            }
-
-            private void AddTestCircleRedBullet()
-            {
-                const int count = 20;
-                for (int i = 0; i < count; ++i)
-                {
-                    Bullet b = CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", 0.0f, 0.5f, (1.0f / count * i) + (1.0f / count / 2.0f)
-                        , 0.0f, 0.01f, 0.0f);
-                }
             }
         }
     }

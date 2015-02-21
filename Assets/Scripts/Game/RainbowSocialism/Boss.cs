@@ -43,6 +43,10 @@ namespace Game
                     _coroutineManager.StartCoroutine(Simple4Wave());
                     _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.5f), 75));
                 }
+                else if (frame == 356)
+                {
+                    _coroutineManager.StartCoroutine(SimpleCircles());
+                }
             }
 
             // 피격시
@@ -140,6 +144,35 @@ namespace Game
                 b.Init("Common/Bullet_Red", 0.8f, 1.3f, 0.75f
                     , 0.0f, 0.03f, 0.0f);
             }
+
+            private void SpawnCircleBullet(string shape, int count, float speed, bool halfAngleOffset)
+            {
+                float angleOffset = (halfAngleOffset) ? (1.0f / count / 2.0f) : 0.0f;
+                for (int i = 0; i < count; ++i)
+                {
+                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                    b.Init(shape, _x, _y, (1.0f / count * i) + angleOffset
+                        , 0.0f, speed, 0.0f);
+                }
+            }
+
+            // 단순 원형 연속
+            private IEnumerator SimpleCircles()
+            {
+                const int count = 9;
+                for (int i = 0; i < count; ++i)
+                {
+                    bool halfAngleOffset = (i % 2) != 0;
+                    string shape = halfAngleOffset ? "Common/Bullet_Red" : "Common/Bullet_blue";
+                    SpawnCircleBullet(shape, 20, 0.01f, halfAngleOffset);
+
+                    if (i < count - 1)
+                    {
+                        yield return new WaitForFrames(13);
+                    }
+                }
+            }
+
             #endregion //Coroutine
         } // Boss
     }
