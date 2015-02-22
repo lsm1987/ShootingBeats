@@ -103,7 +103,7 @@ namespace Game
 
             // 게임 화면 비율
             float gameR = (_MaxX - _MinX) / (_MaxY - _MinY);
-            Debug.Log("deviceR:" + deviceR.ToString() + " gameR:" + gameR.ToString());
+            //Debug.Log("deviceR:" + deviceR.ToString() + " gameR:" + gameR.ToString());
 
             // 메인 카메라를 게임 카메라로 사용
             Camera gameCam = Camera.main;
@@ -175,6 +175,12 @@ namespace Game
         // 엔진에서 호출하는 플레이 갱신
         public void UpdatePlay()
         {
+            if (Input.GetButtonDown("Start"))
+            {
+                Application.LoadLevel("Title");
+                return;
+            }
+
             // 프레임 갱신 하지 않을 것인가?
             bool skipUpdateFrame = false;
 
