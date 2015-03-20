@@ -175,7 +175,7 @@ namespace Game
         // 엔진에서 호출하는 플레이 갱신
         public void UpdatePlay()
         {
-            if (Input.GetButtonDown("Start"))
+            if (Input.GetButtonDown("Start") || Input.GetKeyDown(KeyCode.Escape))
             {
                 Application.LoadLevel("Title");
                 return;
