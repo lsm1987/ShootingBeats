@@ -10,10 +10,10 @@ public class ShapeParticleSortingLayer : MonoBehaviour
 
     private void Start()
     {
-        if (particleSystem != null)
+        if (GetComponent<ParticleSystem>() != null)
         {
-            particleSystem.renderer.sortingLayerName = _sortingLayerName;
-            particleSystem.renderer.sortingOrder = _sortingOrder;
+            GetComponent<ParticleSystem>().GetComponent<Renderer>().sortingLayerName = _sortingLayerName;
+            GetComponent<ParticleSystem>().GetComponent<Renderer>().sortingOrder = _sortingOrder;
         }
     }
 }
