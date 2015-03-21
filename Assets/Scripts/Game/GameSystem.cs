@@ -28,6 +28,7 @@ namespace Game
         public int _Frame { get; private set; }
         [SerializeField]
         private UISystem _uiSystem;
+        public UISystem _UISystem { get { return _uiSystem; } }
         [SerializeField]
         private ScoreBoard _scoreBoard;
         private int _score = 0;

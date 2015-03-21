@@ -9,6 +9,11 @@ namespace Game
         // 레터박스 UI가 붙을 오브젝트
         [SerializeField]
         private GameObject _letterBox;
+        
+        // 이동 입력 영역
+        [SerializeField]
+        private MoveInputArea _moveInputArea;
+        public MoveInputArea _MoveInputArea { get { return _moveInputArea; } }
 
         /// <summary>
         /// 레터박스 UI 추가
@@ -63,6 +68,6 @@ namespace Game
                     image.color = Color.black;
                 }
             }
-        }
+        } // CreateLetterBox()
     }
 }
