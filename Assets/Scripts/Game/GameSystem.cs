@@ -27,6 +27,8 @@ namespace Game
         public List<Bullet> _Bullets { get; private set; }  // 살아있는 탄(적기가 발사) 목록
         public int _Frame { get; private set; }
         [SerializeField]
+        private UISystem _uiSystem;
+        [SerializeField]
         private ScoreBoard _scoreBoard;
         private int _score = 0;
         private System.Random _random = null;   // 게임 내에서 사용할 랜덤. 시드값 항상 동일
@@ -111,21 +113,28 @@ namespace Game
             // 게임 카메라 뷰포트 영역 지정
             if (gameR >= deviceR)
             {
-                // 게임 화면 가로를 기기 가로에 가득 채움
-                // 세로 상단
-                float h = (1 / gameR) / (1 / deviceR);
-                gameCam.rect = new Rect(0.0f, 1.0f - h, 1.0f, h);
+                // 게임 화면 가로를 기기 가로에 가득 채움. 게임 영역은 화면 세로 상단
+                // 기기W/기기H = 게임W/카메라H
+                float camH = (_MaxX - _MinX) / deviceR;
+                gameCam.orthographicSize = camH / 2.0f;
+
+                float diffH = camH - (_MaxY - _MinY);
+                Vector3 camPos = gameCam.transform.position;
+                camPos.y = -1.0f * diffH / 2.0f;
+                gameCam.transform.position = camPos;
+                _uiSystem.CreateLetterBox(true, diffH / camH);
             }
             else
             {
-                // 게임 화면 세로를 기기 세로에 가득 채움
-                // 가로 중앙
-                float w = gameR / deviceR;
-                gameCam.rect = new Rect(0.5f - w / 2.0f, 0.0f, w, 1.0f);
+                // 게임 화면 세로를 기기 세로에 가득 채움. 게임 영역은 화면 가로 중단
+                float camH = (_MaxY - _MinY);
+                gameCam.orthographicSize = camH / 2.0f;
+
+                // 기기W/기기H = 카메라W/게임H
+                float camW = (_MaxY - _MinY) * deviceR;
+                float diffW = camW - (_MaxX - _MinX);
+                _uiSystem.CreateLetterBox(false, diffW / camW);
             }
-            
-            // 게임 세로 범위가 게임 카메라가 보여주는 세로 범위가 되도록 맞춤
-            gameCam.orthographicSize = _MaxY;
         }
         #endregion // Camera
 
@@ -450,7 +459,7 @@ namespace Game
                 Vector2 lb = new Vector2(_MinX, _MinY);
                 Vector2 rb = new Vector2(_MaxX, _MinY);
                 Vector2 rt = new Vector2(_MaxX, _MaxY);
-                Gizmos.color = Color.white;
+                Gizmos.color = Color.green;
                 Gizmos.DrawLine(lt, lb);
                 Gizmos.DrawLine(lb, rb);
                 Gizmos.DrawLine(rb, rt);
