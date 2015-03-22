@@ -37,9 +37,9 @@ namespace Game
 
                 // 탄 로딩 ///////////////////
                 // 외양 로딩
-                PoolStackShape("Common/Bullet_Blue", 100);
+                PoolStackShape("Common/Bullet_Blue", 210);
                 yield return null;
-                PoolStackShape("Common/Bullet_Red", 100);
+                PoolStackShape("Common/Bullet_Red", 125);
                 yield return null;
                 // 클래스 로딩
                 PoolStackMover<Bullet>(100);

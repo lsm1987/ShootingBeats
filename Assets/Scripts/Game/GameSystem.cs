@@ -61,6 +61,7 @@ namespace Game
             _oriVSyncCount = QualitySettings.vSyncCount;
             QualitySettings.vSyncCount = 0;
             Application.targetFrameRate = _fps;
+            //_shapePoolManager.RecordMaxCreatedCount();
             _Players = new List<Player>();
             _Shots = new List<Shot>();
             _Enemys = new List<Enemy>();
@@ -88,6 +89,7 @@ namespace Game
             _instance = null;
             QualitySettings.vSyncCount = _oriVSyncCount;
             Application.targetFrameRate = -1;
+            _shapePoolManager.LogCreatedCount();
         }
 
         // 고정 프레임 간격으로 갱신

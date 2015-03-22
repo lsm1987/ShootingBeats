@@ -9,6 +9,11 @@ namespace Game
         // 리소스별 풀. <subPath, 풀>
         private Dictionary<string, Stack<Shape>> _pools = new Dictionary<string, Stack<Shape>>();
 
+        #region Debug
+        // 최대 생성 수 기록
+        private Dictionary<string, int> _maxCreatedCount = null;
+        #endregion Debug
+
         /// <summary>
         /// 지정한 풀을 찾거나, 없으면 생성하여 리턴한다.
         /// </summary>
@@ -38,6 +43,7 @@ namespace Game
                 obj.name = subPath;
                 Shape instance = obj.GetComponent<Shape>();
                 instance.OnFirstCreatedInPool(subPath);
+                AddCreatedCount(subPath);
                 return instance;
             }
             else
@@ -144,5 +150,43 @@ namespace Game
                 return 0;
             }
         }
-    }
+
+        #region Debug Func
+        public void RecordMaxCreatedCount()
+        {
+            if (_maxCreatedCount == null)
+            {
+                _maxCreatedCount = new Dictionary<string, int>();
+            }
+        }
+
+        private void AddCreatedCount(string subPath)
+        {
+            if (_maxCreatedCount != null)
+            {
+                int createdCount = 0;
+                if (_maxCreatedCount.TryGetValue(subPath, out createdCount))
+                {
+                    _maxCreatedCount[subPath] = (createdCount + 1);
+                }
+                else
+                {
+                    _maxCreatedCount.Add(subPath, 1);
+                }
+            }
+        }
+
+        public void LogCreatedCount()
+        {
+            if (_maxCreatedCount != null)
+            {
+                Debug.Log("CreatedCount----------------");
+                foreach (KeyValuePair<string, int> pair in _maxCreatedCount)
+                {
+                    Debug.Log(pair.Key + " " + pair.Value.ToString());
+                }
+            }
+        }
+        #endregion Debug Func
+    } // class ShapePoolManager
 }
