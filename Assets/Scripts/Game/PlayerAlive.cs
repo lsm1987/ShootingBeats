@@ -70,7 +70,7 @@ namespace Game
 
         private void MoveByTouch()
         {
-            float moveRate = 1.0f;
+            float moveRate = 1.2f;
             Vector2 delta = GameSystem._Instance._UISystem._MoveInputArea.GetDelta();
 
             // 이동경계

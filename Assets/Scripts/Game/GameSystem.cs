@@ -14,7 +14,7 @@ namespace Game
 
         private int _oriVSyncCount = 0; // 유니티 설정 복원용
         private const int _fps = 60; // 갱신주기
-        private const int _songFrameOverGap = 3;    // 노래 프레임이 게임 프레임을 지나쳤을 때 게임 프레임이 한 번에 따라갈 프레임 수
+        private const int _songFrameOverGap = 0;    // 노래 프레임이 게임 프레임을 지나쳤을 때 게임 프레임이 한 번에 따라갈 프레임 수
         private const int _gameFrameOverGap = 6;    // 게임 프레임이 노래 프레임을 지나쳤을 때 이 차이 이내면 스킵하지 않는다.
         public FSM _FSM { get; private set; }
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
