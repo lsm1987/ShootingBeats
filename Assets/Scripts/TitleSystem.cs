@@ -2,6 +2,11 @@
 
 public class TitleSystem : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _uiOverlay;
+    [SerializeField]
+    private GameObject _uiOptionWindow;
+
     private void Start()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
@@ -10,30 +15,43 @@ public class TitleSystem : MonoBehaviour
     private void Update()
     {
         // 스테이지 시작
-        bool start = false;
         if (Input.GetButtonDown("Start"))
         {
-            start = true;
-        }
-        if (!start)
-        {
-            for (int i = 0; i < Input.touchCount; ++i)
-            {
-                if (Input.GetTouch(i).phase == TouchPhase.Ended)
-                {
-                    start = true;
-                }
-            }
-        }
-        if (start)
-        {
-            Application.LoadLevel("Stage");
+            OnStartClicked();
         }
 
         // 게임 종료
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Application.Quit();
+            OnQuitClicked();
         }
+    }
+
+    public void OnStartClicked()
+    {
+        Application.LoadLevel("Stage");
+    }
+
+    public void OnOptionClicked()
+    {
+        _uiOverlay.SetActive(true);
+        _uiOptionWindow.SetActive(true);
+        /*
+        Object prefabOptionWindow = Resources.Load("UI/OptionWindow");
+        GameObject objOptionWindow = Instantiate(prefabOptionWindow) as GameObject;
+        objOptionWindow.transform.SetParent(_uiOverlay.transform);
+        objOptionWindow.GetComponent<RectTransform>().localScale = Vector3.one;
+        */
+    }
+
+    public void OnOptionCloseClicked()
+    {
+        _uiOptionWindow.SetActive(false);
+        _uiOverlay.SetActive(false);
+    }
+
+    public void OnQuitClicked()
+    {
+        Application.Quit();
     }
 }

@@ -22,6 +22,7 @@ namespace Game
         /// <param name="screenRate">레터박스가 가릴 화면의 비율. 수직방향이면 절반씩 사용</param>
         public void CreateLetterBox(bool horizontal, float screenRate)
         {
+            Color color = new Color(0.16f, 0.16f, 0.16f);
             if (horizontal)
             {
                 GameObject obj = new GameObject();
@@ -37,7 +38,7 @@ namespace Game
 
                 obj.AddComponent<CanvasRenderer>();
                 Image image = obj.AddComponent<Image>();
-                image.color = Color.black;
+                image.color = color;
             }
             else
             {
@@ -65,7 +66,7 @@ namespace Game
 
                     obj.AddComponent<CanvasRenderer>();
                     Image image = obj.AddComponent<Image>();
-                    image.color = Color.black;
+                    image.color = color;
                 }
             }
         } // CreateLetterBox()
