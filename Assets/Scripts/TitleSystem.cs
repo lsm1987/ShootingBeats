@@ -3,9 +3,7 @@
 public class TitleSystem : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _uiOverlay;
-    [SerializeField]
-    private GameObject _uiOptionWindow;
+    private GameObject _uiRoot; // UI 루트 오브젝트
 
     private void Start()
     {
@@ -34,20 +32,10 @@ public class TitleSystem : MonoBehaviour
 
     public void OnOptionClicked()
     {
-        _uiOverlay.SetActive(true);
-        _uiOptionWindow.SetActive(true);
-        /*
-        Object prefabOptionWindow = Resources.Load("UI/OptionWindow");
-        GameObject objOptionWindow = Instantiate(prefabOptionWindow) as GameObject;
-        objOptionWindow.transform.SetParent(_uiOverlay.transform);
-        objOptionWindow.GetComponent<RectTransform>().localScale = Vector3.one;
-        */
-    }
-
-    public void OnOptionCloseClicked()
-    {
-        _uiOptionWindow.SetActive(false);
-        _uiOverlay.SetActive(false);
+        Object prefabUIOption = Resources.Load("UI/UIOption");
+        GameObject objUIOption = Instantiate(prefabUIOption) as GameObject;
+        objUIOption.transform.SetParent(_uiRoot.transform, false);
+        objUIOption.GetComponent<RectTransform>().localScale = Vector3.one;
     }
 
     public void OnQuitClicked()
