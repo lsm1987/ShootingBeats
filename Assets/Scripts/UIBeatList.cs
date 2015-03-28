@@ -1,0 +1,69 @@
+﻿using UnityEngine;
+using UnityEngine.UI;
+using System;
+using System.Collections;
+
+// 노래 목록 UI
+public class UIBeatList : MonoBehaviour
+{
+    [SerializeField]
+    private RectTransform _transContents;
+    private BeatInfo[] _beatInfos; // 정렬된 정보들
+
+    private void Awake()
+    {
+        BuildList();
+    }
+
+    // 목록 구성하기
+    private void BuildList()
+    {
+        // 모든 노래 정보 구하기
+        _beatInfos = Resources.LoadAll<BeatInfo>(BeatInfo._resourcePath);
+        if (_beatInfos != null)
+        {
+            // 정보 정렬
+            Array.Sort<BeatInfo>(_beatInfos, BeatInfo.CompareByListPriority);
+
+            // 정보별 항목 UI 만들기
+            float y = 0.0f;
+            UnityEngine.Object prefabItem = Resources.Load("UI/UIBeatListItem");
+            for (int i = 0; i < _beatInfos.Length; ++i)
+            {
+                BeatInfo beatInfo = _beatInfos[i];
+                GameObject objItem = Instantiate(prefabItem) as GameObject;
+                objItem.name = prefabItem.name + "_" + beatInfo.name;
+                objItem.transform.SetParent(_transContents.transform, false);
+                
+                // Y 위치 재지정
+                // http://orbcreation.com/orbcreation/page.orb?1099 참고
+                RectTransform trans = objItem.GetComponent<RectTransform>();
+                trans.localScale = Vector3.one;
+                trans.localPosition = new Vector3(
+                    trans.localPosition.x, y - ((1.0f - trans.pivot.y) * trans.rect.height), trans.localPosition.z);
+                y -= (trans.rect.height + 1);
+
+                // 정보 지정
+                UIBeatListItem item = objItem.GetComponent<UIBeatListItem>();
+                item.SetBeatInfo(beatInfo);
+            }
+
+            // 목록 전체 높이 재지정
+            {
+                Vector2 newSize = new Vector2(_transContents.rect.size.x, Mathf.Abs(y));
+                Vector2 oldSize = _transContents.rect.size;
+                Vector2 deltaSize = newSize - oldSize;
+                _transContents.offsetMin = _transContents.offsetMin - new Vector2(deltaSize.x * _transContents.pivot.x, deltaSize.y * _transContents.pivot.y);
+                _transContents.offsetMax = _transContents.offsetMax + new Vector2(deltaSize.x * (1.0f - _transContents.pivot.x), deltaSize.y * (1.0f - _transContents.pivot.y));
+            }
+
+        } // if (beatInfos != null)
+    }
+
+    // Back 버튼이 클릭되었을 때
+    public void OnBackClicked()
+    {
+        // 타이틀 씬으로 돌아감
+        Application.LoadLevel("Title");
+    }
+}
