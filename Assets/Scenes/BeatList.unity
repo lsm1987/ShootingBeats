@@ -254,8 +254,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: .5}
   m_AnchorMax: {x: 0, y: .5}
-  m_AnchoredPosition: {x: 30, y: 0}
-  m_SizeDelta: {x: 50, y: 70}
+  m_AnchoredPosition: {x: 40, y: 0}
+  m_SizeDelta: {x: 72, y: 72}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &188683689
 MonoBehaviour:
@@ -291,30 +291,24 @@ MonoBehaviour:
 --- !u!114 &188683690
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11442402, guid: 2f47bc85acc21ed4ea221bf14b138abf,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 188683687}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: c218b91aaa3179f4ea173b95a79f24e9, type: 3}
-    m_FontSize: 50
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 4
-    m_RichText: 0
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: <
+  m_Sprite: {fileID: 21300000, guid: 7f017d33ab83e5241a8c427aafe8c797, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!222 &188683691
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1669,8 +1663,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: .5}
   m_AnchorMax: {x: 0, y: .5}
-  m_AnchoredPosition: {x: 30, y: 0}
-  m_SizeDelta: {x: 50, y: 70}
+  m_AnchoredPosition: {x: 40, y: 0}
+  m_SizeDelta: {x: 72, y: 72}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1307888323
 MonoBehaviour:
@@ -1688,30 +1682,24 @@ MonoBehaviour:
 --- !u!114 &1307888324
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 11442402, guid: 2f47bc85acc21ed4ea221bf14b138abf,
-    type: 2}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1307888321}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: c218b91aaa3179f4ea173b95a79f24e9, type: 3}
-    m_FontSize: 50
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 4
-    m_RichText: 0
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: <
+  m_Sprite: {fileID: 21300000, guid: 7f017d33ab83e5241a8c427aafe8c797, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!222 &1307888325
 CanvasRenderer:
   m_ObjectHideFlags: 0

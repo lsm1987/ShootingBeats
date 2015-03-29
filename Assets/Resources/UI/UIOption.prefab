@@ -27,7 +27,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 22497688}
   - 222: {fileID: 22238340}
-  - 114: {fileID: 11442402}
+  - 114: {fileID: 11436508}
   - 114: {fileID: 11424878}
   m_Layer: 5
   m_Name: Back
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11442402
+--- !u!114 &11436508
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -625,24 +625,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 104048}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Script: {fileID: -765806418, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: c218b91aaa3179f4ea173b95a79f24e9, type: 3}
-    m_FontSize: 50
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 4
-    m_RichText: 0
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: <
+  m_Sprite: {fileID: 21300000, guid: 7f017d33ab83e5241a8c427aafe8c797, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &11446078
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1212,8 +1207,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: .5}
   m_AnchorMax: {x: 0, y: .5}
-  m_AnchoredPosition: {x: 30, y: 0}
-  m_SizeDelta: {x: 50, y: 70}
+  m_AnchoredPosition: {x: 40, y: 0}
+  m_SizeDelta: {x: 72, y: 72}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22498436
 RectTransform:
