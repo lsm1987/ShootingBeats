@@ -9,6 +9,7 @@ public class UIBeatList : MonoBehaviour
     [SerializeField]
     private RectTransform _transContents;
     private BeatInfo[] _beatInfos; // 정렬된 정보들
+    public delegate void InfoSelectedHandler(int index); // 정보 선택되었을 때 호출될 함수 형식
 
     private void Awake()
     {
@@ -45,7 +46,7 @@ public class UIBeatList : MonoBehaviour
 
                 // 정보 지정
                 UIBeatListItem item = objItem.GetComponent<UIBeatListItem>();
-                item.SetBeatInfo(beatInfo);
+                item.SetBeatInfo(i, OnInfoSelected, beatInfo);
             }
 
             // 목록 전체 높이 재지정
@@ -65,5 +66,14 @@ public class UIBeatList : MonoBehaviour
     {
         // 타이틀 씬으로 돌아감
         Application.LoadLevel("Title");
+    }
+
+    /// <summary>
+    /// 정보가 선택되었을 때
+    /// </summary>
+    /// <param name="index">몇 번째 정보인가?</param>
+    private void OnInfoSelected(int index)
+    {
+        Debug.Log("[UIBeatList] [" + index.ToString() + "] " + _beatInfos[index]._title + " selcted");
     }
 }
