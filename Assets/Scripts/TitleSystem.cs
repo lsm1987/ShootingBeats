@@ -27,7 +27,7 @@ public class TitleSystem : MonoBehaviour
 
     public void OnStartClicked()
     {
-        Application.LoadLevel("Stage");
+        Application.LoadLevel("BeatList");
     }
 
     public void OnOptionClicked()

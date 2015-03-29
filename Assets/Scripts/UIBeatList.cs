@@ -8,6 +8,9 @@ public class UIBeatList : MonoBehaviour
 {
     [SerializeField]
     private RectTransform _transContents;
+    [SerializeField]
+    private UIBeatReady _uiBeatReady;
+
     private BeatInfo[] _beatInfos; // 정렬된 정보들
     public delegate void InfoSelectedHandler(int index); // 정보 선택되었을 때 호출될 함수 형식
 
@@ -74,6 +77,7 @@ public class UIBeatList : MonoBehaviour
     /// <param name="index">몇 번째 정보인가?</param>
     private void OnInfoSelected(int index)
     {
-        Debug.Log("[UIBeatList] [" + index.ToString() + "] " + _beatInfos[index]._title + " selcted");
+        //Debug.Log("[UIBeatList] [" + index.ToString() + "] " + _beatInfos[index]._title + " selcted");
+        _uiBeatReady.Open(_beatInfos[index]);
     }
 }

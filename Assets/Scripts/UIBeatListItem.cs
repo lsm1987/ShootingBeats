@@ -20,9 +20,7 @@ public class UIBeatListItem : MonoBehaviour
 
         _title.text = beatInfo._title;
         _difficulty.text = beatInfo._difficulty.ToString();
-        int lengthMin = beatInfo._length / 60; // 분
-        int lengthSec = beatInfo._length % 60; // 초
-        _length.text = lengthMin.ToString() + ":" + lengthSec.ToString("00");
+        _length.text = Util.ConverBeatLength(beatInfo._length);
     }
 
     public void OnClicked()

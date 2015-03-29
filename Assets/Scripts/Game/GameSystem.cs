@@ -161,7 +161,7 @@ namespace Game
             yield return StartCoroutine(LoadContext());
 
             // 여유시간
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(0.5f);
             // 로딩 끝
             _FSM.SetState(StateType.Play);
         }
@@ -189,7 +189,7 @@ namespace Game
         {
             if (Input.GetButtonDown("Start") || Input.GetKeyDown(KeyCode.Escape))
             {
-                Application.LoadLevel("Title");
+                Application.LoadLevel("BeatList");
                 return;
             }
 
