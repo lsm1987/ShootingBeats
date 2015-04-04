@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System;
-using System.Collections;
 
 // 노래 목록 UI
-public class UIBeatList : MonoBehaviour
+public class UIBeatList : UIWindow
 {
     [SerializeField]
     private RectTransform _transContents;
@@ -14,7 +13,7 @@ public class UIBeatList : MonoBehaviour
     private BeatInfo[] _beatInfos; // 정렬된 정보들
     public delegate void InfoSelectedHandler(int index); // 정보 선택되었을 때 호출될 함수 형식
 
-    private void Awake()
+    protected override void OnAwake()
     {
         BuildList();
     }
@@ -64,11 +63,27 @@ public class UIBeatList : MonoBehaviour
         } // if (beatInfos != null)
     }
 
+    public override bool OnKeyInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            LoadTitleScene();
+        }
+        return true;
+    }
+
     // Back 버튼이 클릭되었을 때
     public void OnBackClicked()
     {
-        // 타이틀 씬으로 돌아감
-        Application.LoadLevel("Title");
+        LoadTitleScene();
+    }
+
+    /// <summary>
+    /// 타이틀 씬으로 돌아감
+    /// </summary>
+    private void LoadTitleScene()
+    {
+        Application.LoadLevel(SceneName._Title);
     }
 
     /// <summary>

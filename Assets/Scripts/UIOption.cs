@@ -2,19 +2,29 @@
 using UnityEngine.UI;
 
 // 옵션창
-public class UIOption : MonoBehaviour
+public class UIOption : UIWindow
 {
     [SerializeField]
     private Slider _moveSensitivitySlider; // 이동 민감도
     [SerializeField]
     private Text _moveSensitivityValue;
 
-    private void Awake()
+    protected override void OnAwake()
     {
         InitMoveSensitivity();
     }
 
-    // Back UI가 클릭되었을 때
+    public override bool OnKeyInput()
+    {
+        // 창 닫기
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnBack();
+        }
+        return true;
+    }
+
+    // Back 버튼이 클릭되었을 때
     public void OnBackClicked()
     {
         OnBack();
@@ -26,6 +36,7 @@ public class UIOption : MonoBehaviour
         Destroy(gameObject);
     }
 
+    #region MoveSensitivity
     // 이동 민감도 관련 초기화
     private void InitMoveSensitivity()
     {
@@ -57,4 +68,5 @@ public class UIOption : MonoBehaviour
         int value = ConvertMoveSensitivityValue(sliderValue);
         _moveSensitivityValue.text = ConvertToMoveSensitivityString(value);
     }
+    #endregion MoveSensitivity
 }

@@ -1,45 +1,61 @@
 ﻿using UnityEngine;
 
-public class TitleSystem : MonoBehaviour
+public class TitleSystem : SceneSystem
 {
-    [SerializeField]
-    private GameObject _uiRoot; // UI 루트 오브젝트
-
-    private void Start()
+    protected override void OnAwake()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
     }
 
-    private void Update()
+    protected override void OnUpdate()
     {
-        // 스테이지 시작
-        if (Input.GetButtonDown("Start"))
+        // 키입력 처리
+        if (_HasKeyInputFocus)
         {
-            OnStartClicked();
-        }
+            // 스테이지 시작
+            if (Input.GetButtonDown("Start"))
+            {
+                OnStartClicked();
+            }
 
-        // 게임 종료
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            OnQuitClicked();
+            // 게임 종료
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                OnQuitClicked();
+            }
         }
     }
 
+    /// <summary>
+    /// 음악 목록 씬으로
+    /// </summary>
+    private void LoadBeatListScene()
+    {
+        Application.LoadLevel(SceneName._BeatList);
+    }
+
+    /// <summary>
+    /// 프로그램 종료
+    /// </summary>
+    private void QuitAppication()
+    {
+        Application.Quit();
+    }
+
+    #region UI Event
     public void OnStartClicked()
     {
-        Application.LoadLevel("BeatList");
+        LoadBeatListScene();
     }
 
     public void OnOptionClicked()
     {
-        Object prefabUIOption = Resources.Load("UI/UIOption");
-        GameObject objUIOption = Instantiate(prefabUIOption) as GameObject;
-        objUIOption.transform.SetParent(_uiRoot.transform, false);
-        objUIOption.GetComponent<RectTransform>().localScale = Vector3.one;
+        _uiSystem.OpenWindow("UI/UIOption");
     }
 
     public void OnQuitClicked()
     {
-        Application.Quit();
+        QuitAppication();
     }
+    #endregion UI Event
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class UIBeatReady : MonoBehaviour
+public class UIBeatReady : UIWindow
 {
     [SerializeField]
     private Text _title;
@@ -25,15 +25,31 @@ public class UIBeatReady : MonoBehaviour
         gameObject.SetActive(true);
     }
 
+    public override bool OnKeyInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Close();
+        }
+        return true;
+    }
+
     public void OnBackClicked()
     {
-        // 비활성화
+        Close();
+    }
+
+    /// <summary>
+    /// 창 비활성화
+    /// </summary>
+    private void Close()
+    {
         gameObject.SetActive(false);
     }
 
     // 게임 씬으로 이동
     public void OnPlayClicked()
     {
-        Application.LoadLevel("Stage");
+        Application.LoadLevel(SceneName._Stage);
     }
 }
