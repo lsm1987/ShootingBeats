@@ -6,12 +6,12 @@ using System.Collections;
 /// </summary>
 public class SceneSystem : MonoBehaviour
 {
-    protected UISystem _uiSystem { get; private set; } // 이 씬에 배치된 UI 시스템
+    protected UISystem _UISystem { get; private set; } // 이 씬에 배치된 UI 시스템
     public bool _HasKeyInputFocus { get; private set; } // 씬이 키입력 포커스를 갖고 있는가?
 
     private void Awake()
     {
-        _uiSystem = FindObjectOfType<UISystem>();
+        _UISystem = FindObjectOfType<UISystem>();
         OnAwake();
     }
 
@@ -28,10 +28,10 @@ public class SceneSystem : MonoBehaviour
     private void Update()
     {
         _HasKeyInputFocus = true;
-        if (_uiSystem != null)
+        if (_UISystem != null)
         {
             // 이미 키입력처리를 가로챈 UI가 있다면 씬이 포커스를 갖지 않음
-            if (_uiSystem.OnKeyInput())
+            if (_UISystem.OnKeyInput())
             {
                 _HasKeyInputFocus = false;
             }

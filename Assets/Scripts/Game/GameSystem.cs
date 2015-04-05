@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ namespace Game
 {
     // 게임 진행 관리
     // 진행 세부는 상속 클래스에서 지정
-    public abstract partial class GameSystem : MonoBehaviour
+    public abstract partial class GameSystem : SceneSystem
     {
         private static GameSystem _instance;
         public static GameSystem _Instance { get { return _instance; } }
@@ -26,9 +27,14 @@ namespace Game
         public List<Enemy> _Enemys { get; private set; }    // 살아있는 적기 목록
         public List<Bullet> _Bullets { get; private set; }  // 살아있는 탄(적기가 발사) 목록
         public int _Frame { get; private set; }
+
+        // UI 관련
         [SerializeField]
-        private UISystem _uiSystem;
-        public UISystem _UISystem { get { return _uiSystem; } }
+        private GameObject _letterBox;  // 레터박스 UI가 붙을 오브젝트
+        [SerializeField]
+        private MoveInputArea _moveInputArea;   // 이동 입력 영역
+        public MoveInputArea _MoveInputArea { get { return _moveInputArea; } }
+
         [SerializeField]
         private ScoreBoard _scoreBoard;
         private int _score = 0;
@@ -55,7 +61,7 @@ namespace Game
         /// <summary>
         ///  씬 진입 시
         /// </summary>
-        private void Awake()
+        protected override void OnAwake()
         {
             _instance = this;
             _oriVSyncCount = QualitySettings.vSyncCount;
@@ -93,7 +99,7 @@ namespace Game
         }
 
         // 고정 프레임 간격으로 갱신
-        private void Update()
+        protected override void OnUpdate()
         {
             _FSM._CurrentState.OnUpdate();
         }
@@ -125,7 +131,7 @@ namespace Game
                 Vector3 camPos = gameCam.transform.position;
                 camPos.y = -1.0f * diffH / 2.0f;
                 gameCam.transform.position = camPos;
-                _uiSystem.CreateLetterBox(true, diffH / camH);
+                CreateLetterBox(true, diffH / camH);
             }
             else
             {
@@ -136,7 +142,63 @@ namespace Game
                 // 기기W/기기H = 카메라W/게임H
                 float camW = (_MaxY - _MinY) * deviceR;
                 float diffW = camW - (_MaxX - _MinX);
-                _uiSystem.CreateLetterBox(false, diffW / camW);
+                CreateLetterBox(false, diffW / camW);
+            }
+        }
+
+        /// <summary>
+        /// 레터박스 UI 추가
+        /// </summary>
+        /// <param name="horizontal">수평방향 레터박스인가?</param>
+        /// <param name="screenRate">레터박스가 가릴 화면의 비율. 수직방향이면 절반씩 사용</param>
+        public void CreateLetterBox(bool horizontal, float screenRate)
+        {
+            Color color = new Color(0.16f, 0.16f, 0.16f);
+            if (horizontal)
+            {
+                GameObject obj = new GameObject();
+                obj.name = "Horizontal";
+                obj.transform.SetParent(_letterBox.transform, false);
+
+                RectTransform rectTrans = obj.AddComponent<RectTransform>();
+                rectTrans.anchorMin = Vector2.zero;
+                rectTrans.anchorMax = new Vector2(1.0f, screenRate);
+                rectTrans.offsetMin = Vector2.zero;
+                rectTrans.offsetMax = Vector2.zero;
+                rectTrans.pivot = new Vector2(0.5f, 0.5f);
+
+                obj.AddComponent<CanvasRenderer>();
+                Image image = obj.AddComponent<Image>();
+                image.color = color;
+            }
+            else
+            {
+                // 0: 왼쪽, 1: 오른쪽
+                for (int i = 0; i < 2; ++i)
+                {
+                    GameObject obj = new GameObject();
+                    obj.name = "Vertical_" + i.ToString();
+                    obj.transform.SetParent(_letterBox.transform, false);
+
+                    RectTransform rectTrans = obj.AddComponent<RectTransform>();
+                    if (i == 0)
+                    {
+                        rectTrans.anchorMin = Vector2.zero;
+                        rectTrans.anchorMax = new Vector2(screenRate / 2.0f, 1.0f);
+                    }
+                    else
+                    {
+                        rectTrans.anchorMin = new Vector2(1.0f - screenRate / 2.0f, 0.0f);
+                        rectTrans.anchorMax = Vector2.one;
+                    }
+                    rectTrans.offsetMin = Vector2.zero;
+                    rectTrans.offsetMax = Vector2.zero;
+                    rectTrans.pivot = new Vector2(0.5f, 0.5f);
+
+                    obj.AddComponent<CanvasRenderer>();
+                    Image image = obj.AddComponent<Image>();
+                    image.color = color;
+                }
             }
         }
         #endregion // Camera

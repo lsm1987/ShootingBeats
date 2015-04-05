@@ -18,7 +18,7 @@ namespace Game
         {
             TryShot();
 
-            if (GameSystem._Instance._UISystem._MoveInputArea.IsTouching())
+            if (GameSystem._Instance._MoveInputArea.IsTouching())
             {
                 MoveByTouch();
             }
@@ -71,7 +71,7 @@ namespace Game
         private void MoveByTouch()
         {
             float moveRate = 1.2f;
-            Vector2 delta = GameSystem._Instance._UISystem._MoveInputArea.GetDelta();
+            Vector2 delta = GameSystem._Instance._MoveInputArea.GetDelta();
 
             // 이동경계
             float mx = GameSystem._Instance._MaxX - _shape._size;
