@@ -37,13 +37,20 @@ public class UIOption : UIWindow
     }
 
     #region MoveSensitivity
-    // 이동 민감도 관련 초기화
-    private void InitMoveSensitivity()
+    /// <summary>
+    /// 이동 민감도 값을 설정으로부터 읽어들이기
+    /// </summary>
+    private void LoadMoveSensitivity()
     {
-        // 초기값 반영
         int value = GlobalSystem._Instance._Config._MoveSensitivity;
         _moveSensitivitySlider.value = (float)value;
         _moveSensitivityValue.text = ConvertToMoveSensitivityString(value);
+    }
+
+    // 이동 민감도 관련 초기화
+    private void InitMoveSensitivity()
+    {
+        LoadMoveSensitivity();
 
         // 슬라이더 이벤트 핸들러 등록. 인스펙터에서 등록하면 값을 인자로 자동 전달 못함
         _moveSensitivitySlider.onValueChanged.AddListener(OnMoveSensitivityValueSliderValueChanged);
@@ -71,4 +78,17 @@ public class UIOption : UIWindow
         _moveSensitivityValue.text = ConvertToMoveSensitivityString(value);
     }
     #endregion MoveSensitivity
+
+    #region ResetConfig
+    /// <summary>
+    /// 설정 초기화
+    /// </summary>
+    public void OnResetConfigClicked()
+    {
+        // 값 초기화
+        GlobalSystem._Instance._Config.ResetToDefault();
+        // UI에 반영
+        LoadMoveSensitivity();
+    }
+    #endregion ResetConfig
 }
