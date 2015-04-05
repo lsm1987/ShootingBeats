@@ -41,7 +41,8 @@ public class UIOption : UIWindow
     private void InitMoveSensitivity()
     {
         // 초기값 반영
-        int value = ConvertMoveSensitivityValue(_moveSensitivitySlider.value);
+        int value = GlobalSystem._Instance._Config._MoveSensitivity;
+        _moveSensitivitySlider.value = (float)value;
         _moveSensitivityValue.text = ConvertToMoveSensitivityString(value);
 
         // 슬라이더 이벤트 핸들러 등록. 인스펙터에서 등록하면 값을 인자로 자동 전달 못함
@@ -66,6 +67,7 @@ public class UIOption : UIWindow
     public void OnMoveSensitivityValueSliderValueChanged(float sliderValue)
     {
         int value = ConvertMoveSensitivityValue(sliderValue);
+        GlobalSystem._Instance._Config._MoveSensitivity = value;
         _moveSensitivityValue.text = ConvertToMoveSensitivityString(value);
     }
     #endregion MoveSensitivity

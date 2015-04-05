@@ -5,6 +5,10 @@ public class TitleSystem : SceneSystem
     protected override void OnAwake()
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        if (GlobalSystem._Instance == null)
+        {
+            GlobalSystem.CreateInstance();
+        }
     }
 
     protected override void OnUpdate()
