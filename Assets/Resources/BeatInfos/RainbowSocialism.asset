@@ -14,4 +14,6 @@ MonoBehaviour:
   _listPriority: 1
   _title: Rainbow Socialism
   _difficulty: 0
+  _songFile: RainbowSocialism
   _length: 110
+  _namespace: RainbowSocialism

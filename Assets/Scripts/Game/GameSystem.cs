@@ -8,18 +8,18 @@ namespace Game
 {
     // 게임 진행 관리
     // 진행 세부는 상속 클래스에서 지정
-    public abstract partial class GameSystem : SceneSystem
+    public partial class GameSystem : SceneSystem
     {
         private static GameSystem _instance;
         public static GameSystem _Instance { get { return _instance; } }
 
-        private int _oriVSyncCount = 0; // 유니티 설정 복원용
-        private const int _fps = 60; // 갱신주기
         private const int _songFrameOverGap = 0;    // 노래 프레임이 게임 프레임을 지나쳤을 때 게임 프레임이 한 번에 따라갈 프레임 수
         private const int _gameFrameOverGap = 6;    // 게임 프레임이 노래 프레임을 지나쳤을 때 이 차이 이내면 스킵하지 않는다.
         public FSM _FSM { get; private set; }
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
+        private const string _songRoot = "Sounds";  // 노래 파일 경로
+        [SerializeField]
         private AudioSource _srcSong;    // 노래 재생할 소스
         public Player _Player { get; set; } // 활성화된 플레이어기
         public List<Player> _Players { get; private set; }    // 살아있는 플레이어기 목록
@@ -28,12 +28,16 @@ namespace Game
         public List<Bullet> _Bullets { get; private set; }  // 살아있는 탄(적기가 발사) 목록
         public int _Frame { get; private set; }
 
-        // UI 관련
+        // UI 관련 //////////////////////////
         [SerializeField]
         private GameObject _letterBox;  // 레터박스 UI가 붙을 오브젝트
         [SerializeField]
         private MoveInputArea _moveInputArea;   // 이동 입력 영역
         public MoveInputArea _MoveInputArea { get { return _moveInputArea; } }
+
+        // 음악별 설정 //////////////////////////
+        private BeatInfo _beatInfo; // 현재 게임에서 사용할 음악 정보
+        private GameLogic _logic;   // 음악별 다른 동작
 
         [SerializeField]
         private ScoreBoard _scoreBoard;
@@ -56,17 +60,14 @@ namespace Game
         public float _MaxY { get { return 1.3f; } }
         public float _MinY { get { return -1.3f; } }
 
-        protected abstract string _SongPath { get; }
-
         /// <summary>
         ///  씬 진입 시
         /// </summary>
         protected override void OnAwake()
         {
             _instance = this;
-            _oriVSyncCount = QualitySettings.vSyncCount;
-            QualitySettings.vSyncCount = 0;
-            Application.targetFrameRate = _fps;
+            Define.SetFPS();
+            InitBeatInfo();
             //_shapePoolManager.RecordMaxCreatedCount();
             _Players = new List<Player>();
             _Shots = new List<Shot>();
@@ -93,8 +94,6 @@ namespace Game
         private void OnDestroy()
         {
             _instance = null;
-            QualitySettings.vSyncCount = _oriVSyncCount;
-            Application.targetFrameRate = -1;
             _shapePoolManager.LogCreatedCount();
         }
 
@@ -102,6 +101,16 @@ namespace Game
         protected override void OnUpdate()
         {
             _FSM._CurrentState.OnUpdate();
+        }
+
+        private void InitBeatInfo()
+        {
+            _beatInfo = GlobalSystem._Instance._LoadingBeatInfo;
+            _logic = Activator.CreateInstance(System.Type.GetType("Game." + _beatInfo._namespace + ".GameLogic")) as Game.GameLogic;
+            if (_logic == null)
+            {
+                Debug.LogError("[GameSystem] Invalid namespcae:" + _beatInfo._namespace);
+            }
         }
 
         #region Camera
@@ -213,23 +222,17 @@ namespace Game
         private IEnumerator Loading()
         {
             // 노래 로딩
-            GameObject go = gameObject;
-            _srcSong = go.AddComponent<AudioSource>();
-            _srcSong.playOnAwake = false;
-            _srcSong.clip = Resources.Load<AudioClip>(_SongPath);
+            _srcSong.clip = Resources.Load<AudioClip>(_songRoot + "/" + _beatInfo._songFile);
             yield return null;
 
             // 특화 정보 로딩
-            yield return StartCoroutine(LoadContext());
+            yield return StartCoroutine(_logic.LoadContext());
 
             // 여유시간
             yield return new WaitForSeconds(0.5f);
             // 로딩 끝
             _FSM.SetState(StateType.Play);
         }
-
-        // 특화 정보 로딩
-        protected abstract IEnumerator LoadContext();
         #endregion // Loading
 
         // 플레이 시작
@@ -239,7 +242,7 @@ namespace Game
             _srcSong.Play();
             if (_testStartFrame >= 0)
             {
-                _srcSong.time = _testStartFrame / _fps;
+                _srcSong.time = _testStartFrame / Define._fps;
             }
 
             // 진행 초기화
@@ -264,7 +267,7 @@ namespace Game
             if (_srcSong.isPlaying)
             {
                 // 현재 노래 재생 시점을 프레임 단위로 변경
-                int songFrame = (int)(_srcSong.time * (float)_fps);
+                int songFrame = (int)(_srcSong.time * (float)Define._fps);
                 // 이번에 갱신할 게임 프레임
                 int gameFrame = _Frame + 1;
                 //Debug.Log("songFrame:" + songFrame.ToString() + " gameFrame:" + gameFrame.ToString());
@@ -307,7 +310,7 @@ namespace Game
             _Frame++;
 
             // 세부 갱신
-            UpdatePlayContext();
+            _logic.UpdatePlayContext();
 
             // 이동 물체들 갱신
             // 보통 플레이어기가 샷을 생성하고 적기가 탄을 생성하므로 이 순서로 갱신
@@ -317,8 +320,6 @@ namespace Game
             UpdateEnemy(byFrameOver);
             UpdateBullet(byFrameOver);
         }
-
-        protected abstract void UpdatePlayContext();
 
         #region Shape
         public void PoolStackShape(string subPath, int count)
@@ -343,7 +344,7 @@ namespace Game
         /// </summary>
         /// <typeparam name="T">Mover 타입</typeparam>
         /// <param name="count">미리 생성할 수</param>
-        protected void PoolStackMover<T>(int count) where T : Mover, new()
+        public void PoolStackMover<T>(int count) where T : Mover, new()
         {
             _moverPoolManager.PoolStack<T>(count);
         }

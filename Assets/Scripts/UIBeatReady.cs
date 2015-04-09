@@ -13,13 +13,15 @@ public class UIBeatReady : UIWindow
     private Text _difficulty;
     [SerializeField]
     private Text _length;
+    private BeatInfo _beatInfo;
 
     public void Open(BeatInfo beatInfo)
     {
         // 정보 채우기
-        _title.text = beatInfo._title;
-        _difficulty.text = beatInfo._difficulty.ToString();
-        _length.text = Util.ConverBeatLength(beatInfo._length);
+        _beatInfo = beatInfo;
+        _title.text = _beatInfo._title;
+        _difficulty.text = _beatInfo._difficulty.ToString();
+        _length.text = Define.ConverBeatLength(_beatInfo._length);
 
         // 활성화
         gameObject.SetActive(true);
@@ -45,11 +47,13 @@ public class UIBeatReady : UIWindow
     private void Close()
     {
         gameObject.SetActive(false);
+        _beatInfo = null;
     }
 
     // 게임 씬으로 이동
     public void OnPlayClicked()
     {
+        GlobalSystem._Instance._LoadingBeatInfo = _beatInfo;
         Application.LoadLevel(SceneName._Stage);
     }
 }

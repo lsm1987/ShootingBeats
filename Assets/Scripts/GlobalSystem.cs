@@ -3,8 +3,9 @@
 // 전역적으로 관리되어야 하는 정보
 public class GlobalSystem
 {
-    public static GlobalSystem _Instance { get; private set; }
-    public Config _Config { get; private set; }
+    public static GlobalSystem _Instance { get; private set; }  // 전역 접근용
+    public Config _Config { get; private set; } // 설정 접근용
+    public BeatInfo _LoadingBeatInfo { get; set; }  // 스테이지에서 불러올 노래 정보
 
     public GlobalSystem()
     {

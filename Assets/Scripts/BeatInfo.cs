@@ -13,7 +13,9 @@ public class BeatInfo : ScriptableObject
     public int _listPriority = 0;  // 리스트 목록 우선순위. 낮을수록 앞에 위치
     public string _title; // 노래 제목
     public Difficulty _difficulty;  // 난이도
+    public string _songFile; // 음악 파일명
     public int _length; // 노래 길이. 단위 초
+    public string _namespace;   // 코드 namespace
 
     /// <summary>
     /// 목록 우선순위 비교
