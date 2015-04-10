@@ -30,6 +30,9 @@ namespace Game
 
         // UI 관련 //////////////////////////
         [SerializeField]
+        private UILoading _uiLoading;   // 로딩 UI
+        public UILoading _UILoading { get { return _uiLoading; } }
+        [SerializeField]
         private GameObject _letterBox;  // 레터박스 UI가 붙을 오브젝트
         [SerializeField]
         private MoveInputArea _moveInputArea;   // 이동 입력 영역
@@ -47,6 +50,8 @@ namespace Game
         // 테스트용 설정 //////////////////////////
         public bool _isTestInvincible = false;  // 무적모드인가?
         public int _testStartFrame = -1;    // 몇 프레임부터 시작할 것인가?
+        [SerializeField]
+        private BeatInfo _testBeatInfo = null;  // 이 씬에서 바로 시작할 때 사용할 음악 정보
 
         // 게임 옵션으로 지정 //////////////////////////////
         public float _PlayerSpeed { get { return 0.02f; } }
@@ -61,12 +66,18 @@ namespace Game
         public float _MinY { get { return -1.3f; } }
 
         /// <summary>
-        ///  씬 진입 시
+        ///  씬 진입 시 한번 실행
         /// </summary>
         protected override void OnAwake()
         {
             _instance = this;
             Define.SetFPS();
+            if (GlobalSystem._Instance == null)
+            {
+                GlobalSystem.CreateInstance();
+            }
+            _UILoading.Open();
+
             InitBeatInfo();
             //_shapePoolManager.RecordMaxCreatedCount();
             _Players = new List<Player>();
@@ -106,6 +117,12 @@ namespace Game
         private void InitBeatInfo()
         {
             _beatInfo = GlobalSystem._Instance._LoadingBeatInfo;
+            if (_beatInfo == null)
+            {
+                // 목록으로부터 음악이 선택되지 않았다면 테스트용 정보 이용
+                _beatInfo = _testBeatInfo;
+            }
+
             _logic = Activator.CreateInstance(System.Type.GetType("Game." + _beatInfo._namespace + ".GameLogic")) as Game.GameLogic;
             if (_logic == null)
             {

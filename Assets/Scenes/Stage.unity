@@ -87,6 +87,72 @@ NavMeshSettings:
     cellSize: .166666657
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &245381798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 224: {fileID: 245381799}
+  - 222: {fileID: 245381801}
+  - 114: {fileID: 245381800}
+  m_Layer: 5
+  m_Name: Progress
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &245381799
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 245381798}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1257067152}
+  m_RootOrder: 1
+  m_AnchorMin: {x: 0, y: .5}
+  m_AnchorMax: {x: 1, y: .5}
+  m_AnchoredPosition: {x: 0, y: -20}
+  m_SizeDelta: {x: 0, y: 30}
+  m_Pivot: {x: .5, y: .5}
+--- !u!114 &245381800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 245381798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: .196078435, g: .196078435, b: .196078435, a: 1}
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 20
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_RichText: 0
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: ' '
+--- !u!222 &245381801
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 245381798}
 --- !u!1 &1145558380
 GameObject:
   m_ObjectHideFlags: 0
@@ -155,7 +221,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1257067152
 RectTransform:
   m_ObjectHideFlags: 0
@@ -167,6 +233,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1589034067}
+  - {fileID: 245381799}
   m_Father: {fileID: 1295890774}
   m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 0}
@@ -209,9 +276,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1257067151}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e1c0945bf83a7c4fa554af9057ad330, type: 3}
+  m_Script: {fileID: 11500000, guid: 78bc0f7f24b6cb941bc802f9ec0b8179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _progress: {fileID: 245381800}
 --- !u!1 &1271854132
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,7 +439,7 @@ Canvas:
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1793112921
   m_SortingOrder: 0
 --- !u!114 &1295890778
 MonoBehaviour:
@@ -428,11 +496,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _srcSong: {fileID: 1403484233}
+  _uiLoading: {fileID: 1257067155}
   _letterBox: {fileID: 2022039917}
   _moveInputArea: {fileID: 1460445424}
   _scoreBoard: {fileID: 1145558382}
   _isTestInvincible: 0
   _testStartFrame: -1
+  _testBeatInfo: {fileID: 11400000, guid: 99217356808f7ca4fabc89ae31c85ab7, type: 2}
 --- !u!81 &1403484232
 AudioListener:
   m_ObjectHideFlags: 0
@@ -593,7 +663,7 @@ GameObject:
   - 222: {fileID: 1589034069}
   - 114: {fileID: 1589034068}
   m_Layer: 5
-  m_Name: Text
+  m_Name: LoadingText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -613,8 +683,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 40}
+  m_AnchoredPosition: {x: 0, y: 25}
+  m_SizeDelta: {x: 160, y: 50}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &1589034068
 MonoBehaviour:

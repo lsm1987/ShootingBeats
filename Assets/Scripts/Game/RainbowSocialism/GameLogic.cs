@@ -12,6 +12,7 @@ namespace Game
             public override IEnumerator LoadContext()
             {
                 // 플레이어기 로딩 /////////////////
+                GameSystem._Instance._UILoading.SetProgress("Loading Player");
                 GameSystem._Instance.PoolStackShape("Common/Player_Black", 1);
                 GameSystem._Instance.PoolStackMover<PlayerAlive>(1);
                 GameSystem._Instance.PoolStackShape("Common/Player_Crash", 1);
@@ -19,22 +20,29 @@ namespace Game
                 yield return null;
 
                 // 샷 로딩 ///////////////////////
+                GameSystem._Instance._UILoading.SetProgress("Loading Shots");
                 GameSystem._Instance.PoolStackShape("Common/Shot_Black", 20);
                 GameSystem._Instance.PoolStackMover<Shot>(20);
                 yield return null;
 
                 // 적기 로딩 /////////////////////
+                GameSystem._Instance._UILoading.SetProgress("Loading Boss Shape");
                 GameSystem._Instance.PoolStackShape("Common/Boss_Orange", 1);
+                yield return null;
+                GameSystem._Instance._UILoading.SetProgress("Loading Boss Class");
                 GameSystem._Instance.PoolStackMover<Boss>(1);
                 yield return null;
 
                 // 탄 로딩 ///////////////////
                 // 외양 로딩
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 1");
                 GameSystem._Instance.PoolStackShape("Common/Bullet_Blue", 210);
                 yield return null;
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 2");
                 GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 125);
                 yield return null;
                 // 클래스 로딩
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullet Classes");
                 GameSystem._Instance.PoolStackMover<Bullet>(100);
                 yield return null;
             }

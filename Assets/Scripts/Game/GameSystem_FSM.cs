@@ -130,6 +130,12 @@ namespace Game
                 _GameSystem.StartLoading();
             }
 
+            public override void OnLeave(StateType nextState)
+            {
+                base.OnLeave(nextState);
+                _GameSystem._UILoading.Close();
+            }
+
             public override void OnUpdate()
             {
                 base.OnUpdate();
