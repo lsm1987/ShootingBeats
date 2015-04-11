@@ -15,7 +15,15 @@ namespace Game
 
         private const int _songFrameOverGap = 0;    // 노래 프레임이 게임 프레임을 지나쳤을 때 게임 프레임이 한 번에 따라갈 프레임 수
         private const int _gameFrameOverGap = 6;    // 게임 프레임이 노래 프레임을 지나쳤을 때 이 차이 이내면 스킵하지 않는다.
-        public FSM _FSM { get; private set; }
+        
+        private enum StateType   // 진행상태 타입
+        {
+            Invalid,    // 최초 무효상태
+            Load,
+            Play
+        }
+        private StateType _stateType = StateType.Invalid;   // 현재 진행상태
+        private bool _cameraInitialized = false;    // 카메라 초기화되었는가?
         private ShapePoolManager _shapePoolManager = new ShapePoolManager();    // 외양 풀
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
         private const string _songRoot = "Sounds";  // 노래 파일 경로
@@ -76,27 +84,13 @@ namespace Game
             {
                 GlobalSystem.CreateInstance();
             }
-            _UILoading.Open();
-
-            InitBeatInfo();
             //_shapePoolManager.RecordMaxCreatedCount();
             _Players = new List<Player>();
             _Shots = new List<Shot>();
             _Enemys = new List<Enemy>();
             _Bullets = new List<Bullet>();
-            SetScore(0);
-            InitRandom();
 
-            // 카메라
-            InitializeCamera();
-
-            // FSM 초기화
-            _FSM = new FSM(this);
-            _FSM.AddState(new LoadState(this));
-            _FSM.AddState(new PlayState(this));
-
-            // 로딩 시작
-            _FSM.SetState(StateType.Load);
+            StartLoading();
         }
 
         /// <summary>
@@ -111,28 +105,102 @@ namespace Game
         // 고정 프레임 간격으로 갱신
         protected override void OnUpdate()
         {
-            _FSM._CurrentState.OnUpdate();
+            switch(_stateType)
+            {
+                case StateType.Play:
+                    {
+                        UpdatePlay();
+                        break;
+                    }
+            }
+        }
+
+        /// <summary>
+        /// 상태 변경
+        /// </summary>
+        /// <param name="nextState"></param>
+        private void SetState(StateType nextState)
+        {
+            // 현재 상태 새로 지정
+            _stateType = nextState;
+        }
+
+        #region Loading
+        /// <summary>
+        /// 로딩 시작
+        /// </summary>
+        private void StartLoading()
+        {
+            StartCoroutine(Loading());
+        }
+
+        /// <summary>
+        /// 로딩 전체 감싸기
+        /// </summary>
+        /// <returns></returns>
+        private IEnumerator Loading()
+        {
+            // 상태 변경
+            SetState(StateType.Load);
+
+            // 로딩 UI
+            _UILoading.Open();
+
+            // 구성요소 초기화
+            InitBeatInfo();
+            SetScore(0);
+            InitRandom();
+            InitCamera();
+
+            // 노래 로딩
+            _srcSong.clip = Resources.Load<AudioClip>(_songRoot + "/" + _beatInfo._songFile);
+            yield return null;
+
+            // 특화 정보 로딩
+            yield return StartCoroutine(_logic.LoadContext());
+
+            // 여유 프레임
+            _UILoading.Close();
+            yield return null;
+            
+            // 로딩 끝
+            StartPlay();
         }
 
         private void InitBeatInfo()
         {
-            _beatInfo = GlobalSystem._Instance._LoadingBeatInfo;
             if (_beatInfo == null)
             {
-                // 목록으로부터 음악이 선택되지 않았다면 테스트용 정보 이용
-                _beatInfo = _testBeatInfo;
+                _beatInfo = GlobalSystem._Instance._LoadingBeatInfo;
+                if (_beatInfo == null)
+                {
+                    // 목록으로부터 음악이 선택되지 않았다면 테스트용 정보 이용
+                    _beatInfo = _testBeatInfo;
+                }
+                if (_beatInfo == null)
+                {
+                    Debug.LogError("[GameSystem] Invalid BeatInfo");
+                }
             }
 
-            _logic = Activator.CreateInstance(System.Type.GetType("Game." + _beatInfo._namespace + ".GameLogic")) as Game.GameLogic;
             if (_logic == null)
             {
-                Debug.LogError("[GameSystem] Invalid namespcae:" + _beatInfo._namespace);
+                _logic = Activator.CreateInstance(System.Type.GetType("Game." + _beatInfo._namespace + ".GameLogic")) as Game.GameLogic;
+                if (_logic == null)
+                {
+                    Debug.LogError("[GameSystem] Invalid namespcae:" + _beatInfo._namespace);
+                }
             }
         }
 
-        #region Camera
-        private void InitializeCamera()
+        private void InitCamera()
         {
+            if (_cameraInitialized)
+            {
+                // 이미 현재 노래에 대해 초기화 되었음
+                return;
+            }
+
             // 기기 화면 비율
             int deviceW = Screen.width;
             int deviceH = Screen.height;
@@ -144,7 +212,7 @@ namespace Game
 
             // 메인 카메라를 게임 카메라로 사용
             Camera gameCam = Camera.main;
-            
+
             // 게임 카메라 뷰포트 영역 지정
             if (gameR >= deviceR)
             {
@@ -170,6 +238,9 @@ namespace Game
                 float diffW = camW - (_MaxX - _MinX);
                 CreateLetterBox(false, diffW / camW);
             }
+
+            // 카메라 초기화 되었음 표시
+            _cameraInitialized = true;
         }
 
         /// <summary>
@@ -177,7 +248,7 @@ namespace Game
         /// </summary>
         /// <param name="horizontal">수평방향 레터박스인가?</param>
         /// <param name="screenRate">레터박스가 가릴 화면의 비율. 수직방향이면 절반씩 사용</param>
-        public void CreateLetterBox(bool horizontal, float screenRate)
+        private void CreateLetterBox(bool horizontal, float screenRate)
         {
             Color color = new Color(0.16f, 0.16f, 0.16f);
             if (horizontal)
@@ -227,34 +298,14 @@ namespace Game
                 }
             }
         }
-        #endregion // Camera
-
-        #region Loading
-        public void StartLoading()
-        {
-            StartCoroutine(Loading());
-        }
-
-        // 로딩 전체 감싸기
-        private IEnumerator Loading()
-        {
-            // 노래 로딩
-            _srcSong.clip = Resources.Load<AudioClip>(_songRoot + "/" + _beatInfo._songFile);
-            yield return null;
-
-            // 특화 정보 로딩
-            yield return StartCoroutine(_logic.LoadContext());
-
-            // 여유시간
-            yield return new WaitForSeconds(0.5f);
-            // 로딩 끝
-            _FSM.SetState(StateType.Play);
-        }
         #endregion // Loading
 
         // 플레이 시작
         public void StartPlay()
         {
+            // 상태 변경
+            SetState(StateType.Play);
+
             // 노래 시작
             _srcSong.Play();
             if (_testStartFrame >= 0)
@@ -264,6 +315,9 @@ namespace Game
 
             // 진행 초기화
             _Frame = -1; // 첫 갱신 시 0프레임 되도록
+
+            // 시작 직후 바로 0프레임째 업데이트 수행
+            UpdatePlay();
         }
 
         // 엔진에서 호출하는 플레이 갱신
