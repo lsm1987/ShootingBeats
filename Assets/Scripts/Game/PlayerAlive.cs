@@ -18,15 +18,18 @@ namespace Game
         {
             TryShot();
 
-            if (GameSystem._Instance._MoveInputArea.IsTouching())
+            // 따라잡기가 아닌 프레임에서만 입력 적용
+            if (!GameSystem._Instance._FrameByOver)
             {
-                MoveByTouch();
+                if (GameSystem._Instance._MoveInputArea.IsTouching())
+                {
+                    MoveByTouch();
+                }
+                else
+                {
+                    MoveByKey();
+                }
             }
-            else
-            {
-                MoveByKey();
-            }
-            
 
             // 탄, 적기와 충돌 체크
             if (IsHit(GameSystem._Instance._Bullets) != null || IsHit(GameSystem._Instance._Enemys) != null)
@@ -70,7 +73,10 @@ namespace Game
 
         private void MoveByTouch()
         {
-            float moveRate = 1.2f;
+            float moveRate = ((GlobalSystem._Instance != null)
+                ? GlobalSystem._Instance._Config._MoveSensitivity
+                : Config._moveSensitivityDefault)
+                / 100.0f;
             Vector2 delta = GameSystem._Instance._MoveInputArea.GetDelta();
 
             // 이동경계

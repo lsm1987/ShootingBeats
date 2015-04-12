@@ -37,7 +37,7 @@ public class GlobalSystem
 public class Config
 {
     // 이동 민감도. 단위 %
-    private const int _moveSensitivityDefault = 120; // 기본값
+    public const int _moveSensitivityDefault = 120; // 기본값
     private int _moveSensitivity = _moveSensitivityDefault;
     private const string _moveSensitivityKey = "Config_MoveSensitivity"; // 설정 저장용 key
     public int _MoveSensitivity

@@ -34,7 +34,8 @@ namespace Game
         public List<Shot> _Shots { get; private set; }    // 살아있는 샷(플레이어기가 발사) 목록
         public List<Enemy> _Enemys { get; private set; }    // 살아있는 적기 목록
         public List<Bullet> _Bullets { get; private set; }  // 살아있는 탄(적기가 발사) 목록
-        public int _Frame { get; private set; }
+        public int _Frame { get; private set; } // 현재 갱신중인 프레임 번호
+        public bool _FrameByOver { get; private set; }  // 지나쳐버린 노래 따라잡기 위한 프레임 갱신인가?
 
         // UI 관련 //////////////////////////
         [SerializeField]
@@ -323,6 +324,7 @@ namespace Game
 
             // 진행 초기화
             _Frame = -1; // 첫 갱신 시 0프레임 되도록
+            _FrameByOver = false;
 
             // 시작 직후 바로 0프레임째 업데이트 수행
             UpdatePlay();
@@ -395,6 +397,7 @@ namespace Game
         {
             // 프레임 갱신
             _Frame++;
+            _FrameByOver = byFrameOver;
 
             // 세부 갱신
             _logic.UpdatePlayContext();
@@ -402,10 +405,10 @@ namespace Game
             // 이동 물체들 갱신
             // 보통 플레이어기가 샷을 생성하고 적기가 탄을 생성하므로 이 순서로 갱신
             // Hit 체크도 업데이트 순서대로 수행
-            UpdatePlayer(byFrameOver);
-            UpdateShot(byFrameOver);
-            UpdateEnemy(byFrameOver);
-            UpdateBullet(byFrameOver);
+            UpdatePlayer();
+            UpdateShot();
+            UpdateEnemy();
+            UpdateBullet();
         }
 
         #region Shape
@@ -436,7 +439,7 @@ namespace Game
             _moverPoolManager.PoolStack<T>(count);
         }
 
-        private void UpdateMoverList<T>(List<T> movers, bool byFrameOver) where T : Mover
+        private void UpdateMoverList<T>(List<T> movers) where T : Mover
         {
             // 갱신 도중에 새 무버가 생길 수 있으므로 인덱스 순회
             for (int i = 0; i < movers.Count; ++i)
@@ -458,7 +461,7 @@ namespace Game
             }
 
             // 그리기. 프레임 따라잡기용 업데이트에서는 그리지 않음
-            if (!byFrameOver)
+            if (!_FrameByOver)
             {
                 foreach (T mover in movers)
                 {
@@ -477,9 +480,9 @@ namespace Game
             return player;
         }
 
-        private void UpdatePlayer(bool byFrameOver)
+        private void UpdatePlayer()
         {
-            UpdateMoverList(_Players, byFrameOver);
+            UpdateMoverList(_Players);
         }
         #endregion //Player
 
@@ -495,9 +498,9 @@ namespace Game
             return shot;
         }
 
-        private void UpdateShot(bool byFrameOver)
+        private void UpdateShot()
         {
-            UpdateMoverList(_Shots, byFrameOver);
+            UpdateMoverList(_Shots);
         }
         #endregion //Shot
 
@@ -516,9 +519,9 @@ namespace Game
         /// <summary>
         /// 적기 목록 순회하며 갱신
         /// </summary>
-        private void UpdateEnemy(bool byFrameOver)
+        private void UpdateEnemy()
         {
-            UpdateMoverList(_Enemys, byFrameOver);
+            UpdateMoverList(_Enemys);
         }
         #endregion //Enemy
 
@@ -537,7 +540,7 @@ namespace Game
         /// <summary>
         /// 탄 목록 순회하며 갱신
         /// </summary>
-        private void UpdateBullet(bool byFrameOver)
+        private void UpdateBullet()
         {
             // 특수 처리가 있어 공용 무버 갱신함수 사용하지 않음
             for (int i = 0; i < _Bullets.Count; ++i)
@@ -556,7 +559,7 @@ namespace Game
                 }
             }
 
-            if (!byFrameOver)
+            if (!_FrameByOver)
             {
                 for (int i = 0; i < _Bullets.Count; ++i)
                 {
