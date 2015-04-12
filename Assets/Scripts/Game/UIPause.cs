@@ -31,6 +31,14 @@ namespace Game
         }
 
         /// <summary>
+        /// 스테이지 재시작
+        /// </summary>
+        public void OnRetryClicked()
+        {
+            // todo
+        }
+
+        /// <summary>
         /// 옵션창 열기
         /// </summary>
         public void OnOptionClicked()
@@ -38,6 +46,9 @@ namespace Game
             _UISystem.OpenWindow(Define._uiOptionPath);
         }
 
+        /// <summary>
+        /// 음악 목록으로
+        /// </summary>
         public void OnBeatListClicked()
         {
             Application.LoadLevel(SceneName._BeatList);
