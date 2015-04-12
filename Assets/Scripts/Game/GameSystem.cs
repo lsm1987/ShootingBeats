@@ -153,8 +153,11 @@ namespace Game
             InitCamera();
 
             // 노래 로딩
-            _srcSong.clip = Resources.Load<AudioClip>(_songRoot + "/" + _beatInfo._songFile);
-            yield return null;
+            if (_srcSong.clip == null)
+            {
+                _srcSong.clip = Resources.Load<AudioClip>(_songRoot + "/" + _beatInfo._songFile);
+                yield return null;
+            }
 
             // 특화 정보 로딩
             yield return StartCoroutine(_logic.LoadContext());
