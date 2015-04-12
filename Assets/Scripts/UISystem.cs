@@ -9,6 +9,7 @@ public class UISystem : MonoBehaviour
     // 활성화된 윈도우 목록
     // 상위의 윈도우일수록 앞으로 정렬
     private List<UIWindow> _windows = new List<UIWindow>();
+    private List<UIWindow> _tempWindows = new List<UIWindow>(); // 원본목록을 직접 접근하지 않아야 할 떄 사용할 목록
 
     /// <summary>
     /// 새 윈도우가 활성화 되었을 때
@@ -20,7 +21,7 @@ public class UISystem : MonoBehaviour
         {
             // 새 윈도우 생성으로 SiblingIndex가 바뀌었을 수 있으므로 전체 재정렬
             _windows.Add(window);
-            _windows.Sort(UIWindow.CompareBySiblingIndexReverse);
+            ArrangeWindowOrder();
         }
     }
 
@@ -29,8 +30,16 @@ public class UISystem : MonoBehaviour
         if (window != null)
         {
             _windows.Remove(window);
-            _windows.Sort(UIWindow.CompareBySiblingIndexReverse);
+            ArrangeWindowOrder();
         }
+    }
+
+    /// <summary>
+    /// 윈도우 목록 재정렬
+    /// </summary>
+    private void ArrangeWindowOrder()
+    {
+        _windows.Sort(UIWindow.CompareBySiblingIndexReverse);
     }
 
     /// <summary>
@@ -44,8 +53,9 @@ public class UISystem : MonoBehaviour
         GameObject objWindow = Instantiate(prefabWindow) as GameObject;
         objWindow.name = prefabWindow.name; // 오브젝트명의 (Clone) 삭제
         UIWindow window = objWindow.GetComponent<UIWindow>();
-        window._trans.SetParent(transform, false);
-        window._rectTrans.localScale = Vector3.one;
+        window._Trans.SetParent(transform, false);
+        window._RectTrans.localScale = Vector3.one;
+        ArrangeWindowOrder(); // Instantiate() 시 Enable() 호출되지만 SetParent() 호출로 우선순위가 바뀌므로 재정렬
         return window;
     }
 
@@ -60,13 +70,20 @@ public class UISystem : MonoBehaviour
     /// <returns>true: UI 내에서 키입력 처리가 완료되어 추가 처리하지 않음</returns>
     public bool OnKeyInput()
     {
-        foreach (UIWindow window in _windows)
+        bool keyInputFinished = false; // 처리 완료여부
+        if (_windows.Count > 0)
         {
-            if (window.OnKeyInput())
+            _tempWindows.AddRange(_windows); // 키입력 처리 도중에 윈도우 목록 변경 생길 수 있으므로 복사하여 순회
+            foreach (UIWindow window in _tempWindows)
             {
-                return true; // 키입력 전달하지 않는 UI 발생
+                if (window != null && window.OnKeyInput())
+                {
+                    keyInputFinished = true; // 키입력 전달하지 않는 UI 발생
+                    break;
+                }
             }
+            _tempWindows.Clear();
         }
-        return false;
+        return keyInputFinished;
     }
 }

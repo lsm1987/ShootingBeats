@@ -30,7 +30,7 @@ namespace Game
         public void Open()
         {
             _progress.text = string.Empty;
-            gameObject.SetActive(true);
+            _Go.SetActive(true);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Game
         /// </summary>
         public void Close()
         {
-            gameObject.SetActive(false);
+            _Go.SetActive(false);
         }
     }
 }

@@ -6,15 +6,17 @@
 /// </summary>
 public class UIWindow : MonoBehaviour
 {
-    public Transform _trans { get; private set; }
-    public RectTransform _rectTrans { get; private set; }
-    protected UISystem _uiSystem { get; private set; }
+    private GameObject _go;
+    protected GameObject _Go { get { if (_go == null) { _go = gameObject; } return _go; } }
+    private Transform _trans;
+    public Transform _Trans { get { if (_trans == null) { _trans = transform; } return _trans; } }
+    private RectTransform _rectTrans;
+    public RectTransform _RectTrans { get { if (_rectTrans == null) { _rectTrans = GetComponent<RectTransform>(); } return _rectTrans; } }
+    private UISystem _uiSystem;
+    protected UISystem _UISystem { get { if (_uiSystem == null) { _uiSystem = FindObjectOfType<UISystem>(); } return _uiSystem; } }
 
     private void Awake()
     {
-        _trans = transform;
-        _rectTrans = GetComponent<RectTransform>();
-        _uiSystem = FindObjectOfType<UISystem>();
         OnAwake();
     }
 
@@ -27,23 +29,23 @@ public class UIWindow : MonoBehaviour
 
     private void OnEnable()
     {
-        if (_uiSystem != null)
+        if (_UISystem != null)
         {
-            _uiSystem.OnWindowEnabled(this);
+            _UISystem.OnWindowEnabled(this);
         }
     }
 
     private void OnDisable()
     {
-        if (_uiSystem != null)
+        if (_UISystem != null)
         {
-            _uiSystem.OnWindowDisabled(this);
+            _UISystem.OnWindowDisabled(this);
         }
     }
 
     public int GetSiblingIndex()
     {
-        return _trans.GetSiblingIndex();
+        return _Trans.GetSiblingIndex();
     }
 
     /// <summary>

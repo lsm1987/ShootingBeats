@@ -24,7 +24,7 @@ public class UIBeatReady : UIWindow
         _length.text = Define.ConverBeatLength(_beatInfo._length);
 
         // 활성화
-        gameObject.SetActive(true);
+        _Go.SetActive(true);
     }
 
     public override bool OnKeyInput()
@@ -46,7 +46,7 @@ public class UIBeatReady : UIWindow
     /// </summary>
     private void Close()
     {
-        gameObject.SetActive(false);
+        _Go.SetActive(false);
         _beatInfo = null;
     }
 

@@ -6,7 +6,7 @@ namespace Game
     {
         public void Open()
         {
-            gameObject.SetActive(true);
+            _Go.SetActive(true);
         }
 
         public override bool OnKeyInput()
@@ -23,7 +23,7 @@ namespace Game
         /// </summary>
         private void Close()
         {
-            gameObject.SetActive(false);
+            _Go.SetActive(false);
             if (GameSystem._Instance != null)
             {
                 GameSystem._Instance.StopPause();
@@ -35,7 +35,7 @@ namespace Game
         /// </summary>
         public void OnOptionClicked()
         {
-            _uiSystem.OpenWindow(Define._uiOptionPath);
+            _UISystem.OpenWindow(Define._uiOptionPath);
         }
 
         public void OnBeatListClicked()
