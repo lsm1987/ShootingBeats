@@ -27,4 +27,7 @@ public static class Define
         int lengthSec = sec % 60; // 초
         return (lengthMin.ToString() + ":" + lengthSec.ToString("00"));
     }
+
+    // UI 프리팹 리소스 경로
+    public const string _uiOptionPath = "UI/UIOption";
 }

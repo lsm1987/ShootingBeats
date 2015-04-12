@@ -55,7 +55,7 @@ public class TitleSystem : SceneSystem
 
     public void OnOptionClicked()
     {
-        _UISystem.OpenWindow("UI/UIOption");
+        _UISystem.OpenWindow(Define._uiOptionPath);
     }
 
     public void OnQuitClicked()

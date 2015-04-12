@@ -45,6 +45,9 @@ namespace Game
         [SerializeField]
         private MoveInputArea _moveInputArea;   // 이동 입력 영역
         public MoveInputArea _MoveInputArea { get { return _moveInputArea; } }
+        [SerializeField]
+        private UIPause _uiPause;   // 일시정지 UI
+        private UIPause _UIPause { get { return _uiPause; } }
 
         // 음악별 설정 //////////////////////////
         private BeatInfo _beatInfo; // 현재 게임에서 사용할 음악 정보
@@ -54,6 +57,8 @@ namespace Game
         private ScoreBoard _scoreBoard;
         private int _score = 0;
         private System.Random _random = null;   // 게임 내에서 사용할 랜덤. 시드값 항상 동일
+        private bool _isPaused = false;     // 일시정지 중인가?
+        private float _timeScaleBeforePause = 1.0f; // 일시정지 전 타임스케일
 
         // 테스트용 설정 //////////////////////////
         public bool _isTestInvincible = false;  // 무적모드인가?
@@ -326,11 +331,19 @@ namespace Game
         // 엔진에서 호출하는 플레이 갱신
         public void UpdatePlay()
         {
-            if (Input.GetButtonDown("Start") || Input.GetKeyDown(KeyCode.Escape))
+            // 키입력 처리
+            if (_HasKeyInputFocus)
             {
-                Application.LoadLevel("BeatList");
+                if (Input.GetButtonDown("Start") || Input.GetKeyDown(KeyCode.Escape))
+                {
+                    StartPause();
+                }
+            }
+            if (_isPaused)
+            {
                 return;
             }
+
 
             // 프레임 갱신 하지 않을 것인가?
             bool skipUpdateFrame = false;
@@ -589,6 +602,36 @@ namespace Game
             return (float)_random.NextDouble();
         }
         #endregion // Random
+
+        #region Pause
+        /// <summary>
+        /// 일시정지 시작
+        /// </summary>
+        private void StartPause()
+        {
+            if (_stateType == StateType.Play && !_isPaused)
+            {
+                _srcSong.Pause();
+                _timeScaleBeforePause = Time.timeScale;
+                Time.timeScale = 0.0f;
+                _isPaused = true;
+                _UIPause.Open();
+            }
+        }
+
+        /// <summary>
+        /// 일시정지 중지
+        /// </summary>
+        public void StopPause()
+        {
+            if (_isPaused)
+            {
+                Time.timeScale = _timeScaleBeforePause;
+                _srcSong.UnPause();
+                _isPaused = false;
+            }
+        }
+        #endregion Pause
 
         #region Debug
         private void OnDrawGizmos()
