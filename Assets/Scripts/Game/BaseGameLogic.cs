@@ -4,9 +4,9 @@ using System.Collections;
 namespace Game
 {
     /// <summary>
-    /// 노래별 다른 동작을 분리
+    /// 음악별 다른 동작 정의
     /// </summary>
-    public abstract class GameLogic
+    public abstract class BaseGameLogic
     {
         // 특화 정보 로딩
         public abstract IEnumerator LoadContext();

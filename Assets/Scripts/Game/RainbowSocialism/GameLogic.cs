@@ -6,7 +6,7 @@ namespace Game
     namespace RainbowSocialism
     {
         // "무지개빛 사회주의" 진행 정보
-        public class GameLogic : Game.GameLogic
+        public class GameLogic : Game.BaseGameLogic
         {
             // 특화 정보 로딩
             public override IEnumerator LoadContext()

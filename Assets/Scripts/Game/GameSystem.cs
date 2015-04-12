@@ -48,7 +48,7 @@ namespace Game
 
         // 음악별 설정 //////////////////////////
         private BeatInfo _beatInfo; // 현재 게임에서 사용할 음악 정보
-        private GameLogic _logic;   // 음악별 다른 동작
+        private BaseGameLogic _logic;   // 음악별 다른 동작
 
         [SerializeField]
         private ScoreBoard _scoreBoard;
@@ -188,7 +188,7 @@ namespace Game
 
             if (_logic == null)
             {
-                _logic = Activator.CreateInstance(System.Type.GetType("Game." + _beatInfo._namespace + ".GameLogic")) as Game.GameLogic;
+                _logic = Activator.CreateInstance(System.Type.GetType("Game." + _beatInfo._namespace + ".GameLogic")) as Game.BaseGameLogic;
                 if (_logic == null)
                 {
                     Debug.LogError("[GameSystem] Invalid namespcae:" + _beatInfo._namespace);
