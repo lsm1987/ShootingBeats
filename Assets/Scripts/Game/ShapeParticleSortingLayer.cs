@@ -1,19 +1,22 @@
 ﻿using UnityEngine;
 
-// 파티클에 스프라이트 소팅 지정
-public class ShapeParticleSortingLayer : MonoBehaviour
+namespace Game
 {
-    [SerializeField]
-    private string _sortingLayerName;
-    [SerializeField]
-    private int _sortingOrder;
-
-    private void Start()
+    // 파티클에 스프라이트 소팅 지정
+    public class ShapeParticleSortingLayer : MonoBehaviour
     {
-        if (GetComponent<ParticleSystem>() != null)
+        [SerializeField]
+        private string _sortingLayerName;
+        [SerializeField]
+        private int _sortingOrder;
+
+        private void Start()
         {
-            GetComponent<ParticleSystem>().GetComponent<Renderer>().sortingLayerName = _sortingLayerName;
-            GetComponent<ParticleSystem>().GetComponent<Renderer>().sortingOrder = _sortingOrder;
+            if (GetComponent<ParticleSystem>() != null)
+            {
+                GetComponent<ParticleSystem>().GetComponent<Renderer>().sortingLayerName = _sortingLayerName;
+                GetComponent<ParticleSystem>().GetComponent<Renderer>().sortingOrder = _sortingOrder;
+            }
         }
     }
 }
