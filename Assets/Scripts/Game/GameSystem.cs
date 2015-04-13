@@ -161,7 +161,7 @@ namespace Game
             // 노래 로딩
             if (_srcSong.clip == null)
             {
-                _srcSong.clip = Resources.Load<AudioClip>(_songRoot + "/" + _beatInfo._songFile);
+                _srcSong.clip = Resources.Load<AudioClip>(_songRoot + "/" + _beatInfo._namespace);
                 yield return null;
             }
             else
