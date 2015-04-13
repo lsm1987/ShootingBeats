@@ -644,7 +644,7 @@ namespace Game
         /// <summary>
         /// 일시정지 시작
         /// </summary>
-        private void StartPause()
+        public void StartPause()
         {
             if (_stateType == StateType.Play && !_isPaused)
             {
