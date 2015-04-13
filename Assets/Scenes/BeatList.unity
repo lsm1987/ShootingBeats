@@ -1151,6 +1151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 751a69f485998484680c7ad37f1be341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _albumArt: {fileID: 1222297617}
   _title: {fileID: 380767814}
   _author: {fileID: 62388184}
   _highScore: {fileID: 2135480687}
