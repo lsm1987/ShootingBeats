@@ -164,8 +164,13 @@ namespace Game
                 _srcSong.clip = Resources.Load<AudioClip>(_songRoot + "/" + _beatInfo._songFile);
                 yield return null;
             }
+            else
+            {
+                _srcSong.Stop();
+            }
 
             // 특화 정보 로딩
+            RemoveAllMover();
             yield return StartCoroutine(_logic.LoadContext());
 
             // 여유 프레임
@@ -470,6 +475,35 @@ namespace Game
             }
         }
 
+        /// <summary>
+        /// 지정한 무버 목록의 무버들을 풀로 되돌린다.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="movers"></param>
+        private void RemoveMoverList<T>(List<T> movers) where T : Mover
+        {
+            if (movers != null)
+            {
+                for (int i = movers.Count - 1; i >= 0; --i)
+                {
+                    T mover = movers[i];
+                    mover.OnDestroy();
+                    _moverPoolManager.Delete(mover);
+                }
+            }
+            movers.Clear();
+        }
+
+        /// <summary>
+        /// 활성화된 모든 무버를 풀로 되돌린다.
+        /// </summary>
+        private void RemoveAllMover()
+        {
+            RemoveMoverList(_Players);
+            RemoveMoverList(_Shots);
+            RemoveMoverList(_Enemys);
+            RemoveMoverList(_Bullets);
+        }
         #endregion //Mover
 
         #region Player
@@ -635,6 +669,18 @@ namespace Game
             }
         }
         #endregion Pause
+
+        /// <summary>
+        /// 플레이중인 게임 재시작
+        /// </summary>
+        public void Retry()
+        {
+            if (_stateType != StateType.Play)
+            {
+                return;
+            }
+            StartLoading();
+        }
 
         #region Debug
         private void OnDrawGizmos()

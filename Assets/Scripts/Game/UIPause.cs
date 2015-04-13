@@ -35,7 +35,11 @@ namespace Game
         /// </summary>
         public void OnRetryClicked()
         {
-            // todo
+            Close();
+            if (GameSystem._Instance != null)
+            {
+                GameSystem._Instance.Retry();
+            }
         }
 
         /// <summary>

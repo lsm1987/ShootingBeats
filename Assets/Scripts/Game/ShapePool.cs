@@ -55,15 +55,19 @@ namespace Game
 
         /// <summary>
         /// 인스턴스를 생성해 풀에 쌓아둔다.
+        /// <para>이미 풀에 쌓여있는 수는 제외</para>
         /// </summary>
         public void PoolStack(string subPath, int count)
         {
             Stack<Shape> pool = GetOrCreatePool(subPath);
-
-            for (int i = 0; i < count; ++i)
+            count -= pool.Count;
+            if (count > 0)
             {
-                Shape instance = CreateInstance(subPath, pool);
-                pool.Push(instance);
+                for (int i = 0; i < count; ++i)
+                {
+                    Shape instance = CreateInstance(subPath, pool);
+                    pool.Push(instance);
+                }
             }
         }
 

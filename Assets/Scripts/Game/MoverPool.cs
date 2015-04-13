@@ -41,11 +41,14 @@ namespace Game
         public void PoolStack<T>(int count) where T : Mover, new()
         {
             Stack<Mover> pool = GetOrCreatePool<T>();
-
-            for (int i = 0; i < count; ++i)
+            count -= pool.Count;
+            if (count > 0)
             {
-                T instance = CreateInstance<T>(pool);
-                pool.Push(instance);
+                for (int i = 0; i < count; ++i)
+                {
+                    T instance = CreateInstance<T>(pool);
+                    pool.Push(instance);
+                }
             }
         }
 

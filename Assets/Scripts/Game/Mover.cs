@@ -117,7 +117,7 @@ namespace Game
         }
 
         // 순회에 의한 삭제 전 호출
-        public void OnDestroy()
+        public virtual void OnDestroy()
         {
             ClearShape();
         }
