@@ -9,7 +9,7 @@ namespace Game
         public class Boss : Enemy
         {
             private int _score = 10; // 피격시 획득 점수
-            CoroutineManager _coroutineManager = new CoroutineManager();
+            private CoroutineManager _coroutineManager = new CoroutineManager();
 
             public Boss()
                 : base()
@@ -123,6 +123,12 @@ namespace Game
             public override void OnHit()
             {
                 GameSystem._Instance.SetScoreDelta(_score);
+            }
+
+            public override void OnDestroy()
+            {
+                base.OnDestroy();
+                _coroutineManager.StopAllCoroutines();
             }
 
             #region Coroutine
