@@ -61,10 +61,11 @@ namespace Game
         public abstract void Move();
 
         // 그리기
-        public void Draw()
+        public void Draw(int order)
         {
             _shape._trans.position = _Pos;
             _shape._trans.rotation = Quaternion.Euler(0.0f, 0.0f, 360.0f * _angle);
+            _shape.SetSortingOrder(order);
         }
 
         // 충돌 판정. 충돌여부를 리턴

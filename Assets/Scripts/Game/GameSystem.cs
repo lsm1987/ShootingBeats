@@ -468,9 +468,12 @@ namespace Game
             // 그리기. 프레임 따라잡기용 업데이트에서는 그리지 않음
             if (!_FrameByOver)
             {
-                foreach (T mover in movers)
+                int order = 0;
+                for (int i = 0; i < movers.Count; ++i)
                 {
-                    mover.Draw();
+                    // 뒤에 추가된 무버일수록 위에 그림
+                    movers[i].Draw(order);
+                    order += movers[i]._shape._SpriteOrderCount;
                 }
             }
         }
@@ -576,31 +579,7 @@ namespace Game
         /// </summary>
         private void UpdateBullet()
         {
-            // 특수 처리가 있어 공용 무버 갱신함수 사용하지 않음
-            for (int i = 0; i < _Bullets.Count; ++i)
-            {
-                _Bullets[i].Move();
-            }
-
-            for (int i = _Bullets.Count - 1; i >= 0; --i)
-            {
-                if (!_Bullets[i]._alive)
-                {
-                    Bullet bullet = _Bullets[i];
-                    bullet.OnDestroy();
-                    _Bullets.RemoveAt(i);
-                    _moverPoolManager.Delete(bullet);
-                }
-            }
-
-            if (!_FrameByOver)
-            {
-                for (int i = 0; i < _Bullets.Count; ++i)
-                {
-                    // 뒤에 추가된 탄일수록 위에 그림
-                    _Bullets[i].Draw(i);
-                }
-            }
+            UpdateMoverList(_Bullets);
         }
         #endregion // Bullet
 

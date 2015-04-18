@@ -15,6 +15,24 @@ namespace Game
             return _prefabRoot + "/" + subPath;
         }
         #endregion // Static Define
+        
+        // 이 외양을 구성하는 스프라이트의 정보
+        private class SpriteInfo
+        {
+            private SpriteRenderer _sprite = null;  // 스프라이트 참조
+            public int _OrderOffset { get; private set; }   // 소팅 오더 오프셋. 프리팹 상태의 소팅 오더 기본값을 오프셋으로 사용. 0 이상이어야 함. 그림이 겹치지 않으면 중복 가능
+
+            public SpriteInfo(SpriteRenderer sprite_)
+            {
+                _sprite = sprite_;
+                _OrderOffset = _sprite.sortingOrder;
+            }
+
+            public void SetOrder(int baseOrder)
+            {
+                _sprite.sortingOrder = baseOrder + _OrderOffset; 
+            }
+        }
 
         // 표시 크기. 반경
         public float _size;
@@ -24,7 +42,8 @@ namespace Game
         // GameObject는 자주 접근하지 않으므로 캐싱하지 않음
         [HideInInspector]
         public Transform _trans;
-        private SpriteRenderer _spriteRenderer = null;
+        private SpriteInfo[] _spriteInfos = null;   // 이 오브젝트와 자식들이 갖고 있는 모든 렌더러들의 정보. null 가능
+        public int _SpriteOrderCount { get; private set; } // 이 외양이 사용하는 오더 수
         public string _poolKey { get; private set; } // 이 인스턴스가 되돌아갈 풀의 구분자
 
         /// <summary>
@@ -33,7 +52,28 @@ namespace Game
         private void Awake()
         {
             _trans = transform;
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+
+            // 스프라이트 관련 정보 초기화
+            SpriteRenderer[] sprites = gameObject.GetComponentsInChildren<SpriteRenderer>();
+            if (sprites != null && sprites.Length > 0)
+            {
+                int maxOrder = 0;
+                _spriteInfos = new SpriteInfo[sprites.Length];
+                for (int i = 0; i < sprites.Length; ++i)
+                {
+                    // 스프라이트 정보 채우기
+                    _spriteInfos[i] = new SpriteInfo(sprites[i]);
+
+                    // 최대 오더값 갱신
+                    if (maxOrder < _spriteInfos[i]._OrderOffset)
+                    {
+                        maxOrder = _spriteInfos[i]._OrderOffset;
+                    }
+                }
+
+                // 최대 오더 + 1이 이 외양이 사용하는 오더 수가 된다.
+                _SpriteOrderCount = maxOrder + 1;
+            }
         }
 
         /// <summary>
@@ -63,9 +103,12 @@ namespace Game
 
         public void SetSortingOrder(int order)
         {
-            if (_spriteRenderer != null)
+            if (_spriteInfos != null)
             {
-                _spriteRenderer.sortingOrder = order;
+                for (int i = 0; i < _spriteInfos.Length; ++i)
+                {
+                    _spriteInfos[i].SetOrder(order);
+                }
             }
         }
 
