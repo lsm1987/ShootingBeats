@@ -30,6 +30,8 @@ namespace Game
         private const string _songRoot = "Sounds";  // 노래 파일 경로
         [SerializeField]
         private AudioSource _srcSong;    // 노래 재생할 소스
+        [SerializeField]
+        private AudioSource _srcEffect; // 사운드 이펙트 재생할 소스
         public Player _Player { get; set; } // 활성화된 플레이어기
         public List<Player> _Players { get; private set; }    // 살아있는 플레이어기 목록
         public List<Shot> _Shots { get; private set; }    // 살아있는 샷(플레이어기가 발사) 목록
@@ -673,6 +675,7 @@ namespace Game
             if (_stateType == StateType.Play && !_isPaused)
             {
                 _srcSong.Pause();
+                _srcEffect.Pause();
                 _timeScaleBeforePause = Time.timeScale;
                 Time.timeScale = 0.0f;
                 _isPaused = true;
@@ -689,6 +692,7 @@ namespace Game
             {
                 Time.timeScale = _timeScaleBeforePause;
                 _srcSong.UnPause();
+                _srcEffect.UnPause();
                 _isPaused = false;
             }
         }
@@ -715,6 +719,7 @@ namespace Game
 
             // 유지할 필요 없는 구성요소 무효화
             _srcSong.Stop();
+            _srcEffect.Stop();
             RemoveAllMover();
 
             // 하이스코어 갱신
@@ -736,6 +741,18 @@ namespace Game
             // 결과 UI
             _UIResult.SetData(cleared, _beatInfo._title, _score, highScore, newHighScore);
             _UIResult.Open();
+        }
+
+        /// <summary>
+        /// 사운드 이펙트 재생
+        /// </summary>
+        public void PlaySoundEffect(string path)
+        {
+            AudioClip clip = Resources.Load("Sounds/Effects/" + path) as AudioClip;
+            if (clip != null)
+            {
+                _srcEffect.PlayOneShot(clip);
+            }
         }
 
         #region Debug
