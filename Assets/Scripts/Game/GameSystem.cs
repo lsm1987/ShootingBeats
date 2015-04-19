@@ -39,11 +39,16 @@ namespace Game
         public List<Bullet> _Bullets { get; private set; }  // 살아있는 탄(적기가 발사) 목록
         public int _Frame { get; private set; } // 현재 갱신중인 프레임 번호
         public bool _FrameByOver { get; private set; }  // 지나쳐버린 노래 따라잡기 위한 프레임 갱신인가?
+        private int _totalFrame = 0; // 총 몇 프레임짜리 스테이지인가?
 
         // UI 관련 //////////////////////////
         [SerializeField]
         private UILoading _uiLoading;   // 로딩 UI
         public UILoading _UILoading { get { return _uiLoading; } }
+        [SerializeField]
+        private GameArea _gameArea;
+        [SerializeField]
+        private UIProgressBar _uiProgressBar;
         [SerializeField]
         private GameObject _letterBox;  // 레터박스 UI가 붙을 오브젝트
         [SerializeField]
@@ -167,11 +172,13 @@ namespace Game
             InitRandom();
             InitCamera();
             InitGameOvered();
+            _uiProgressBar.SetRate(0.0f);
 
             // 노래 로딩
             if (_srcSong.clip == null)
             {
                 _srcSong.clip = Resources.Load<AudioClip>(_songRoot + "/" + _beatInfo._namespace);
+                _totalFrame = (int)(_srcSong.clip.length * (float)Define._fps);
                 yield return null;
             }
             else
@@ -238,6 +245,8 @@ namespace Game
             Camera gameCam = Camera.main;
 
             // 게임 카메라 뷰포트 영역 지정
+            bool isHorizontalLetterBox = true;
+            float letterBoxScreenRate = 0.0f;
             if (gameR >= deviceR)
             {
                 // 게임 화면 가로를 기기 가로에 가득 채움. 게임 영역은 화면 세로 상단
@@ -249,7 +258,8 @@ namespace Game
                 Vector3 camPos = gameCam.transform.position;
                 camPos.y = -1.0f * diffH / 2.0f;
                 gameCam.transform.position = camPos;
-                CreateLetterBox(true, diffH / camH);
+                isHorizontalLetterBox = true;
+                letterBoxScreenRate = diffH / camH;
             }
             else
             {
@@ -260,8 +270,11 @@ namespace Game
                 // 기기W/기기H = 카메라W/게임H
                 float camW = (_MaxY - _MinY) * deviceR;
                 float diffW = camW - (_MaxX - _MinX);
-                CreateLetterBox(false, diffW / camW);
+                isHorizontalLetterBox = false;
+                letterBoxScreenRate = diffW / camW;
             }
+            _gameArea.SetArea(isHorizontalLetterBox, letterBoxScreenRate);
+            CreateLetterBox(isHorizontalLetterBox, letterBoxScreenRate);
 
             // 카메라 초기화 되었음 표시
             _cameraInitialized = true;
@@ -433,6 +446,15 @@ namespace Game
             UpdateShot();
             UpdateEnemy();
             UpdateBullet();
+
+            // UI 갱신
+            if (!_FrameByOver)
+            {
+                if (_totalFrame > 0)
+                {
+                    _uiProgressBar.SetRate((float)_Frame / (float)_totalFrame);
+                }
+            }
         }
 
         /// <summary>
