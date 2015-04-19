@@ -59,19 +59,36 @@ namespace Game
         {
             if (_shotCounter == 0)
             {
-                CreateShot(true);
-                CreateShot(false);
+                CreateShot(true, true);
+                CreateShot(true, false);
+                CreateShot(false, false);
+                CreateShot(false, true);
             }
 
             // 카운터 갱신
             _shotCounter = (_shotCounter + 1) % _shotInterval;
         }
 
-        private void CreateShot(bool left)
+        private void CreateShot(bool left, bool diagonal)
         {
             Shot shot = GameSystem._Instance.CreateShot<Shot>();
-            shot.Init("Common/Shot_Black", _x + 0.05f * ((left) ? -1.0f : 1.0f), _y + 0.05f, 0.25f
-                , 0.0f, 0.03f, 0.0f);
+            float x = _x + 0.05f * ((left) ? -1.0f : 1.0f);
+            if (diagonal)
+            {
+                x += (left ? -0.025f : 0.025f);
+            }
+            float y = _y + 0.05f;
+            float angle = 0.25f;
+            const float diagonalAngle = 0.01f;
+            if (diagonal)
+            {
+                angle += (left ? diagonalAngle : -diagonalAngle);
+            }
+            // 대각선 방향 탄은 속도를 좀 더 빠르게 해야 수직탄과 같은 y위치를 가짐(v' = v / cos)
+            // 하지만 diagonalAngle = 0.01, velocity = 0.03 이면 v' = 0.03006 으로 큰 차이 없으므로 보정하지 않음
+            float velocity = 0.03f;
+            shot.Init("Common/Shot_Black", x, y, angle
+                , 0.0f, velocity, 0.0f);
         }
 
         private void MoveByTouch()

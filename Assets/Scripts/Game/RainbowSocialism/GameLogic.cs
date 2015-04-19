@@ -22,8 +22,8 @@ namespace Game
                 // 샷 로딩 ///////////////////////
                 GameSystem._Instance._UILoading.SetProgress("Loading Shots");
                 yield return null;
-                GameSystem._Instance.PoolStackShape("Common/Shot_Black", 20);
-                GameSystem._Instance.PoolStackMover<Shot>(20);
+                GameSystem._Instance.PoolStackShape("Common/Shot_Black", 40);
+                GameSystem._Instance.PoolStackMover<Shot>(40);
 
                 // 적기 로딩 /////////////////////
                 GameSystem._Instance._UILoading.SetProgress("Loading Boss Shape");
