@@ -76,10 +76,7 @@ namespace Game
         private const int _gameOverResultDelay = (int)(Define._fps * 2.0f);    // 게임오버 발생 후 결과UI 나오기까지 지연 프레임
 
         // 테스트용 설정 //////////////////////////
-        public bool _isTestInvincible = false;  // 무적모드인가?
-        public int _testStartFrame = -1;    // 몇 프레임부터 시작할 것인가?
-        [SerializeField]
-        private BeatInfo _testBeatInfo = null;  // 이 씬에서 바로 시작할 때 사용할 음악 정보
+        public TestInfo _TestInfo { get; private set; }
 
         // 게임 옵션으로 지정 //////////////////////////////
         public float _PlayerSpeed { get { return 0.02f; } }
@@ -167,6 +164,7 @@ namespace Game
             _UILoading.Open();
 
             // 구성요소 초기화
+            InitTestInfo();
             InitBeatInfo();
             SetScore(0);
             InitRandom();
@@ -198,15 +196,23 @@ namespace Game
             StartPlay();
         }
 
+        private void InitTestInfo()
+        {
+            if (_TestInfo == null)
+            {
+                _TestInfo = GetComponent<TestInfo>();
+            }
+        }
+
         private void InitBeatInfo()
         {
             if (_beatInfo == null)
             {
                 _beatInfo = GlobalSystem._Instance._LoadingBeatInfo;
-                if (_beatInfo == null)
+                if (_beatInfo == null && _TestInfo != null)
                 {
                     // 목록으로부터 음악이 선택되지 않았다면 테스트용 정보 이용
-                    _beatInfo = _testBeatInfo;
+                    _beatInfo = _TestInfo._BeatInfo;
                 }
                 if (_beatInfo == null)
                 {
@@ -346,9 +352,9 @@ namespace Game
             // 노래 시작
             _srcSong.mute = false;
             _srcSong.Play();
-            if (_testStartFrame >= 0)
+            if (_TestInfo != null && _TestInfo._StartFrame >= 0)
             {
-                _srcSong.time = _testStartFrame / Define._fps;
+                _srcSong.time = _TestInfo._StartFrame / Define._fps;
             }
 
             // 진행 초기화
