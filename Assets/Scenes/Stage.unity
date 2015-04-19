@@ -1902,6 +1902,7 @@ MonoBehaviour:
   _letterBox: {fileID: 2022039917}
   _moveInputArea: {fileID: 1460445424}
   _uiPause: {fileID: 244522766}
+  _uiResult: {fileID: 574954177}
   _scoreBoard: {fileID: 1145558382}
   _isTestInvincible: 0
   _testStartFrame: -1

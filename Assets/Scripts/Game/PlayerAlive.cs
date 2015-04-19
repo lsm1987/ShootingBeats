@@ -38,6 +38,9 @@ namespace Game
                 {
                     _alive = false;
 
+                    // 게임에 알림
+                    GameSystem._Instance.OnPlayerDied();
+
                     // 충돌 표시용 플레이어기 생성
                     PlayerCrash playerCrash = GameSystem._Instance.CreatePlayer<PlayerCrash>();
                     playerCrash.Init("Common/Player_Crash", _x, _y, _angle);

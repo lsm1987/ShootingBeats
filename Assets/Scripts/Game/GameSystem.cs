@@ -20,7 +20,8 @@ namespace Game
         {
             Invalid,    // 최초 무효상태
             Load,
-            Play
+            Play,
+            Result, // 결과창
         }
         private StateType _stateType = StateType.Invalid;   // 현재 진행상태
         private bool _cameraInitialized = false;    // 카메라 초기화되었는가?
@@ -49,6 +50,9 @@ namespace Game
         [SerializeField]
         private UIPause _uiPause;   // 일시정지 UI
         private UIPause _UIPause { get { return _uiPause; } }
+        [SerializeField]
+        private UIResult _uiResult; // 결과 UI
+        private UIResult _UIResult { get { return _uiResult; } }
 
         // 음악별 설정 //////////////////////////
         private BeatInfo _beatInfo; // 현재 게임에서 사용할 음악 정보
@@ -60,6 +64,9 @@ namespace Game
         private System.Random _random = null;   // 게임 내에서 사용할 랜덤. 시드값 항상 동일
         private bool _isPaused = false;     // 일시정지 중인가?
         private float _timeScaleBeforePause = 1.0f; // 일시정지 전 타임스케일
+        private bool _isGameOvered = false; // 게임오버 판정이 발생했는가?
+        private int _gameOveredFrame = 0;   // 게임오버 발생한 프레임
+        private const int _gameOverResultDelay = (int)(Define._fps * 2.0f);    // 게임오버 발생 후 결과UI 나오기까지 지연 프레임
 
         // 테스트용 설정 //////////////////////////
         public bool _isTestInvincible = false;  // 무적모드인가?
@@ -157,6 +164,7 @@ namespace Game
             SetScore(0);
             InitRandom();
             InitCamera();
+            InitGameOvered();
 
             // 노래 로딩
             if (_srcSong.clip == null)
@@ -321,6 +329,7 @@ namespace Game
             SetState(StateType.Play);
 
             // 노래 시작
+            _srcSong.mute = false;
             _srcSong.Play();
             if (_testStartFrame >= 0)
             {
@@ -392,6 +401,14 @@ namespace Game
             {
                 UpdatePlayFrame(false);
             }
+
+            // 결과 보여줘야 하는가?
+            if ((_isGameOvered && _Frame >= (_gameOveredFrame + _gameOverResultDelay))  // 게임오버되었고 딜레이 지남
+                || !_srcSong.isPlaying  // 노래가 종료됨
+                )
+            {
+                DoResult();
+            }
         }
 
         /// <summary>
@@ -414,6 +431,25 @@ namespace Game
             UpdateShot();
             UpdateEnemy();
             UpdateBullet();
+        }
+
+        /// <summary>
+        /// 게임오버 발생 지정
+        /// </summary>
+        private void SetGameOvered()
+        {
+            _srcSong.mute = true;
+            _isGameOvered = true;
+            _gameOveredFrame = _Frame;
+        }
+
+        /// <summary>
+        /// 게임오버 발생여부 초기화
+        /// </summary>
+        private void InitGameOvered()
+        {
+            _isGameOvered = false;
+            _gameOveredFrame = 0;
         }
 
         #region Shape
@@ -520,6 +556,15 @@ namespace Game
         private void UpdatePlayer()
         {
             UpdateMoverList(_Players);
+        }
+
+        /// <summary>
+        /// 플레이어기가 죽었을 때
+        /// </summary>
+        public void OnPlayerDied()
+        {
+            // 게임오버 지정
+            SetGameOvered();
         }
         #endregion //Player
 
@@ -650,15 +695,33 @@ namespace Game
         #endregion Pause
 
         /// <summary>
-        /// 플레이중인 게임 재시작
+        /// 게임 재시작
         /// </summary>
         public void Retry()
         {
-            if (_stateType != StateType.Play)
+            if (_stateType != StateType.Invalid && _stateType != StateType.Load)
             {
-                return;
+                StartLoading();   
             }
-            StartLoading();
+        }
+
+        /// <summary>
+        /// 결과 정산 및 보여주기
+        /// </summary>
+        private void DoResult()
+        {
+            // 상태 변경
+            SetState(StateType.Result);
+
+            // 유지할 필요 없는 구성요소 무효화
+            _srcSong.Stop();
+            RemoveAllMover();
+
+            // 기록 갱신
+
+            // 결과 UI
+            _UIResult.SetData(!_isGameOvered, _beatInfo._title, _score, 0, false);
+            _UIResult.Open();
         }
 
         #region Debug

@@ -45,14 +45,24 @@ namespace Game
             _Go.SetActive(false);
         }
 
+        /// <summary>
+        /// 스테이지 재시작
+        /// </summary>
         public void OnRetryClicked()
         {
-            // todo
+            Close();
+            if (GameSystem._Instance != null)
+            {
+                GameSystem._Instance.Retry();
+            }
         }
 
+        /// <summary>
+        /// 음악 목록으로
+        /// </summary>
         public void OnBeatListClicked()
         {
-            // todo
+            Application.LoadLevel(SceneName._BeatList);
         }
     }
 }
