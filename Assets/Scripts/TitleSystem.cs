@@ -17,15 +17,14 @@ public class TitleSystem : SceneSystem
         // 키입력 처리
         if (_HasKeyInputFocus)
         {
-            // 스테이지 시작
-            if (Input.GetButtonDown("Start"))
+            if (Input.GetButtonDown(ButtonName._start))
             {
+                // 스테이지 시작
                 OnStartClicked();
             }
-
-            // 게임 종료
-            if (Input.GetKeyDown(KeyCode.Escape))
+            else if (Input.GetKeyDown(KeyCode.Escape))
             {
+                // 게임 종료
                 OnQuitClicked();
             }
         }

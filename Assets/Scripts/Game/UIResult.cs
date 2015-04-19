@@ -22,7 +22,10 @@ namespace Game
 
         public override bool OnKeyInput()
         {
-            // 다른 UI로 입력 넘어가지 못하게 막음
+            if (Input.GetButtonDown(ButtonName._start) || Input.GetKeyDown(KeyCode.Escape))
+            {
+                OnRetryClicked();
+            }
             return true;
         }
 

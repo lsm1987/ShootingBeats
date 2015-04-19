@@ -371,7 +371,7 @@ namespace Game
             // 키입력 처리
             if (_HasKeyInputFocus)
             {
-                if (Input.GetButtonDown("Start") || Input.GetKeyDown(KeyCode.Escape))
+                if (Input.GetButtonDown(ButtonName._start) || Input.GetKeyDown(KeyCode.Escape))
                 {
                     StartPause();
                 }

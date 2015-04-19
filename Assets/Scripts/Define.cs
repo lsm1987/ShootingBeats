@@ -7,6 +7,11 @@ public static class SceneName
     public const string _Stage = "Stage";
 }
 
+public static class ButtonName
+{
+    public const string _start = "Start";
+}
+
 public static class Define
 {
     public const int _fps = 60; // 갱신주기

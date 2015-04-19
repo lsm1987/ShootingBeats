@@ -11,7 +11,11 @@ namespace Game
 
         public override bool OnKeyInput()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetButtonDown(ButtonName._start))
+            {
+                OnRetryClicked();
+            }
+            else if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Close();
             }
