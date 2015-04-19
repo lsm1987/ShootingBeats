@@ -717,10 +717,24 @@ namespace Game
             _srcSong.Stop();
             RemoveAllMover();
 
-            // 기록 갱신
+            // 하이스코어 갱신
+            bool newHighScore = false;
+            int highScore = Define.GetSongHighScore(_beatInfo);
+            if (_score > highScore)
+            {
+                newHighScore = true;
+                highScore = _score;
+                Define.SetSongHighScore(_beatInfo, _score);
+            }
+            // 클리어 여부 갱신
+            bool cleared = !_isGameOvered;
+            if (cleared && !Define.IsSongCleared(_beatInfo))
+            {
+                Define.SetSongCleared(_beatInfo, true);
+            }
 
             // 결과 UI
-            _UIResult.SetData(!_isGameOvered, _beatInfo._title, _score, 0, false);
+            _UIResult.SetData(cleared, _beatInfo._title, _score, highScore, newHighScore);
             _UIResult.Open();
         }
 

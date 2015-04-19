@@ -30,4 +30,52 @@ public static class Define
 
     // UI 프리팹 리소스 경로
     public const string _uiOptionPath = "UI/UIOption";
+
+    /// <summary>
+    /// 음악 클리어 여부 저장용 Key 구하기
+    /// </summary>
+    private static string GetSongClearedPrefKey(BeatInfo beatInfo)
+    {
+        return string.Format("Song_{0}_Cleared", beatInfo._namespace);
+    }
+
+    /// <summary>
+    /// 음악 클리어 기록이 있는가?
+    /// </summary>
+    public static bool IsSongCleared(BeatInfo beatInfo)
+    {
+        return PlayerPrefs.GetInt(GetSongClearedPrefKey(beatInfo), 0) != 0;
+    }
+
+    /// <summary>
+    /// 음악 클리어 여부를 기록
+    /// </summary>
+    public static void SetSongCleared(BeatInfo beatInfo, bool cleared)
+    {
+        PlayerPrefs.SetInt(GetSongClearedPrefKey(beatInfo), ((cleared) ? 1 : 0));
+    }
+
+    /// <summary>
+    /// 음악 하이스코어 저장용 Key 구하기
+    /// </summary>
+    private static string GetSongHighScorePrefKey(BeatInfo beatInfo)
+    {
+        return string.Format("Song_{0}_HighScore", beatInfo._namespace);
+    }
+
+    /// <summary>
+    /// 음악 하이스코어 기록을 구한다.
+    /// </summary>
+    public static int GetSongHighScore(BeatInfo beatInfo)
+    {
+        return PlayerPrefs.GetInt(GetSongHighScorePrefKey(beatInfo), 0);
+    }
+
+    /// <summary>
+    /// 음악 하이스코어를 기록
+    /// </summary>
+    public static void SetSongHighScore(BeatInfo beatInfo, int highScore)
+    {
+        PlayerPrefs.SetInt(GetSongHighScorePrefKey(beatInfo), highScore);
+    }
 }
