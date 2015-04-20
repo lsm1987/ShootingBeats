@@ -293,34 +293,28 @@ namespace Game
         /// <param name="screenRate">레터박스가 가릴 화면의 비율. 수직방향이면 절반씩 사용</param>
         private void CreateLetterBox(bool horizontal, float screenRate)
         {
-            Color color = new Color(0.16f, 0.16f, 0.16f);
             if (horizontal)
             {
-                GameObject obj = new GameObject();
-                obj.name = "Horizontal";
+                UnityEngine.Object prefab = Resources.Load(Define._uiLetterBoxBottom);
+                GameObject obj = Instantiate(prefab) as GameObject;
+                obj.name = prefab.name;
                 obj.transform.SetParent(_letterBox.transform, false);
 
-                RectTransform rectTrans = obj.AddComponent<RectTransform>();
+                RectTransform rectTrans = obj.GetComponent<RectTransform>();
                 rectTrans.anchorMin = Vector2.zero;
                 rectTrans.anchorMax = new Vector2(1.0f, screenRate);
-                rectTrans.offsetMin = Vector2.zero;
-                rectTrans.offsetMax = Vector2.zero;
-                rectTrans.pivot = new Vector2(0.5f, 0.5f);
-
-                obj.AddComponent<CanvasRenderer>();
-                Image image = obj.AddComponent<Image>();
-                image.color = color;
             }
             else
             {
                 // 0: 왼쪽, 1: 오른쪽
                 for (int i = 0; i < 2; ++i)
                 {
-                    GameObject obj = new GameObject();
-                    obj.name = "Vertical_" + i.ToString();
+                    UnityEngine.Object prefab = Resources.Load((i == 0) ? Define._uiLetterBoxLeft : Define._uiLetterBoxRight);
+                    GameObject obj = Instantiate(prefab) as GameObject;
+                    obj.name = prefab.name;
                     obj.transform.SetParent(_letterBox.transform, false);
 
-                    RectTransform rectTrans = obj.AddComponent<RectTransform>();
+                    RectTransform rectTrans = obj.GetComponent<RectTransform>();
                     if (i == 0)
                     {
                         rectTrans.anchorMin = Vector2.zero;
@@ -331,13 +325,6 @@ namespace Game
                         rectTrans.anchorMin = new Vector2(1.0f - screenRate / 2.0f, 0.0f);
                         rectTrans.anchorMax = Vector2.one;
                     }
-                    rectTrans.offsetMin = Vector2.zero;
-                    rectTrans.offsetMax = Vector2.zero;
-                    rectTrans.pivot = new Vector2(0.5f, 0.5f);
-
-                    obj.AddComponent<CanvasRenderer>();
-                    Image image = obj.AddComponent<Image>();
-                    image.color = color;
                 }
             }
         }
