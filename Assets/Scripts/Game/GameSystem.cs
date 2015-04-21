@@ -13,7 +13,11 @@ namespace Game
         private static GameSystem _instance;
         public static GameSystem _Instance { get { return _instance; } }
 
-        private const int _songFrameOverGap = 0;    // 노래 프레임이 게임 프레임을 지나쳤을 때 게임 프레임이 한 번에 따라갈 프레임 수
+        private const int _songFrameOverTolerance = 0;  // 노래 프레임이 게임 프레임을 지나쳐 보정이 필요하다고 판단하기까지 여유 프레임 수
+                                                        // (예: 0 -> 게임을 10프레임 업데이트 할 차례인데 노래가 11프레임이면 11 > 10 + 0 -> 보정 필요)
+        private const int _additionalBySongFrameOver = 1;  // 노래 게임이 게임 프레임을 지나쳤을 때,
+                                                                    // 노래를 따라잡기위해 게임을 최대 몇 프레임이나 추가로 업데이트 할 것인가
+        private const int _songFrameOverToMuch = 60;    // 노래 프레임이 너무 지나쳐 한 번에 다 따라잡아야 하는 경우의 기준
         private const int _gameFrameOverGap = 6;    // 게임 프레임이 노래 프레임을 지나쳤을 때 이 차이 이내면 스킵하지 않는다.
         
         private enum StateType   // 진행상태 타입
@@ -383,15 +387,26 @@ namespace Game
                 int gameFrame = _Frame + 1;
                 //Debug.Log("songFrame:" + songFrame.ToString() + " gameFrame:" + gameFrame.ToString());
 
-                if (songFrame > gameFrame + _songFrameOverGap)
+                if (songFrame > gameFrame + _songFrameOverToMuch)
                 {
-                    //Debug.Log("[GameSystem] Song frame over occurred. Song:" + songFrame.ToString() + " Game:" + gameFrame.ToString());
-                    // 기본 갱신 1회가 있으므로 -1회 따라잡음
-                    while (songFrame > (_Frame + 1))
+                    // 한꺼번에 다 따라잡아야 할 정도로 노래가 앞서감
+                    // 기본 갱신 1회가 있으므로 노래 -1 까지 따라잡음
+                    int targetFrame = (songFrame - 1);
+                    while (_Frame < targetFrame)
                     {
                         UpdatePlayFrame(true);
                     }
-                    //Debug.Log("over occured!");
+                }
+                else if (songFrame > gameFrame + _songFrameOverTolerance)
+                {
+                    // 조금씩 따라잡을 정도로 노래가 앞서감
+                    //Debug.Log("[GameSystem] Song frame over occurred. Song:" + songFrame.ToString() + " Game:" + gameFrame.ToString());
+                    int targetFrame = Mathf.Min(songFrame - 1, _Frame + _additionalBySongFrameOver);
+                    while (_Frame < targetFrame)
+                    {
+                        //Debug.Log("over occured!");
+                        UpdatePlayFrame(true);
+                    }
                 }
                 else if (songFrame + _gameFrameOverGap < gameFrame)
                 {
