@@ -87,7 +87,7 @@ namespace Game
             }
             // 대각선 방향 탄은 속도를 좀 더 빠르게 해야 수직탄과 같은 y위치를 가짐(v' = v / cos)
             // 하지만 diagonalAngle = 0.01, velocity = 0.03 이면 v' = 0.03006 으로 큰 차이 없으므로 보정하지 않음
-            float velocity = 0.03f;
+            float velocity = 0.05f;
             shot.Init("Common/Shot_Black", x, y, angle
                 , 0.0f, velocity, 0.0f);
         }
