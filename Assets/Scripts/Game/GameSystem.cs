@@ -435,10 +435,10 @@ namespace Game
             // 이동 물체들 갱신
             // 보통 플레이어기가 샷을 생성하고 적기가 탄을 생성하므로 이 순서로 갱신
             // Hit 체크도 업데이트 순서대로 수행
-            UpdatePlayer();
-            UpdateShot();
-            UpdateEnemy();
-            UpdateBullet();
+            UpdateMoverList(_Players, _FrameByOver);
+            UpdateMoverList(_Shots, _FrameByOver);
+            UpdateMoverList(_Enemys, _FrameByOver);
+            UpdateMoverList(_Bullets, _FrameByOver);
 
             // UI 갱신
             if (!_FrameByOver)
@@ -497,7 +497,7 @@ namespace Game
             _moverPoolManager.PoolStack<T>(count);
         }
 
-        private void UpdateMoverList<T>(List<T> movers) where T : Mover
+        private void UpdateMoverList<T>(List<T> movers, bool frameByOver) where T : Mover
         {
             // 갱신 도중에 새 무버가 생길 수 있으므로 인덱스 순회
             for (int i = 0; i < movers.Count; ++i)
@@ -519,7 +519,7 @@ namespace Game
             }
 
             // 그리기. 프레임 따라잡기용 업데이트에서는 그리지 않음
-            if (!_FrameByOver)
+            if (!frameByOver)
             {
                 int order = 0;
                 for (int i = 0; i < movers.Count; ++i)
@@ -570,11 +570,6 @@ namespace Game
             return player;
         }
 
-        private void UpdatePlayer()
-        {
-            UpdateMoverList(_Players);
-        }
-
         /// <summary>
         /// 플레이어기가 죽었을 때
         /// </summary>
@@ -596,11 +591,6 @@ namespace Game
             _Shots.Add(shot);
             return shot;
         }
-
-        private void UpdateShot()
-        {
-            UpdateMoverList(_Shots);
-        }
         #endregion //Shot
 
         #region Enemy
@@ -614,14 +604,6 @@ namespace Game
             _Enemys.Add(enemy);
             return enemy;
         }
-
-        /// <summary>
-        /// 적기 목록 순회하며 갱신
-        /// </summary>
-        private void UpdateEnemy()
-        {
-            UpdateMoverList(_Enemys);
-        }
         #endregion //Enemy
 
         #region Bullet
@@ -634,14 +616,6 @@ namespace Game
             T bullet = _moverPoolManager.Create<T>();
             _Bullets.Add(bullet);
             return bullet;
-        }
-
-        /// <summary>
-        /// 탄 목록 순회하며 갱신
-        /// </summary>
-        private void UpdateBullet()
-        {
-            UpdateMoverList(_Bullets);
         }
         #endregion // Bullet
 
