@@ -34,7 +34,7 @@ namespace Game
             // 탄, 적기와 충돌 체크
             if (IsHit(GameSystem._Instance._Bullets) != null || IsHit(GameSystem._Instance._Enemys) != null)
             {
-                if (GameSystem._Instance._TestInfo == null || !GameSystem._Instance._TestInfo._IsInvincivble)
+                if (!GameSystem._Instance.IsPlayerInvincible())
                 {
                     _alive = false;
 

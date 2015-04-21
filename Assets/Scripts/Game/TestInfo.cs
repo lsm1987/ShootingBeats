@@ -7,7 +7,7 @@ namespace Game
     {
         [SerializeField]
         private bool _isInvincible = false; // 무적상태인가?
-        public bool _IsInvincivble { get { return _isInvincible; } }
+        public bool _IsInvincible { get { return _isInvincible; } }
         [SerializeField]
         private int _startFrame = -1;    // 몇 프레임부터 시작할 것인가?
         public int _StartFrame { get { return _startFrame; } }

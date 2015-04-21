@@ -343,7 +343,7 @@ namespace Game
             // 노래 시작
             _srcSong.mute = false;
             _srcSong.Play();
-            if (_TestInfo != null && _TestInfo._StartFrame >= 0)
+            if (_TestInfo != null && _TestInfo._StartFrame > 0)
             {
                 _srcSong.time = _TestInfo._StartFrame / Define._fps;
             }
@@ -592,6 +592,24 @@ namespace Game
         {
             // 게임오버 지정
             SetGameOvered();
+        }
+
+        /// <summary>
+        /// 플레이어기가 시스템에 의해 무적상태가 되었는가?
+        /// </summary>
+        /// <returns></returns>
+        public bool IsPlayerInvincible()
+        {
+            if (_TestInfo != null)
+            {
+                // 테스트 정보에서 지정
+                if (_TestInfo._IsInvincible    // 항상 무적
+                    || (_TestInfo._StartFrame > 0 && _Frame <= _TestInfo._StartFrame))  // 테스트용 시작프레임 이전
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         #endregion //Player
 
