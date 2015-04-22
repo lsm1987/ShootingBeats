@@ -38,6 +38,7 @@ public static class Define
     public const string _uiLetterBoxBottom = "UI/LetterBoxBottom";
     public const string _uiLetterBoxLeft = "UI/LetterBoxLeft";
     public const string _uiLetterBoxRight= "UI/LetterBoxRight";
+    public const string _uiStageText = "UI/UIStageText";
 
     /// <summary>
     /// 음악 클리어 여부 저장용 Key 구하기

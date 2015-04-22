@@ -51,6 +51,7 @@ namespace Game
         public UILoading _UILoading { get { return _uiLoading; } }
         [SerializeField]
         private GameArea _gameArea;
+        public GameArea _GameArea { get { return _gameArea; } }
         [SerializeField]
         private UIProgressBar _uiProgressBar;
         [SerializeField]
