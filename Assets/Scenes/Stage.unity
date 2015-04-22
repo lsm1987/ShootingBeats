@@ -2144,7 +2144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isInvincible: 0
   _startFrame: 0
-  _beatInfo: {fileID: 11400000, guid: 99217356808f7ca4fabc89ae31c85ab7, type: 2}
+  _beatInfo: {fileID: 11400000, guid: 5805cf9e726e3de4282e646ad502e782, type: 2}
 --- !u!1 &1460445420
 GameObject:
   m_ObjectHideFlags: 0
