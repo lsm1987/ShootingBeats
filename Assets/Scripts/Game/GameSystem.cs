@@ -122,6 +122,10 @@ namespace Game
         {
             _instance = null;
             _shapePoolManager.LogCreatedCount();
+            if (_isPaused)
+            {
+                Time.timeScale = _timeScaleBeforePause;
+            }
         }
 
         // 고정 프레임 간격으로 갱신
