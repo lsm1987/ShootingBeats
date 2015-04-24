@@ -13,6 +13,7 @@ public class BeatInfo : ScriptableObject
     public string _namespace;   // 문자열 구분자. 코드 음악파일명, namespace 등으로 사용
     public int _listPriority = 0;  // 리스트 목록 우선순위. 낮을수록 앞에 위치
     public string _title; // 노래 제목
+    public string _author;  // 저자
     public Difficulty _difficulty;  // 난이도
     public int _length; // 노래 길이. 단위 초
 

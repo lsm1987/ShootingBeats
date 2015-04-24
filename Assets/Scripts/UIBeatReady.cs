@@ -24,6 +24,7 @@ public class UIBeatReady : UIWindow
         _beatInfo = beatInfo;
         _albumArt.sprite = Resources.Load<Sprite>(_albumArtRoot + "/" + _beatInfo._namespace);
         _title.text = _beatInfo._title;
+        _author.text = _beatInfo._author;
         _highScore.text = string.Format("High Score: {0}", Define.GetSongHighScore(beatInfo)); // 한꺼번에 가운데 정렬 위해 텍스트를 둘로 나누지 않음
         if (!Define.IsSongCleared(beatInfo))
         {

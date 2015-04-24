@@ -11,9 +11,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd53da55b847216498036b83a6045701, type: 3}
   m_Name: RainbowSocialism
   m_EditorClassIdentifier: 
+  _namespace: RainbowSocialism
   _listPriority: 1
   _title: Rainbow Socialism
+  _author: (-_-)a
   _difficulty: 0
-  _songFile: RainbowSocialism
   _length: 110
-  _namespace: RainbowSocialism

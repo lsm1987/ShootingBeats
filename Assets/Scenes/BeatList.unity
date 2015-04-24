@@ -214,7 +214,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: (-_-)a
+  m_Text: Author
 --- !u!222 &62388185
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -709,7 +709,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Rainbow Socialism
+  m_Text: Title
 --- !u!222 &380767815
 CanvasRenderer:
   m_ObjectHideFlags: 0
