@@ -22,16 +22,6 @@ public class UIStageText : MonoBehaviour
     /// </summary>
     /// <param name="x">x 위치. 게임 좌표계</param>
     /// <param name="x">y 위치. 게임 좌표계</param>
-    /// <param name="width">너비. UI 픽셀 좌표계</param>
-    /// <param name="height">높이. UI 픽셀 좌표계</param>
-    /// <param name="text"></param>
-    public void Set(float x, float y, float width, float height, string text)
-    {
-        SetPosition(x, y);
-        SetSize(width, height);
-        SetText(text);
-    }
-
     public void SetPosition(float x, float y)
     {
         Camera worldCamera = _canvas.worldCamera;
@@ -41,6 +31,11 @@ public class UIStageText : MonoBehaviour
         _rectTrans.localPosition = localPos;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="width">너비. UI 픽셀 좌표계</param>
+    /// <param name="height">높이. UI 픽셀 좌표계</param>
     public void SetSize(float width, float height)
     {
         Vector2 newSize = new Vector2(width, height);
@@ -48,6 +43,11 @@ public class UIStageText : MonoBehaviour
         Vector2 deltaSize = newSize - oldSize;
         _rectTrans.offsetMin = _rectTrans.offsetMin - new Vector2(deltaSize.x * _rectTrans.pivot.x, deltaSize.y * _rectTrans.pivot.y);
         _rectTrans.offsetMax = _rectTrans.offsetMax + new Vector2(deltaSize.x * (1f - _rectTrans.pivot.x), deltaSize.y * (1f - _rectTrans.pivot.y));
+    }
+
+    public void SetAlign(TextAnchor textAnchor)
+    {
+        _text.alignment = textAnchor;
     }
 
     public void SetText(string text)
