@@ -18,11 +18,23 @@ public class UIStageText : MonoBehaviour
     private Canvas _canvas;
 
     /// <summary>
-    /// 
+    /// 앵커 위치 지정
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    public void SetAnchorPoistion(float x, float y)
+    {
+        _rectTrans.anchorMin = new Vector2(x, y);
+        _rectTrans.anchorMax = new Vector2(x, y);
+    }
+
+    /// <summary>
+    /// 게임 좌표계로 위치 지정
+    /// <para>SetAlign() 이후에 수행할 것</para>
     /// </summary>
     /// <param name="x">x 위치. 게임 좌표계</param>
     /// <param name="x">y 위치. 게임 좌표계</param>
-    public void SetPosition(float x, float y)
+    public void SetGamePosition(float x, float y)
     {
         Camera worldCamera = _canvas.worldCamera;
         Vector2 screenPos = worldCamera.WorldToScreenPoint(new Vector3(x, y, 0.0f));
@@ -48,6 +60,31 @@ public class UIStageText : MonoBehaviour
     public void SetAlign(TextAnchor textAnchor)
     {
         _text.alignment = textAnchor;
+
+        switch (textAnchor)
+        {
+            case TextAnchor.LowerCenter:
+            case TextAnchor.MiddleCenter:
+            case TextAnchor.UpperCenter:
+                {
+                    _rectTrans.pivot = new Vector2(0.5f, 0.5f);
+                    break;
+                }
+            case TextAnchor.LowerLeft:
+            case TextAnchor.MiddleLeft:
+            case TextAnchor.UpperLeft:
+                {
+                    _rectTrans.pivot = new Vector2(0.0f, 0.5f);
+                    break;
+                }
+            case TextAnchor.LowerRight:
+            case TextAnchor.MiddleRight:
+            case TextAnchor.UpperRight:
+                {
+                    _rectTrans.pivot = new Vector2(1.0f, 0.5f);
+                    break;
+                }
+        }
     }
 
     public void SetText(string text)

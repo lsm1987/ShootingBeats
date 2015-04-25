@@ -31,9 +31,9 @@ namespace Game
                     _uiStageText.Initialize(GameSystem._Instance._GameArea.transform);
                 }
                 _uiStageText.SetActive(false);
-                _uiStageText.SetPosition(0.0f, 0.0f);
-                _uiStageText.SetSize(_stageTextDefaultWidth, _stageTextDefaultHeight);
                 _uiStageText.SetAlign(TextAnchor.MiddleCenter);
+                _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
+                _uiStageText.SetSize(_stageTextDefaultWidth, _stageTextDefaultHeight);
                 _uiStageText.SetText(string.Empty);
             }
 
@@ -52,7 +52,7 @@ namespace Game
                         }
                     case 300:
                         {
-                            _uiStageText.SetPosition(0.0f, 0.0f);
+                            _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
                             _uiStageText.SetText("Shooting Beats! Tutorial");
                             _uiStageText.SetActive(true);
                             break;
@@ -81,9 +81,9 @@ namespace Game
                         {
                             // 16초
                             // 아야챠챠
-                            _uiStageText.SetPosition(0.3f, 0.0f);
-                            _uiStageText.SetSize(_stageTextDefaultWidth * 0.6f, _stageTextDefaultHeight * 2.0f);
                             _uiStageText.SetAlign(TextAnchor.MiddleRight);
+                            _uiStageText.SetAnchorPoistion(0.9f, 0.5f);
+                            _uiStageText.SetSize(_stageTextDefaultWidth * 0.6f, _stageTextDefaultHeight * 2.0f);
                             _uiStageText.SetText("Dodge bullets\nby touch and drag");
                             _uiStageText.SetActive(true);
                             break;
