@@ -60,6 +60,9 @@ namespace Game
         private MoveInputArea _moveInputArea;   // 이동 입력 영역
         public MoveInputArea _MoveInputArea { get { return _moveInputArea; } }
         [SerializeField]
+        private PauseInputArea _pauseInputArea;   // 일시정지 입력 영역
+        public PauseInputArea _PauseInputArea { get { return _pauseInputArea; } }
+        [SerializeField]
         private UIPause _uiPause;   // 일시정지 UI
         private UIPause _UIPause { get { return _uiPause; } }
         [SerializeField]

@@ -574,7 +574,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ShootingBeats!
+  m_Text: Shooting Beats!
 --- !u!222 &844009188
 CanvasRenderer:
   m_ObjectHideFlags: 0

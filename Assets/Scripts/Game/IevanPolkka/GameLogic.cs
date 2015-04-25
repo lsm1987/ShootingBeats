@@ -35,6 +35,10 @@ namespace Game
                 _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
                 _uiStageText.SetSize(_stageTextDefaultWidth, _stageTextDefaultHeight);
                 _uiStageText.SetText(string.Empty);
+
+                // UI
+                GameSystem._Instance._MoveInputArea.SetVisible(false);
+                GameSystem._Instance._PauseInputArea.SetVisible(false);
             }
 
             // 특화 정보 갱신
@@ -91,7 +95,6 @@ namespace Game
                     case 1230:
                         {
                             // 마바 리빠빠
-                            _uiStageText.SetActive(false);
                             break;
                         }
                     case 1477:
@@ -99,42 +102,41 @@ namespace Game
                             // 24초
                             // 야바린간
                             _uiStageText.SetText("Entire rect colored now is\nmove touch area");
-                            _uiStageText.SetActive(true);
+                            GameSystem._Instance._MoveInputArea.SetVisible(true);
                             break;
                         }
                     case 1726:
                         {
                             // 맀빠린단
-                            _uiStageText.SetActive(false);
+                            GameSystem._Instance._MoveInputArea.SetVisible(false);
                             break;
                         }
                     case 1964:
                         {
                             // 32초
                             // 아야챠챠
-                            _uiStageText.SetText("Only white circle\nof player is hit area");
-                            _uiStageText.SetActive(true);
+                            //_uiStageText.SetText("Only white circle\nof player is hit area");
+                            _uiStageText.SetText("Rect colored now is\npause touch area");
+                            GameSystem._Instance._PauseInputArea.SetVisible(true);
                             break;
                         }
                     case 2245:
                         {
                             // 마바 리빠빠
-                            _uiStageText.SetActive(false);
+                            GameSystem._Instance._PauseInputArea.SetVisible(false);
                             break;
                         }
                     case 2444:
                         {
                             // 40초
                             // 야바린간
-                            _uiStageText.SetText("Rect colored now is\npause touch area");
-                            _uiStageText.SetActive(true);
+                            _uiStageText.SetText("Back button\nalso can pause");
                             break;
                         }
                     case 2693:
                         {
                             // 44초
                             // 맀빠린단
-                            _uiStageText.SetText("Back button\ncan pause also");
                             break;
                         }
                     case 2940:

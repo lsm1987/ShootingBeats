@@ -135,7 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .404411793, g: .650861919, b: 1, a: 0}
+  m_Color: {r: 0, g: .490196079, b: 1, a: 0}
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
@@ -2121,6 +2121,7 @@ MonoBehaviour:
   _uiProgressBar: {fileID: 792652385}
   _letterBox: {fileID: 2022039917}
   _moveInputArea: {fileID: 1460445424}
+  _pauseInputArea: {fileID: 63213687}
   _uiPause: {fileID: 244522766}
   _uiResult: {fileID: 574954177}
   _scoreBoard: {fileID: 1145558382}
@@ -2143,7 +2144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isInvincible: 0
-  _startFrame: 970
+  _startFrame: 0
   _beatInfo: {fileID: 11400000, guid: 5805cf9e726e3de4282e646ad502e782, type: 2}
 --- !u!1 &1460445420
 GameObject:
@@ -2175,7 +2176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .25, g: 1, b: .410344779, a: 0}
+  m_Color: {r: 0, g: .490196079, b: 1, a: 0}
   m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
