@@ -53,178 +53,7 @@ namespace Game
                 {
                     case 0:
                         {
-                            // 플레이어 생성
-                            PlayerAlive player = GameSystem._Instance.CreatePlayer<PlayerAlive>();
-                            player.Init("Common/Player_Black", 0.0f, -0.7f, 0.0f);
-                            break;
-                        }
-                    case 300:
-                        {
-                            _uiStageText.SetAlign(TextAnchor.MiddleCenter);
-                            _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
-                            _uiStageText.SetText("Shooting Beats! Tutorial");
-                            _uiStageText.SetActive(true);
-                            break;
-                        }
-                    case 540:
-                        {
-                            _uiStageText.SetText("with Ievan Polkka");
-                            break;
-                        }
-                    case 780:
-                        {
-                            _uiStageText.SetText("Are you ready?");
-                            break;
-                        }
-                    case 900:
-                        {
-                            _uiStageText.SetText("Let's start!");
-                            break;
-                        }
-                    case 960:
-                        {
-                            _uiStageText.SetActive(false);
-                            break;
-                        }
-                    case 1026:
-                        {
-                            // 16초
-                            // 아야챠챠
-                            _uiStageText.SetAlign(TextAnchor.MiddleRight);
-                            _uiStageText.SetAnchorPoistion(0.9f, 0.5f);
-                            _uiStageText.SetSize(_stageTextDefaultWidth * 0.6f, _stageTextDefaultHeight * 2.0f);
-                            _uiStageText.SetText("Dodge bullets\nby touch and drag");
-                            _uiStageText.SetActive(true);
-
-                            _coroutineManager.StartCoroutine(SideAim(0, 0.02f, 60, 16));
-                            break;
-                        }
-                    case (1026 + 60 * 4):
-                        {
-                            // 마바 리빠빠
-                            break;
-                        }
-                    case (1026 + 60 * 4 * 2):
-                        {
-                            // 24초
-                            // 야바린간
-                            _uiStageText.SetText("Colored rect is\nmove touch area");
-                            GameSystem._Instance._MoveInputArea.SetVisible(true);
-                            break;
-                        }
-                    case (1026 + 60 * 4 * 3):
-                        {
-                            // 맀빠린단
-                            GameSystem._Instance._MoveInputArea.SetVisible(false);
-                            break;
-                        }
-                    case 1986:
-                        {
-                            // 32초
-                            // 아야챠챠
-                            //_uiStageText.SetText("Only white circle\nof player is hit area");
-                            _uiStageText.SetText("Colored rect is\npause touch area");
-                            GameSystem._Instance._PauseInputArea.SetVisible(true);
-
-                            _coroutineManager.StartCoroutine(SideAim(2, 0.02f, 60, 8));
-                            break;
-                        }
-                    case (1986 + 60 * 4):
-                        {
-                            // 마바 리빠빠
-                            GameSystem._Instance._PauseInputArea.SetVisible(false);
-                            break;
-                        }
-                    case (1986 + 60 * 4 * 2):
-                        {
-                            // 40초
-                            // 야바린간
-                            _uiStageText.SetText("Back button\nalso can pause");
-
-                            _coroutineManager.StartCoroutine(SideAim(3, 0.02f, 60, 8));
-                            break;
-                        }
-                    case (1986 + 60 * 4 * 3):
-                        {
-                            // 44초
-                            // 맀빠린단
-                            break;
-                        }
-                    case 2946:
-                        {
-                            // 49초
-                            // 간주
-                            _uiStageText.SetActive(false);
-
-                            _coroutineManager.StartCoroutine(CornerAim(0.02f, 60, 4));
-                            break;
-                        }
-                    case 3906:
-                        {
-                            // 1분 4초
-                            // YO!
-                            _uiStageText.SetText("Each beat has\nthe Beat Core");
-                            _uiStageText.SetActive(true);
-                            break;
-                        }
-                    case 4380:
-                        {
-                            // 1분 13초
-                            // 간주(야바린간)
-                            _uiStageText.SetText("Shooting Beat Core\nwill increase score");
-                            break;
-                        }
-                    case 4860:
-                        {
-                            // 1분 21초
-                            // 아야챠챠
-                            _uiStageText.SetAlign(TextAnchor.MiddleCenter);
-                            _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
-                            _uiStageText.SetText("Explanation is over");
-                            break;
-                        }
-                    case 5346:
-                        {
-                            // 1분 29초
-                            // 야바린간
-                            _uiStageText.SetText("Enjoy your shooting");
-                            break;
-                        }
-                    case 5580:
-                        {
-                            // 1분 33초
-                            // 마마마 린간 덴간 린간 덴간
-                            _uiStageText.SetText("Let's~");
-                            break;
-                        }
-                    case 5730:
-                        {
-                            // 1분 35초
-                            // 린간 린간
-                            _uiStageText.SetText("Spin!");
-                            break;
-                        }
-                    case 5760:
-                        {
-                            // 리리리린
-                            _uiStageText.SetText("Spin!!!");
-                            break;
-                        }
-                    case 5790:
-                        {
-                            // 리리리린
-                            _uiStageText.SetText("Spin!!!!!!");
-                            break;
-                        }
-                    case 5820:
-                        {
-                            // 리리리린
-                            _uiStageText.SetText("<b>Spin!!!!!!!!!</b>");
-                            break;
-                        }
-                    case 5850:
-                        {
-                            _uiStageText.SetActive(false);
+                            _coroutineManager.StartCoroutine(Main());
                             break;
                         }
                 } // switch
@@ -232,6 +61,108 @@ namespace Game
                 // 매프레임 갱신
                 _coroutineManager.UpdateAllCoroutines();
             } // UpdatePlayContext()
+
+            private IEnumerator Main()
+            {
+                // 플레이어 생성
+                PlayerAlive player = GameSystem._Instance.CreatePlayer<PlayerAlive>();
+                player.Init("Common/Player_Black", 0.0f, -0.7f, 0.0f);
+
+                yield return new WaitForAbsFrames(300);
+                _uiStageText.SetAlign(TextAnchor.MiddleCenter);
+                _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
+                _uiStageText.SetText("Shooting Beats! Tutorial");
+                _uiStageText.SetActive(true);
+
+                yield return new WaitForAbsFrames(540);
+                _uiStageText.SetText("with Ievan Polkka");
+
+                yield return new WaitForAbsFrames(700);
+                _uiStageText.SetText("Are you ready?");
+
+                yield return new WaitForAbsFrames(900);
+                _uiStageText.SetText("Let's start!");
+
+                yield return new WaitForAbsFrames(960);
+                _uiStageText.SetActive(false);
+
+                yield return new WaitForAbsFrames(1026);
+                // 아야챠챠
+                _uiStageText.SetAlign(TextAnchor.MiddleRight);
+                _uiStageText.SetAnchorPoistion(0.9f, 0.5f);
+                _uiStageText.SetSize(_stageTextDefaultWidth * 0.6f, _stageTextDefaultHeight * 2.0f);
+                _uiStageText.SetText("Dodge bullets\nby touch and drag");
+                _uiStageText.SetActive(true);
+                _coroutineManager.StartCoroutine(SideAim(0, 0.02f, 60, 16));
+
+                // 마바 리빠빠
+
+                yield return new WaitForFrames(60 * 4 * 2);
+                // 야바린간
+                _uiStageText.SetText("Colored rect is\nmove touch area");
+                GameSystem._Instance._MoveInputArea.SetVisible(true);
+
+                yield return new WaitForFrames(60 * 4);
+                // 맀빠린단
+                GameSystem._Instance._MoveInputArea.SetVisible(false);
+
+                yield return new WaitForAbsFrames(1986);
+                // 아야챠챠
+                _uiStageText.SetText("Colored rect is\npause touch area");
+                GameSystem._Instance._PauseInputArea.SetVisible(true);
+                _coroutineManager.StartCoroutine(SideAim(2, 0.02f, 60, 8));
+
+                yield return new WaitForFrames(60 * 4);
+                // 마바 리빠빠
+                GameSystem._Instance._PauseInputArea.SetVisible(false);
+
+                yield return new WaitForFrames(60 * 4);
+                // 야바린간
+                _uiStageText.SetText("Back button\nalso can pause");
+                _coroutineManager.StartCoroutine(SideAim(3, 0.02f, 60, 8));
+
+                // 맀빠린단
+
+                yield return new WaitForAbsFrames(2946);
+                // 간주
+                _uiStageText.SetActive(false);
+                _coroutineManager.StartCoroutine(CornerAim(0.02f, 60, 4));
+
+                yield return new WaitForAbsFrames(3906);
+                // YO!
+                _uiStageText.SetText("Each beat has\nthe Beat Core");
+                _uiStageText.SetActive(true);
+
+                yield return new WaitForAbsFrames(4380);
+                // 간주(야바린간)
+                _uiStageText.SetText("Shooting Beat Core\nwill increase score");
+
+                yield return new WaitForAbsFrames(4860);
+                // 아야챠챠
+                _uiStageText.SetAlign(TextAnchor.MiddleCenter);
+                _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
+                _uiStageText.SetText("Explanation is over");
+
+                yield return new WaitForAbsFrames(5346);
+                // 야바린간
+                _uiStageText.SetText("Enjoy your shooting");
+
+                yield return new WaitForAbsFrames(5580);
+                // 마마마 린간 덴간 린간 덴간
+                _uiStageText.SetText("Let's~");
+
+                yield return new WaitForAbsFrames(5730);
+                // 린간 린간
+                _uiStageText.SetText("Spin!");
+                yield return new WaitForFrames(30);
+                _uiStageText.SetText("Spin!!!");
+                yield return new WaitForFrames(30);
+                _uiStageText.SetText("Spin!!!!!!");
+                yield return new WaitForFrames(30);
+                _uiStageText.SetText("<b>Spin!!!!!!!!!</b>");
+                yield return new WaitForFrames(30);
+                _uiStageText.SetActive(false);
+            }
 
             #region Coroutine
             /// <summary>
