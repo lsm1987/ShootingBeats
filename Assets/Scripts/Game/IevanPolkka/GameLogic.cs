@@ -8,6 +8,7 @@ namespace Game
         // "이에반 폴카" 진행정보
         public class GameLogic : Game.BaseGameLogic
         {
+            private CoroutineManager _coroutineManager = new CoroutineManager();
             private UIStageText _uiStageText = null;    // 스테이지 내 UI로 띄워줄 텍스트. 하나만 사용
             private const float _stageTextDefaultWidth = 500.0f;
             private const float _stageTextDefaultHeight = 60.0f;
@@ -20,6 +21,9 @@ namespace Game
                 {
                     yield return loadPlayer.Current;
                 }
+
+                // 코루틴
+                _coroutineManager.StopAllCoroutines();
 
                 // 스테이지 텍스트
                 if (_uiStageText == null)
@@ -56,6 +60,7 @@ namespace Game
                         }
                     case 300:
                         {
+                            _uiStageText.SetAlign(TextAnchor.MiddleCenter);
                             _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
                             _uiStageText.SetText("Shooting Beats! Tutorial");
                             _uiStageText.SetActive(true);
@@ -73,7 +78,7 @@ namespace Game
                         }
                     case 900:
                         {
-                            _uiStageText.SetText("Let's Spin!");
+                            _uiStageText.SetText("Let's start!");
                             break;
                         }
                     case 960:
@@ -81,7 +86,7 @@ namespace Game
                             _uiStageText.SetActive(false);
                             break;
                         }
-                    case 996:
+                    case 1026:
                         {
                             // 16초
                             // 아야챠챠
@@ -90,63 +95,187 @@ namespace Game
                             _uiStageText.SetSize(_stageTextDefaultWidth * 0.6f, _stageTextDefaultHeight * 2.0f);
                             _uiStageText.SetText("Dodge bullets\nby touch and drag");
                             _uiStageText.SetActive(true);
+
+                            _coroutineManager.StartCoroutine(RightAngleAim(0, 0.03f, 60, 16));
                             break;
                         }
-                    case 1230:
+                    case (1026 + 60 * 4):
                         {
                             // 마바 리빠빠
                             break;
                         }
-                    case 1477:
+                    case (1026 + 60 * 4 * 2):
                         {
                             // 24초
                             // 야바린간
-                            _uiStageText.SetText("Entire rect colored now is\nmove touch area");
+                            _uiStageText.SetText("Colored rect is\nmove touch area");
                             GameSystem._Instance._MoveInputArea.SetVisible(true);
                             break;
                         }
-                    case 1726:
+                    case (1026 + 60 * 4 * 3):
                         {
                             // 맀빠린단
                             GameSystem._Instance._MoveInputArea.SetVisible(false);
                             break;
                         }
-                    case 1964:
+                    case 1986:
                         {
                             // 32초
                             // 아야챠챠
                             //_uiStageText.SetText("Only white circle\nof player is hit area");
-                            _uiStageText.SetText("Rect colored now is\npause touch area");
+                            _uiStageText.SetText("Colored rect is\npause touch area");
                             GameSystem._Instance._PauseInputArea.SetVisible(true);
+
+                            _coroutineManager.StartCoroutine(RightAngleAim(2, 0.03f, 60, 8));
                             break;
                         }
-                    case 2245:
+                    case (1986 + 60 * 4):
                         {
                             // 마바 리빠빠
                             GameSystem._Instance._PauseInputArea.SetVisible(false);
                             break;
                         }
-                    case 2444:
+                    case (1986 + 60 * 4 * 2):
                         {
                             // 40초
                             // 야바린간
                             _uiStageText.SetText("Back button\nalso can pause");
+
+                            _coroutineManager.StartCoroutine(RightAngleAim(3, 0.03f, 60, 8));
                             break;
                         }
-                    case 2693:
+                    case (1986 + 60 * 4 * 3):
                         {
                             // 44초
                             // 맀빠린단
                             break;
                         }
-                    case 2940:
+                    case 2946:
                         {
                             // 49초
+                            // 간주
+                            _uiStageText.SetActive(false);
+                            break;
+                        }
+                    case 3888:
+                        {
+                            // 1분 4초
+                            // YO!
+                            _uiStageText.SetText("Each beat has\nthe Beat Core");
+                            _uiStageText.SetActive(true);
+                            break;
+                        }
+                    case 4380:
+                        {
+                            // 1분 13초
+                            // 간주(야바린간)
+                            _uiStageText.SetText("Shooting Beat Core\nwill increase score");
+                            break;
+                        }
+                    case 4860:
+                        {
+                            // 1분 21초
+                            // 아야챠챠
+                            _uiStageText.SetAlign(TextAnchor.MiddleCenter);
+                            _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
+                            _uiStageText.SetText("Explanation is over");
+                            break;
+                        }
+                    case 5346:
+                        {
+                            // 1분 29초
+                            // 야바린간
+                            _uiStageText.SetText("Enjoy your shooting");
+                            break;
+                        }
+                    case 5580:
+                        {
+                            // 1분 33초
+                            // 마마마 린간 덴간 린간 덴간
+                            _uiStageText.SetText("Let's~");
+                            break;
+                        }
+                    case 5730:
+                        {
+                            // 1분 35초
+                            // 린간 린간
+                            _uiStageText.SetText("Spin!");
+                            break;
+                        }
+                    case 5760:
+                        {
+                            // 리리리린
+                            _uiStageText.SetText("Spin!!!");
+                            break;
+                        }
+                    case 5790:
+                        {
+                            // 리리리린
+                            _uiStageText.SetText("Spin!!!!!!");
+                            break;
+                        }
+                    case 5820:
+                        {
+                            // 리리리린
+                            _uiStageText.SetText("<b>Spin!!!!!!!!!</b>");
+                            break;
+                        }
+                    case 5850:
+                        {
                             _uiStageText.SetActive(false);
                             break;
                         }
                 } // switch
-            } // UpdatePlayContext
-        }
+
+                // 매프레임 갱신
+                _coroutineManager.UpdateAllCoroutines();
+            } // UpdatePlayContext()
+
+            #region Coroutine
+            /// <summary>
+            /// 직각방향으로 시작위치 조준탄
+            /// </summary>
+            /// <param name="dir">시작방향. 0:상, 1:하, 2:좌, 3: 우</param>
+            private IEnumerator RightAngleAim(int dir, float speed, int interval, int count)
+            {
+                for (int i = 0; i < count; ++i)
+                {
+                    float x, y, angle;
+                    if (dir == 0)
+                    {
+                        x = GameSystem._Instance._Player._x;
+                        y = GameSystem._Instance._MaxY;
+                        angle = 0.75f;
+                    }
+                    else if (dir == 1)
+                    {
+                        x = GameSystem._Instance._Player._x;
+                        y = GameSystem._Instance._MinY;
+                        angle = 0.25f;
+                    }
+                    else if (dir == 2)
+                    {
+                        x = GameSystem._Instance._MinX;
+                        y = GameSystem._Instance._Player._y;
+                        angle = 0.0f;
+                    }
+                    else
+                    {
+                        x = GameSystem._Instance._MaxX;
+                        y = GameSystem._Instance._Player._y;
+                        angle = 0.50f;
+                    }
+
+                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                    b.Init("Common/Bullet_Blue", x, y, angle, 0.0f, speed, 0.0f);
+
+                    if (i < count - 1)
+                    {
+                        yield return new WaitForFrames(interval);
+                    }
+                }
+            }
+            #endregion Coroutine
+        } // GameLogic
     } // Ievan Polkka
 } // Game
