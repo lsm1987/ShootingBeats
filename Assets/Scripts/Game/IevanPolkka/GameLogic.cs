@@ -96,7 +96,7 @@ namespace Game
                             _uiStageText.SetText("Dodge bullets\nby touch and drag");
                             _uiStageText.SetActive(true);
 
-                            _coroutineManager.StartCoroutine(RightAngleAim(0, 0.03f, 60, 16));
+                            _coroutineManager.StartCoroutine(SideAim(0, 0.02f, 60, 16));
                             break;
                         }
                     case (1026 + 60 * 4):
@@ -126,7 +126,7 @@ namespace Game
                             _uiStageText.SetText("Colored rect is\npause touch area");
                             GameSystem._Instance._PauseInputArea.SetVisible(true);
 
-                            _coroutineManager.StartCoroutine(RightAngleAim(2, 0.03f, 60, 8));
+                            _coroutineManager.StartCoroutine(SideAim(2, 0.02f, 60, 8));
                             break;
                         }
                     case (1986 + 60 * 4):
@@ -141,7 +141,7 @@ namespace Game
                             // 야바린간
                             _uiStageText.SetText("Back button\nalso can pause");
 
-                            _coroutineManager.StartCoroutine(RightAngleAim(3, 0.03f, 60, 8));
+                            _coroutineManager.StartCoroutine(SideAim(3, 0.02f, 60, 8));
                             break;
                         }
                     case (1986 + 60 * 4 * 3):
@@ -155,9 +155,11 @@ namespace Game
                             // 49초
                             // 간주
                             _uiStageText.SetActive(false);
+
+                            _coroutineManager.StartCoroutine(CornerAim(0.02f, 60, 4));
                             break;
                         }
-                    case 3888:
+                    case 3906:
                         {
                             // 1분 4초
                             // YO!
@@ -233,10 +235,10 @@ namespace Game
 
             #region Coroutine
             /// <summary>
-            /// 직각방향으로 시작위치 조준탄
+            /// 사면에서 직각방향으로 발사되는 시작위치 조준탄
             /// </summary>
             /// <param name="dir">시작방향. 0:상, 1:하, 2:좌, 3: 우</param>
-            private IEnumerator RightAngleAim(int dir, float speed, int interval, int count)
+            private IEnumerator SideAim(int dir, float speed, int interval, int count)
             {
                 for (int i = 0; i < count; ++i)
                 {
@@ -272,6 +274,52 @@ namespace Game
                     if (i < count - 1)
                     {
                         yield return new WaitForFrames(interval);
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 모서리에서 플레이어 방향으로 발사되는 조준탄
+            /// </summary>
+            /// <param name="interval">탄별 간격</interval>
+            /// <param name="roundCount">4모서리 순회를 몇 번 할 것인가</param>
+            private IEnumerator CornerAim(float speed, int interval, int roundCount)
+            {
+                for (int i = 0; i < roundCount; ++i)
+                {
+                    // 0: 우상, 1: 좌상, 2: 좌하, 3: 우하
+                    for (int dir = 0; dir < 4; ++dir)
+                    {
+                        float x, y;
+                        if (dir == 0)
+                        {
+                            x = GameSystem._Instance._MaxX;
+                            y = GameSystem._Instance._MaxY;
+                        }
+                        else if (dir == 1)
+                        {
+                            x = GameSystem._Instance._MinX;
+                            y = GameSystem._Instance._MaxY;
+                        }
+                        else if (dir == 2)
+                        {
+                            x = GameSystem._Instance._MinX;
+                            y = GameSystem._Instance._MinY;
+                        }
+                        else
+                        {
+                            x = GameSystem._Instance._MaxX;
+                            y = GameSystem._Instance._MinY;
+                        }
+
+                        float angle = GetPlayerAngle(x, y);
+                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                        b.Init("Common/Bullet_Red", x, y, angle, 0.0f, speed, 0.0f);
+
+                        if (!((i == (roundCount - 1) && (dir == (4 - 1)))))
+                        {
+                            yield return new WaitForFrames(interval);
+                        }
                     }
                 }
             }

@@ -31,5 +31,30 @@ namespace Game
             GameSystem._Instance.PoolStackShape("Common/Shot_Black", 36);
             GameSystem._Instance.PoolStackMover<Shot>(36);
         }
+
+        #region Pattern
+        /// <summary>
+        /// 지정한 좌표로부터 플레이어로 향하는 각도 구하기
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        protected float GetPlayerAngle(float x, float y)
+        {
+            // Atan2 의 결과가 라디안이므로 0~1로 변경
+            Vector2 playerPos = GameSystem._Instance._Player._Pos;
+            return Mathf.Atan2(playerPos.y - y, playerPos.x - x) / Mathf.PI / 2.0f;
+        }
+
+        /// <summary>
+        /// 지정한 무버로부터 플레이어로 향하는 각도 구하기
+        /// </summary>
+        /// <param name="startMover"></param>
+        /// <returns></returns>
+        protected float GetPlayerAngle(Mover startMover)
+        {
+            return GetPlayerAngle(startMover._x, startMover._y);
+        }
+        #endregion Pattern
     }
 }
