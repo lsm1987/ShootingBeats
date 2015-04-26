@@ -32,14 +32,14 @@ namespace Game
             GameSystem._Instance.PoolStackMover<Shot>(36);
         }
 
-        #region Pattern
+        #region Util
         /// <summary>
         /// 지정한 좌표로부터 플레이어로 향하는 각도 구하기
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <returns></returns>
-        protected float GetPlayerAngle(float x, float y)
+        public float GetPlayerAngle(float x, float y)
         {
             // Atan2 의 결과가 라디안이므로 0~1로 변경
             Vector2 playerPos = GameSystem._Instance._Player._Pos;
@@ -51,9 +51,28 @@ namespace Game
         /// </summary>
         /// <param name="startMover"></param>
         /// <returns></returns>
-        protected float GetPlayerAngle(Mover startMover)
+        public float GetPlayerAngle(Mover startMover)
         {
             return GetPlayerAngle(startMover._x, startMover._y);
+        }
+        #endregion Util
+
+        #region Pattern
+        /// <summary>
+        /// 무버를 지정한 위치까지 등속 이동
+        /// </summary>
+        public IEnumerator MoveConstantVelocity(Mover mover, Vector2 arrivePos, int duration)
+        {
+            Vector2 delta = (arrivePos - mover._Pos) / (float)duration; // 한 프레임에 움직일 거리
+
+            for (int i = 0; i < duration - 1; ++i)
+            {
+                mover._Pos += delta;
+                yield return null;
+            }
+
+            // 마지막 프레임
+            mover._Pos = arrivePos;
         }
         #endregion Pattern
     }

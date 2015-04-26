@@ -84,6 +84,21 @@ namespace Game
         }
 
         /// <summary>
+        /// 작업을 코루틴으로 등록만 하고 다음 업데이트 호출시 실행
+        /// </summary>
+        public CoroutineNode RegisterCoroutine(IEnumerator fiber)
+        {
+            if (fiber == null)
+            {
+                return null;
+            }
+
+            CoroutineNode coroutine = new CoroutineNode(fiber);
+            AddCoroutine(coroutine);
+            return coroutine;
+        }
+
+        /// <summary>
         /// 모든 코루틴 강제로 끊기
         /// <para>이미 돌아가고 있던 코루틴의 정상종료가 불가능하므로 쓸 일 적음</para>
         /// </summary>

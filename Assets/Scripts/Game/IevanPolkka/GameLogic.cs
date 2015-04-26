@@ -132,6 +132,9 @@ namespace Game
                 // YO!
                 _uiStageText.SetText("Each beat has\nthe Beat Core");
                 _uiStageText.SetActive(true);
+                // 보스 생성
+                Boss boss = GameSystem._Instance.CreateEnemy<Boss>();
+                boss.Init("Common/Boss_Orange", 0.0f, GameSystem._Instance._MaxY + 0.1f, 0.0f);
 
                 yield return new WaitForAbsFrames(4380);
                 // 간주(야바린간)

@@ -785,6 +785,14 @@ namespace Game
             }
         }
 
+        /// <summary>
+        /// 로직 접근용
+        /// </summary>
+        public T GetLogic<T>() where T : BaseGameLogic
+        {
+            return _logic as T;
+        }
+
         #region Debug
         private void OnDrawGizmos()
         {
