@@ -43,24 +43,16 @@ namespace Game
                 // UI
                 GameSystem._Instance._MoveInputArea.SetVisible(false);
                 GameSystem._Instance._PauseInputArea.SetVisible(false);
+
+                // 메인 코루틴 등록
+                _coroutineManager.RegisterCoroutine(Main());
             }
 
             // 특화 정보 갱신
             public override void UpdatePlayContext()
             {
-                int frame = GameSystem._Instance._Frame;
-                switch(frame)
-                {
-                    case 0:
-                        {
-                            _coroutineManager.StartCoroutine(Main());
-                            break;
-                        }
-                } // switch
-
-                // 매프레임 갱신
                 _coroutineManager.UpdateAllCoroutines();
-            } // UpdatePlayContext()
+            }
 
             private IEnumerator Main()
             {
@@ -126,7 +118,9 @@ namespace Game
                 yield return new WaitForAbsFrames(2946);
                 // 간주
                 _uiStageText.SetActive(false);
-                _coroutineManager.StartCoroutine(CornerAim(0.02f, 60, 4));
+                _coroutineManager.StartCoroutine(CornerAim(0.02f, 60, 2));
+                yield return new WaitForFrames(60 * 4 * 2);
+                _coroutineManager.StartCoroutine(CornerAim(0.02f, 30, 4));
 
                 yield return new WaitForAbsFrames(3906);
                 // YO!
@@ -136,35 +130,22 @@ namespace Game
                 Boss boss = GameSystem._Instance.CreateEnemy<Boss>();
                 boss.Init("Common/Boss_Orange", 0.0f, GameSystem._Instance._MaxY + 0.1f, 0.0f);
 
-                yield return new WaitForAbsFrames(4380);
+                yield return new WaitForAbsFrames(4386);
                 // 간주(야바린간)
                 _uiStageText.SetText("Shooting Beat Core\nwill increase score");
 
-                yield return new WaitForAbsFrames(4860);
+                yield return new WaitForAbsFrames(4866);
                 // 아야챠챠
                 _uiStageText.SetAlign(TextAnchor.MiddleCenter);
                 _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
-                _uiStageText.SetText("Explanation is over");
+                _uiStageText.SetText("And the last tip:");
+                yield return new WaitForFrames(60 * 4);
+                // 마바 리빠빠
+                _uiStageText.SetText(RandomTip());
 
-                yield return new WaitForAbsFrames(5346);
-                // 야바린간
-                _uiStageText.SetText("Enjoy your shooting");
-
-                yield return new WaitForAbsFrames(5580);
+                yield return new WaitForAbsFrames(5586);
                 // 마마마 린간 덴간 린간 덴간
-                _uiStageText.SetText("Let's~");
-
-                yield return new WaitForAbsFrames(5730);
-                // 린간 린간
-                _uiStageText.SetText("Spin!");
-                yield return new WaitForFrames(30);
-                _uiStageText.SetText("Spin!!!");
-                yield return new WaitForFrames(30);
-                _uiStageText.SetText("Spin!!!!!!");
-                yield return new WaitForFrames(30);
-                _uiStageText.SetText("<b>Spin!!!!!!!!!</b>");
-                yield return new WaitForFrames(30);
-                _uiStageText.SetActive(false);
+                _coroutineManager.StartCoroutine(SetTextLetsSpin());
             }
 
             #region Coroutine
@@ -257,7 +238,48 @@ namespace Game
                     }
                 }
             }
+
+            /// <summary>
+            /// Let's Spin! 문자열 출력
+            /// </summary>
+            /// <returns></returns>
+            private IEnumerator SetTextLetsSpin()
+            {
+                _uiStageText.SetText("Let's~");
+                yield return new WaitForFrames(150);
+                string textSpin = "Spin!";
+                _uiStageText.SetText(textSpin);
+                yield return new WaitForFrames(30);
+                textSpin += "!!";
+                _uiStageText.SetText(textSpin);
+                yield return new WaitForFrames(30);
+                textSpin += "!!";
+                _uiStageText.SetText(textSpin);
+                for (int i = 0; i < 10; ++i)
+                {
+                    yield return new WaitForFrames(6);
+                    textSpin += "!!";
+                    _uiStageText.SetText("<b>" + textSpin + "</b>");
+                }
+                yield return new WaitForFrames(10);
+                _uiStageText.SetActive(false);
+            }
             #endregion Coroutine
+
+            /// <summary>
+            /// 무작위 팁 문자열 리턴
+            /// </summary>
+            /// <returns></returns>
+            private string RandomTip()
+            {
+                string[] tips = {
+                    "Do not play game while walking",
+                    "Do not play game\nwhile working",
+                    "Check volume\nat public place",
+                    "Check source code of\nthis game at GitHub",
+                };
+                return tips[Random.Range(0, tips.Length)];
+            }
         } // GameLogic
     } // Ievan Polkka
 } // Game

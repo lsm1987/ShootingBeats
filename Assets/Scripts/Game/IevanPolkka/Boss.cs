@@ -19,7 +19,7 @@ namespace Game
             public override void Init(string shapeSubPath, float x, float y, float angle)
             {
                 base.Init(shapeSubPath, x, y, angle);
-                _coroutineManager.RegisterCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 120));
+                _coroutineManager.RegisterCoroutine(MoveMain());
             }
 
             public override void Move()
@@ -28,9 +28,19 @@ namespace Game
                 _coroutineManager.UpdateAllCoroutines();
             }
 
-            // 실제 갱신
-            private void MoveMain()
+            // 메인 코루틴
+            private IEnumerator MoveMain()
             {
+                // 등장
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 120));
+
+                yield return new WaitForAbsFrames(4386);
+                // 간주(야바린간)
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(-0.8f, 0.75f), 120));
+                yield return new WaitForFrames(120);
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.8f, 0.75f), 240));
+                yield return new WaitForFrames(240);
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 120));
             }
 
             // 피격시
