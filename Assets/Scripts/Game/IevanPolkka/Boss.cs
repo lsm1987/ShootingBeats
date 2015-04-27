@@ -65,19 +65,28 @@ namespace Game
                     const int shakeInterval = 2;
                     for (int i = 0; i < 8; ++i)
                     {
-                        _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX + shakeOffset, pivotY), shakeInterval));
+                        _Pos = new Vector2(pivotX + shakeOffset, pivotY);
                         yield return new WaitForFrames(shakeInterval);
-                        _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX, pivotY + shakeOffset), shakeInterval));
+                        _Pos = new Vector2(pivotX, pivotY + shakeOffset);
                         yield return new WaitForFrames(shakeInterval);
-                        _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX - shakeOffset, pivotY), shakeInterval));
+                        _Pos = new Vector2(pivotX - shakeOffset, pivotY);
                         yield return new WaitForFrames(shakeInterval);
-                        _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX, pivotY - shakeOffset), shakeInterval));
+                        _Pos = new Vector2(pivotX, pivotY - shakeOffset);
                         yield return new WaitForFrames(shakeInterval);
                     }
                     _Pos = new Vector2(pivotX, pivotY);
                 }
 
                 // 아야챠챠
+                yield return new WaitForAbsFrames(5850);
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.01f, 12, true, 60, 8));
+                yield return new WaitForFrames(30);
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Red", 0.25f, 0.02f, 12, false, 60, 7));
+
+                // 야바린간
+                yield return new WaitForAbsFrames(6330);
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.01f, 12, true, 60, 8));
+                _coroutineManager.StartCoroutine(_Logic.CornerAim(0.02f, 60, 2));
             }
 
             // 피격시

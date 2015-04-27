@@ -74,6 +74,26 @@ namespace Game
             // 마지막 프레임
             mover._Pos = arrivePos;
         }
+
+        public void CircleBullet(Mover mover, string shape, float angle, float speed, int count, bool halfAngleOffset)
+        {
+            float angleStart = angle + ((halfAngleOffset) ? (1.0f / count / 2.0f) : 0.0f);
+            for (int i = 0; i < count; ++i)
+            {
+                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init(shape, mover._x, mover._y, angleStart + (1.0f / count * i), 0.0f, speed, 0.0f);
+            }
+        }
+
+        public IEnumerator CircleBullets(Mover mover, string shape, float angle, float speed, int count, bool halfAngleOffset
+            , int interval, int repeatCount)
+        {
+            for (int i = 0; i < repeatCount; ++i)
+            {
+                CircleBullet(mover, shape, angle, speed, count, halfAngleOffset);
+                yield return new WaitForFrames(interval);
+            }
+        }
         #endregion Pattern
     }
 }

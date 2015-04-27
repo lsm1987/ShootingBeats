@@ -203,7 +203,7 @@ namespace Game
             /// </summary>
             /// <param name="interval">탄별 간격</interval>
             /// <param name="roundCount">4모서리 순회를 몇 번 할 것인가</param>
-            private IEnumerator CornerAim(float speed, int interval, int roundCount)
+            public IEnumerator CornerAim(float speed, int interval, int roundCount)
             {
                 for (int i = 0; i < roundCount; ++i)
                 {
