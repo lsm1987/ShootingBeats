@@ -41,6 +41,43 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.8f, 0.75f), 240));
                 yield return new WaitForFrames(240);
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 120));
+
+                {
+                    yield return new WaitForAbsFrames(5586);
+                    // 마마마 린간 덴간 린간 덴간
+                    const float pivotX = 0.0f;
+                    const float pivotY = 0.75f;
+                    const float pivotOffset = 0.1f;
+                    // 마마마 린간 덴간
+                    _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX + pivotOffset, pivotY), 30));
+                    yield return new WaitForFrames(75);
+                    // 린간 덴간
+                    _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX - pivotOffset, pivotY), 30));
+                    yield return new WaitForFrames(75);
+                    // 린간
+                    _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX + pivotOffset, pivotY), 15));
+                    yield return new WaitForFrames(30);
+                    // 린간
+                    _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX, pivotY), 15));
+                    yield return new WaitForFrames(30);
+
+                    const float shakeOffset = 0.03f;
+                    const int shakeInterval = 2;
+                    for (int i = 0; i < 8; ++i)
+                    {
+                        _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX + shakeOffset, pivotY), shakeInterval));
+                        yield return new WaitForFrames(shakeInterval);
+                        _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX, pivotY + shakeOffset), shakeInterval));
+                        yield return new WaitForFrames(shakeInterval);
+                        _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX - shakeOffset, pivotY), shakeInterval));
+                        yield return new WaitForFrames(shakeInterval);
+                        _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(pivotX, pivotY - shakeOffset), shakeInterval));
+                        yield return new WaitForFrames(shakeInterval);
+                    }
+                    _Pos = new Vector2(pivotX, pivotY);
+                }
+
+                // 아야챠챠
             }
 
             // 피격시

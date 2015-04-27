@@ -139,9 +139,14 @@ namespace Game
                 _uiStageText.SetAlign(TextAnchor.MiddleCenter);
                 _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
                 _uiStageText.SetText("And the last tip:");
+                _coroutineManager.StartCoroutine(SideAim(0, 0.02f, 60, 4));
                 yield return new WaitForFrames(60 * 4);
                 // 마바 리빠빠
                 _uiStageText.SetText(RandomTip());
+                _coroutineManager.StartCoroutine(SideAim(2, 0.02f, 60, 4));
+                yield return new WaitForFrames(60 * 4);
+                _uiStageText.SetText("Ready");
+                _coroutineManager.StartCoroutine(SideAim(3, 0.02f, 60, 4));
 
                 yield return new WaitForAbsFrames(5586);
                 // 마마마 린간 덴간 린간 덴간
@@ -245,19 +250,24 @@ namespace Game
             /// <returns></returns>
             private IEnumerator SetTextLetsSpin()
             {
-                _uiStageText.SetText("Let's~");
-                yield return new WaitForFrames(150);
+                _uiStageText.SetText("Five");
+                _uiStageText.SetActive(true);
+                yield return new WaitForFrames(75);
+                _uiStageText.SetText("Four");
+                yield return new WaitForFrames(75);
+                _uiStageText.SetText("Three");
+                yield return new WaitForFrames(30);
+                _uiStageText.SetText("Two");
+                yield return new WaitForFrames(30);
+                _uiStageText.SetText("One");
+                yield return new WaitForFrames(10);
+                _uiStageText.SetText("Let's");
+                yield return new WaitForFrames(10);
                 string textSpin = "Spin!";
                 _uiStageText.SetText(textSpin);
-                yield return new WaitForFrames(30);
-                textSpin += "!!";
-                _uiStageText.SetText(textSpin);
-                yield return new WaitForFrames(30);
-                textSpin += "!!";
-                _uiStageText.SetText(textSpin);
-                for (int i = 0; i < 10; ++i)
+                for (int i = 0; i < 8; ++i)
                 {
-                    yield return new WaitForFrames(6);
+                    yield return new WaitForFrames(5);
                     textSpin += "!!";
                     _uiStageText.SetText("<b>" + textSpin + "</b>");
                 }
