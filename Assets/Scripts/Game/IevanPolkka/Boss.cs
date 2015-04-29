@@ -92,7 +92,8 @@ namespace Game
                 yield return new WaitForAbsFrames(6840);
                 _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, Vector2.zero, 120, 0.05f));
                 yield return new WaitForFrames(120);
-                _coroutineManager.StartCoroutine(_Logic.GapBullets(this, "Common/Bullet_Blue", 0.95f, 0.005f, 100, 240, 4));
+                _coroutineManager.StartCoroutine(_Logic.CustomGapBullets(this, "Common/Bullet_Blue", 0.95f, 0.005f, 100
+                    , 120, new float[] { 0.36f, 0.20f, 0.95f, 0.25f, 0.5f, 0.36f, 0.75f }));
 
                 // 마지막 간주
                 yield return new WaitForAbsFrames(7800);

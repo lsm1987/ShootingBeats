@@ -116,6 +116,16 @@ namespace Game
             }
         }
 
+        public IEnumerator CustomGapBullets(Mover mover, string shape, float angleRange, float speed, int count
+            , int interval, float[] angles)
+        {
+            for (int i = 0; i < angles.Length; ++i)
+            {
+                NWayBullet(mover, shape, angles[i], angleRange, speed, count);
+                yield return new WaitForFrames(interval);
+            }
+        }
+
         /// <summary>
         /// 원형탄
         /// </summary>

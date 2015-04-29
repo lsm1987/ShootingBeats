@@ -31,7 +31,7 @@ namespace Game
                 // 외양 로딩
                 GameSystem._Instance._UILoading.SetProgress("Loading Bullets 1/2");
                 yield return null;
-                GameSystem._Instance.PoolStackShape("Common/Bullet_Blue", 169);
+                GameSystem._Instance.PoolStackShape("Common/Bullet_Blue", 270);
                 GameSystem._Instance._UILoading.SetProgress("Loading Bullets 2/2");
                 yield return null;
                 GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 50);
