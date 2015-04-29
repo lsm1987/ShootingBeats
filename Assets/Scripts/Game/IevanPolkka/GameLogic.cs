@@ -22,6 +22,24 @@ namespace Game
                     yield return loadPlayer.Current;
                 }
 
+                // 적기 로딩 /////////////////////
+                GameSystem._Instance._UILoading.SetProgress("Loading Boss");
+                GameSystem._Instance.PoolStackShape("Common/Boss_Orange", 1);
+                GameSystem._Instance.PoolStackMover<Boss>(1);
+
+                // 탄 로딩 ///////////////////
+                // 외양 로딩
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 1/2");
+                yield return null;
+                GameSystem._Instance.PoolStackShape("Common/Bullet_Blue", 169);
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 2/2");
+                yield return null;
+                GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 50);
+                // 클래스 로딩
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullet Classes");
+                yield return null;
+                GameSystem._Instance.PoolStackMover<Bullet>(100);
+
                 // 코루틴
                 _coroutineManager.StopAllCoroutines();
 
@@ -158,7 +176,7 @@ namespace Game
             /// 사면에서 직각방향으로 발사되는 시작위치 조준탄
             /// </summary>
             /// <param name="dir">시작방향. 0:상, 1:하, 2:좌, 3: 우</param>
-            private IEnumerator SideAim(int dir, float speed, int interval, int count)
+            public IEnumerator SideAim(int dir, float speed, int interval, int count)
             {
                 for (int i = 0; i < count; ++i)
                 {

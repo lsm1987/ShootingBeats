@@ -2079,8 +2079,8 @@ GameObject:
   m_Component:
   - 4: {fileID: 1403484230}
   - 114: {fileID: 1403484231}
-  - 114: {fileID: 1403484233}
   - 81: {fileID: 1403484232}
+  - 114: {fileID: 1403484233}
   m_Layer: 0
   m_Name: GameSystem
   m_TagString: Untagged

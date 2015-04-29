@@ -81,12 +81,31 @@ namespace Game
                 yield return new WaitForAbsFrames(5850);
                 _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.01f, 12, true, 60, 8));
                 yield return new WaitForFrames(30);
-                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Red", 0.25f, 0.02f, 12, false, 60, 7));
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Red", 0.25f, 0.02f, 12, false, 60, 8));
 
                 // 야바린간
                 yield return new WaitForAbsFrames(6330);
                 _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.01f, 12, true, 60, 8));
                 _coroutineManager.StartCoroutine(_Logic.CornerAim(0.02f, 60, 2));
+
+                // 아야챠챠
+                yield return new WaitForAbsFrames(6840);
+                _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, Vector2.zero, 120, 0.05f));
+                yield return new WaitForFrames(120);
+                _coroutineManager.StartCoroutine(_Logic.GapBullets(this, "Common/Bullet_Blue", 0.95f, 0.005f, 100, 240, 4));
+
+                // 마지막 간주
+                yield return new WaitForAbsFrames(7800);
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 480));
+                _coroutineManager.StartCoroutine(_Logic.SideAim(0, 0.02f, 60, 8));
+                yield return new WaitForFrames(60 * 8);
+                _coroutineManager.StartCoroutine(_Logic.SideAim(2, 0.02f, 120, 4));
+                yield return new WaitForFrames(60);
+                _coroutineManager.StartCoroutine(_Logic.SideAim(3, 0.02f, 120, 4));
+
+                yield return new WaitForAbsFrames(7800 + 960 - 60);
+                _Logic.CircleBullet(this, "Common/Bullet_Red", 0.25f, 0.02f, 12, false);
+                _alive = false;
             }
 
             // 피격시

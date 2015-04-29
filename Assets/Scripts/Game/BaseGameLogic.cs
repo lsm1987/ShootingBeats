@@ -75,6 +75,50 @@ namespace Game
             mover._Pos = arrivePos;
         }
 
+        /// <summary>
+        /// 무버를 지정한 위치까지 비례감속 이동
+        /// </summary>
+        public IEnumerator MoveDamp(Mover mover, Vector2 arrivePos, int duration, float damp)
+        {
+            for (int i = 0; i < duration - 1; ++i)
+            {
+                mover._Pos = Vector2.Lerp(mover._Pos, arrivePos, damp);
+                yield return null;
+            }
+
+            // 마지막 프레임
+            mover._Pos = arrivePos;
+        }
+
+        /// <summary>
+        /// N-Way 탄
+        /// </summary>
+        public void NWayBullet(Mover mover, string shape, float angle, float angleRange, float speed, int count)
+        {
+            for (int i = 0; i < count; ++i)
+            {
+                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init(shape, mover._x, mover._y, angle + angleRange * ((float)i / (count - 1) - 0.5f), 0.0f, speed, 0.0f);
+            }
+        }
+
+        /// <summary>
+        /// 무작위로 구멍 뚫린 N-Way
+        /// </summary>
+        public IEnumerator GapBullets(Mover mover, string shape, float angleRange, float speed, int count
+            , int interval, int repeatCount)
+        {
+            for (int i = 0; i < repeatCount; ++i)
+            {
+                float angle = GameSystem._Instance.GetRandom01();
+                NWayBullet(mover, shape, angle, angleRange, speed, count);
+                yield return new WaitForFrames(interval);
+            }
+        }
+
+        /// <summary>
+        /// 원형탄
+        /// </summary>
         public void CircleBullet(Mover mover, string shape, float angle, float speed, int count, bool halfAngleOffset)
         {
             float angleStart = angle + ((halfAngleOffset) ? (1.0f / count / 2.0f) : 0.0f);
@@ -91,6 +135,29 @@ namespace Game
             for (int i = 0; i < repeatCount; ++i)
             {
                 CircleBullet(mover, shape, angle, speed, count, halfAngleOffset);
+                yield return new WaitForFrames(interval);
+            }
+        }
+
+        /// <summary>
+        /// 선회가속 원형탄
+        /// </summary>
+        public void BentCircleBullet(Mover mover, string shape, float angle, float speed, int count, float bulletAngleRate, float bulletSpeedRate, bool halfAngleOffset)
+        {
+            float angleStart = angle + ((halfAngleOffset) ? (1.0f / count / 2.0f) : 0.0f);
+            for (int i = 0; i < count; ++i)
+            {
+                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init(shape, mover._x, mover._y, angleStart + (1.0f / count * i), bulletAngleRate, speed, bulletSpeedRate);
+            }
+        }
+
+        public IEnumerator BentCircleBullets(Mover mover, string shape, float angle, float speed, int count, float bulletAngleRate, float bulletSpeedRate, bool halfAngleOffset
+            , int interval, int repeatCount)
+        {
+            for (int i = 0; i < repeatCount; ++i)
+            {
+                BentCircleBullet(mover, shape, angle, speed, count, bulletAngleRate, bulletSpeedRate, halfAngleOffset);
                 yield return new WaitForFrames(interval);
             }
         }
