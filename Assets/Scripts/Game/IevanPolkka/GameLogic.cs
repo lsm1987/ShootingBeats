@@ -24,7 +24,7 @@ namespace Game
 
                 // 적기 로딩 /////////////////////
                 GameSystem._Instance._UILoading.SetProgress("Loading Boss");
-                GameSystem._Instance.PoolStackShape("Common/Boss_Orange", 1);
+                GameSystem._Instance.PoolStackShape("Common/Boss_Miku", 1);
                 GameSystem._Instance.PoolStackMover<Boss>(1);
 
                 // 탄 로딩 ///////////////////
@@ -146,7 +146,7 @@ namespace Game
                 _uiStageText.SetActive(true);
                 // 보스 생성
                 Boss boss = GameSystem._Instance.CreateEnemy<Boss>();
-                boss.Init("Common/Boss_Orange", 0.0f, GameSystem._Instance._MaxY + 0.1f, 0.0f);
+                boss.Init("Common/Boss_Miku", 0.0f, GameSystem._Instance._MaxY + 0.1f, 0.0f);
 
                 yield return new WaitForAbsFrames(4386);
                 // 간주(야바린간)
