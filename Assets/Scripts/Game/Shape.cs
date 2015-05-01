@@ -101,6 +101,15 @@ namespace Game
             gameObject.SetActive(false);
         }
 
+        /// <summary>
+        /// 위치정보 적용
+        /// </summary>
+        public void SetPosition(Vector2 pos, float angle)
+        {
+            _trans.position = pos;
+            _trans.rotation = Quaternion.Euler(0.0f, 0.0f, 360.0f * angle);
+        }
+
         public void SetSortingOrder(int order)
         {
             if (_spriteInfos != null)

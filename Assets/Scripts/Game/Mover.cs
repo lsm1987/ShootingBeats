@@ -37,6 +37,9 @@ namespace Game
             _y = y;
             _angle = angle;
             _alive = true;
+
+            // 배치 후 외양에 위치 반영. 배치 즉시 발생하는 파티클에서 필요할 수 있음
+            _shape.SetPosition(_Pos, _angle);
         }
 
         /// <summary>
@@ -63,8 +66,7 @@ namespace Game
         // 그리기
         public void Draw(int order)
         {
-            _shape._trans.position = _Pos;
-            _shape._trans.rotation = Quaternion.Euler(0.0f, 0.0f, 360.0f * _angle);
+            _shape.SetPosition(_Pos, _angle);
             _shape.SetSortingOrder(order);
         }
 

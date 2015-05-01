@@ -36,9 +36,11 @@ namespace Game
                 yield return null;
                 GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 50);
                 // 클래스 로딩
-                GameSystem._Instance._UILoading.SetProgress("Loading Bullet Classes");
-                yield return null;
                 GameSystem._Instance.PoolStackMover<Bullet>(100);
+
+                // 이펙트 로딩
+                GameSystem._Instance.PoolStackShape("Common/Effect_BossCrashMiku", 1);
+                GameSystem._Instance.PoolStackMover<Effect>(1);
 
                 // 코루틴
                 _coroutineManager.StopAllCoroutines();

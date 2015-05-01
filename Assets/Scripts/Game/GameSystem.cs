@@ -41,6 +41,7 @@ namespace Game
         public List<Shot> _Shots { get; private set; }    // 살아있는 샷(플레이어기가 발사) 목록
         public List<Enemy> _Enemys { get; private set; }    // 살아있는 적기 목록
         public List<Bullet> _Bullets { get; private set; }  // 살아있는 탄(적기가 발사) 목록
+        public List<Effect> _Effects { get; private set; }
         public int _Frame { get; private set; } // 현재 갱신중인 프레임 번호
         public bool _FrameByOver { get; private set; }  // 지나쳐버린 노래 따라잡기 위한 프레임 갱신인가?
         private int _totalFrame = 0; // 총 몇 프레임짜리 스테이지인가?
@@ -114,6 +115,7 @@ namespace Game
             _Shots = new List<Shot>();
             _Enemys = new List<Enemy>();
             _Bullets = new List<Bullet>();
+            _Effects = new List<Effect>();
 
             StartLoading();
         }
@@ -462,6 +464,7 @@ namespace Game
             UpdateMoverList(_Shots, _FrameByOver);
             UpdateMoverList(_Enemys, _FrameByOver);
             UpdateMoverList(_Bullets, _FrameByOver);
+            UpdateMoverList(_Effects, _FrameByOver);
 
             // UI 갱신
             if (!_FrameByOver)
@@ -582,6 +585,7 @@ namespace Game
             RemoveMoverList(_Shots);
             RemoveMoverList(_Enemys);
             RemoveMoverList(_Bullets);
+            RemoveMoverList(_Effects);
         }
         #endregion //Mover
 
@@ -659,6 +663,15 @@ namespace Game
             return bullet;
         }
         #endregion // Bullet
+
+        #region Effect
+        public T CreateEffect<T>() where T : Effect, new()
+        {
+            T effect = _moverPoolManager.Create<T>();
+            _Effects.Add(effect);
+            return effect;
+        }
+        #endregion
 
         #region Score
         /// <summary>

@@ -106,6 +106,10 @@ namespace Game
 
                 yield return new WaitForAbsFrames(7800 + 960 - 60);
                 _Logic.CircleBullet(this, "Common/Bullet_Red", 0.25f, 0.02f, 12, false);
+                {
+                    Effect crashEffect = GameSystem._Instance.CreateEffect<Effect>();
+                    crashEffect.Init("Common/Effect_BossCrashMiku", _x, _y, 0.0f);
+                }
                 _alive = false;
             }
 
