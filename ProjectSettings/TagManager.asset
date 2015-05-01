@@ -56,9 +56,6 @@ TagManager:
   - name: Bullet
     uniqueID: 2643978333
     locked: 0
-  - name: PlayerCrash
-    uniqueID: 1051174483
-    locked: 0
   - name: ForegroundUI
     uniqueID: 1793112921
     locked: 0
