@@ -38,12 +38,9 @@ namespace Game
                 // 클래스 로딩
                 GameSystem._Instance.PoolStackMover<Bullet>(100);
 
-                // 이펙트 로딩
+                // 이펙트 로딩 ///////////////////
                 GameSystem._Instance.PoolStackShape("Common/Effect_BossCrashMiku", 1);
                 GameSystem._Instance.PoolStackMover<Effect>(1);
-
-                // 코루틴
-                _coroutineManager.StopAllCoroutines();
 
                 // 스테이지 텍스트
                 if (_uiStageText == null)
@@ -64,8 +61,9 @@ namespace Game
                 GameSystem._Instance._MoveInputArea.SetVisible(false);
                 GameSystem._Instance._PauseInputArea.SetVisible(false);
 
-                // 메인 코루틴 등록
-                _coroutineManager.RegisterCoroutine(Main());
+                // 코루틴
+                _coroutineManager.StopAllCoroutines();
+                _coroutineManager.RegisterCoroutine(Main());    // 메인 코루틴 등록
             }
 
             // 특화 정보 갱신

@@ -21,7 +21,6 @@ namespace Game
             set { _pos.y = value; }
         }
         public float _angle; // 현재 회전. 단위 0.0f~1.0f
-        public float _scale;
         public bool _alive;
         public Type _poolKey { get; private set; } // 이 인스턴스가 되돌아갈 풀의 구분자
 
