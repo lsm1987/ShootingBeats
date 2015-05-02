@@ -256,27 +256,8 @@ namespace Game
                 yield return new WaitForFrames(32);
 
                 float angle = ((leftCorner) ? 0.875f : 0.625f);
-                ShootNWay("Common/Bullet_Blue", 0.02f, 6, angle, 0.25f);
+                _Logic.NWayBullet(this, "Common/Bullet_Blue", angle, 0.25f, 0.02f, 6);
                 yield return new WaitForFrames(75);
-            }
-
-            private void ShootNWay(string shape, float speed, int count, float angle, float angleRange)
-            {
-                if (count > 1)
-                {
-                    for (int i = 0; i < count; ++i)
-                    {
-                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                        b.Init(shape, _X, _Y, angle + angleRange * ((float)i / (count - 1) - 0.5f)
-                            , 0.0f, speed, 0.0f);
-                    }
-                }
-                else if (count == 1)
-                {
-                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                    b.Init(shape, _X, _Y, angle + angleRange
-                        , 0.0f, speed, 0.0f);
-                }
             }
 
             // 다방향 소용돌이탄
@@ -385,12 +366,12 @@ namespace Game
             {
                 const int repeatCount = 4;
                 const int directionCount = 4;
-                float startAngle = 0.75f;
+                const float startAngle = 0.75f;
+                const float angleRange = 1.0f - 1.0f / directionCount;
                 for (int i = 0; i < repeatCount; ++i)
                 {
-                    ShootNWay("Common/Bullet_Red", 0.01f, directionCount
-                        , startAngle + 0.25f * (float)i * (clockwise ? -1.0f : 1.0f)
-                        , 1.0f - 1.0f / directionCount);
+                    float angle = startAngle + 0.25f * (float)i * (clockwise ? -1.0f : 1.0f);
+                    _Logic.NWayBullet(this, "Common/Bullet_Red", angle, angleRange, 0.01f, directionCount);
 
                     if (i < repeatCount - 1)
                     {
@@ -410,25 +391,26 @@ namespace Game
 
                 const float speed = 0.01f;
                 const float angle = 0.75f;
+                const float nwayAngleRange = 0.125f;
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
                 b.Init("Common/Bullet_Red", _X, _Y, angle, 0.0f, speed, 0.0f);
                 yield return new WaitForFrames(interval);
 
-                ShootNWay("Common/Bullet_Red", speed, 2, angle, 0.125f);
+                _Logic.NWayBullet(this, "Common/Bullet_Red", angle, nwayAngleRange, speed, 2);
                 yield return new WaitForFrames(interval);
 
                 b = GameSystem._Instance.CreateBullet<Bullet>();
                 b.Init("Common/Bullet_Red", _X, _Y, angle, 0.0f, speed, 0.0f);
                 yield return new WaitForFrames(interval);
 
-                ShootNWay("Common/Bullet_Red", speed, 2, angle, 0.125f);
+                _Logic.NWayBullet(this, "Common/Bullet_Red", angle, nwayAngleRange, speed, 2);
                 yield return new WaitForFrames(interval);
 
                 b = GameSystem._Instance.CreateBullet<Bullet>();
                 b.Init("Common/Bullet_Red", _X, _Y, angle, 0.0f, speed, 0.0f);
                 yield return new WaitForFrames(interval);
 
-                ShootNWay("Common/Bullet_Red", speed, 2, angle, 0.125f);
+                _Logic.NWayBullet(this, "Common/Bullet_Red", angle, nwayAngleRange, speed, 2);
                 yield return new WaitForFrames(interval);
             }
 

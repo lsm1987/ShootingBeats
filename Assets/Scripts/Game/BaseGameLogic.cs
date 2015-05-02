@@ -95,10 +95,20 @@ namespace Game
         /// </summary>
         public void NWayBullet(Mover mover, string shape, float angle, float angleRange, float speed, int count)
         {
-            for (int i = 0; i < count; ++i)
+            if (count > 1)
             {
+                for (int i = 0; i < count; ++i)
+                {
+                    // (angle - angleRange / 2) ~ (angle + angleRange / 2) 범위에서 count 만큼 생성
+                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                    b.Init(shape, mover._X, mover._Y, angle + angleRange * ((float)i / (count - 1) - 0.5f), 0.0f, speed, 0.0f);
+                }
+            }
+            else if (count == 1)
+            {
+                // 탄 수가 하나일 때는 발사 각도로 1개 발사
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init(shape, mover._X, mover._Y, angle + angleRange * ((float)i / (count - 1) - 0.5f), 0.0f, speed, 0.0f);
+                b.Init(shape, mover._X, mover._Y, angle, 0.0f, speed, 0.0f);
             }
         }
 
