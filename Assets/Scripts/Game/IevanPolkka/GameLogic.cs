@@ -185,26 +185,26 @@ namespace Game
                     float x, y, angle;
                     if (dir == 0)
                     {
-                        x = GameSystem._Instance._Player._x;
+                        x = GameSystem._Instance._Player._X;
                         y = GameSystem._Instance._MaxY;
                         angle = 0.75f;
                     }
                     else if (dir == 1)
                     {
-                        x = GameSystem._Instance._Player._x;
+                        x = GameSystem._Instance._Player._X;
                         y = GameSystem._Instance._MinY;
                         angle = 0.25f;
                     }
                     else if (dir == 2)
                     {
                         x = GameSystem._Instance._MinX;
-                        y = GameSystem._Instance._Player._y;
+                        y = GameSystem._Instance._Player._Y;
                         angle = 0.0f;
                     }
                     else
                     {
                         x = GameSystem._Instance._MaxX;
-                        y = GameSystem._Instance._Player._y;
+                        y = GameSystem._Instance._Player._Y;
                         angle = 0.50f;
                     }
 

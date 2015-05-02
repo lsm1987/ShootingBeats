@@ -136,17 +136,17 @@ namespace Game
             private IEnumerator MoveConstantVelocity(Vector3 arrivePos, int duration)
             {
                 int startFrame = _Frame;
-                Vector2 startPos = _Pos;
+                Vector2 startPos = _pos;
 
                 while (_Frame < (startFrame + duration))
                 {
                     float time = (float)(_Frame - startFrame) / (float)duration;
-                    _Pos = Vector2.Lerp(startPos, arrivePos, time);
+                    _pos = Vector2.Lerp(startPos, arrivePos, time);
                     yield return null;
                 }
 
                 // 마지막 프레임
-                _Pos = arrivePos;
+                _pos = arrivePos;
             }
 
             // 지정한 위치까지 비례감속 이동
@@ -156,12 +156,12 @@ namespace Game
 
                 while (_Frame < (startFrame + duration))
                 {
-                    _Pos = Vector2.Lerp(_Pos, arrivePos, damp);
+                    _pos = Vector2.Lerp(_pos, arrivePos, damp);
                     yield return null;
                 }
 
                 // 마지막 프레임
-                _Pos = arrivePos;
+                _pos = arrivePos;
             }
 
             // 단순 3파
@@ -169,16 +169,16 @@ namespace Game
             {
                 // 1파
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init("Common/Bullet_Blue", _x, _y, 0.75f
+                b.Init("Common/Bullet_Blue", _X, _Y, 0.75f
                     , 0.0f, 0.02f, 0.0f);
                 yield return new WaitForFrames(11);
 
                 // 2파
                 b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init("Common/Bullet_Blue", _x - 0.2f, _y, 0.75f
+                b.Init("Common/Bullet_Blue", _X - 0.2f, _Y, 0.75f
                     , 0.0f, 0.02f, 0.0f);
                 b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init("Common/Bullet_Blue", _x + 0.2f, _y, 0.75f
+                b.Init("Common/Bullet_Blue", _X + 0.2f, _Y, 0.75f
                     , 0.0f, 0.02f, 0.0f);
                 yield return new WaitForFrames(12);
 
@@ -191,7 +191,7 @@ namespace Game
                 for (int i = 0; i < count; ++i)
                 {
                     b = GameSystem._Instance.CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Blue", _x, _y, (startAngle + (endAngle - startAngle) / count * i)
+                    b.Init("Common/Bullet_Blue", _X, _Y, (startAngle + (endAngle - startAngle) / count * i)
                         , 0.0f, 0.02f, 0.0f);
 
                     if (i < count - 1)
@@ -242,7 +242,7 @@ namespace Game
                 for (int i = 0; i < count; ++i)
                 {
                     Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                    b.Init(shape, _x, _y, (1.0f / count * i) + angleOffset
+                    b.Init(shape, _X, _Y, (1.0f / count * i) + angleOffset
                         , 0.0f, speed, 0.0f);
                 }
             }
@@ -270,7 +270,7 @@ namespace Game
                 {
                     float playerAngle = _Logic.GetPlayerAngle(this);
                     Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", _x, _y, playerAngle
+                    b.Init("Common/Bullet_Red", _X, _Y, playerAngle
                         , 0.0f, 0.02f, 0.0f);
 
                     if (i < count - 1)
@@ -309,7 +309,7 @@ namespace Game
             {
                 // 1탄
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init("Common/Bullet_Blue", _x, _y, 0.75f
+                b.Init("Common/Bullet_Blue", _X, _Y, 0.75f
                     , 0.0f, 0.02f, 0.0f);
                 yield return new WaitForFrames(32);
 
@@ -325,14 +325,14 @@ namespace Game
                     for (int i = 0; i < count; ++i)
                     {
                         Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                        b.Init(shape, _x, _y, angle + angleRange * ((float)i / (count - 1) - 0.5f)
+                        b.Init(shape, _X, _Y, angle + angleRange * ((float)i / (count - 1) - 0.5f)
                             , 0.0f, speed, 0.0f);
                     }
                 }
                 else if (count == 1)
                 {
                     Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                    b.Init(shape, _x, _y, angle + angleRange
+                    b.Init(shape, _X, _Y, angle + angleRange
                         , 0.0f, speed, 0.0f);
                 }
             }
@@ -352,7 +352,7 @@ namespace Game
                         for (int i = 0; i < count; ++i)
                         {
                             Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                            b.Init("Common/Bullet_Blue", _x, _y, shotAngle + ((float)i / count)
+                            b.Init("Common/Bullet_Blue", _X, _Y, shotAngle + ((float)i / count)
                                 , 0.0f, speed, 0.0f);
                         }
 
@@ -386,7 +386,7 @@ namespace Game
                             for (int i = 0; i < count; ++i)
                             {
                                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                                b.Init("Common/Bullet_Blue", _x, _y, shotAngle[j] + ((float)i / count)
+                                b.Init("Common/Bullet_Blue", _X, _Y, shotAngle[j] + ((float)i / count)
                                     , 0.0f, speed, 0.0f);
                             }
 
@@ -417,7 +417,7 @@ namespace Game
                         for (int i = 0; i < count; ++i)
                         {
                             Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                            b.Init(shape, _x, _y, shotAngle + ((float)i / count)
+                            b.Init(shape, _X, _Y, shotAngle + ((float)i / count)
                                 , bulletAngleRate, speed, bulletSpeedRate);
                         }
 
@@ -469,21 +469,21 @@ namespace Game
                 const float speed = 0.01f;
                 const float angle = 0.75f;
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init("Common/Bullet_Red", _x, _y, angle, 0.0f, speed, 0.0f);
+                b.Init("Common/Bullet_Red", _X, _Y, angle, 0.0f, speed, 0.0f);
                 yield return new WaitForFrames(interval);
 
                 ShootNWay("Common/Bullet_Red", speed, 2, angle, 0.125f);
                 yield return new WaitForFrames(interval);
 
                 b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init("Common/Bullet_Red", _x, _y, angle, 0.0f, speed, 0.0f);
+                b.Init("Common/Bullet_Red", _X, _Y, angle, 0.0f, speed, 0.0f);
                 yield return new WaitForFrames(interval);
 
                 ShootNWay("Common/Bullet_Red", speed, 2, angle, 0.125f);
                 yield return new WaitForFrames(interval);
 
                 b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init("Common/Bullet_Red", _x, _y, angle, 0.0f, speed, 0.0f);
+                b.Init("Common/Bullet_Red", _X, _Y, angle, 0.0f, speed, 0.0f);
                 yield return new WaitForFrames(interval);
 
                 ShootNWay("Common/Bullet_Red", speed, 2, angle, 0.125f);
@@ -519,7 +519,7 @@ namespace Game
                         for (int i = 0; i < count; ++i)
                         {
                             Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                            b.Init(shape, _x, _y, GameSystem._Instance.GetRandom01()
+                            b.Init(shape, _X, _Y, GameSystem._Instance.GetRandom01()
                                 , 0.0f, speed, 0.0f);
                         }
                     }

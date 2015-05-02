@@ -9,7 +9,17 @@ namespace Game
     public abstract class Mover
     {
         public Shape _shape;
-        public float _x, _y;
+        public Vector2 _pos;
+        public float _X
+        {
+            get { return _pos.x; }
+            set { _pos.x = value; }
+        }
+        public float _Y
+        {
+            get { return _pos.y; }
+            set { _pos.y = value; }
+        }
         public float _angle; // 현재 회전. 단위 0.0f~1.0f
         public float _scale;
         public bool _alive;
@@ -33,13 +43,13 @@ namespace Game
         public virtual void Init(string shapeSubPath, float x, float y, float angle)
         {
             SetShape(shapeSubPath);
-            _x = x;
-            _y = y;
+            _X = x;
+            _Y = y;
             _angle = angle;
             _alive = true;
 
             // 배치 후 외양에 위치 반영. 배치 즉시 발생하는 파티클에서 필요할 수 있음
-            _shape.SetPosition(_Pos, _angle);
+            _shape.SetPosition(_pos, _angle);
         }
 
         /// <summary>
@@ -66,7 +76,7 @@ namespace Game
         // 그리기
         public void Draw(int order)
         {
-            _shape.SetPosition(_Pos, _angle);
+            _shape.SetPosition(_pos, _angle);
             _shape.SetSortingOrder(order);
         }
 
@@ -76,8 +86,8 @@ namespace Game
             // 대상 또는 자신의 hit 영역이 없다면 Hit 발생하지 않음
             if (_shape._hit != 0.0f && mover._shape._hit != 0.0f)
             {
-                float dx = mover._x - _x;
-                float dy = mover._y - _y;
+                float dx = mover._X - _X;
+                float dy = mover._Y - _Y;
                 float hit = mover._shape._hit + _shape._hit;
                 return (dx * dx + dy * dy) < (hit * hit);
             }
@@ -106,10 +116,10 @@ namespace Game
         // 게임 영역 안에 있는지 여부 리턴
         public bool IsInStage()
         {
-            if ((_x + _shape._size) <= GameSystem._Instance._MinX
-                || (_x - _shape._size) >= GameSystem._Instance._MaxX
-                || (_y + _shape._size) <= GameSystem._Instance._MinY
-                || (_y - _shape._size) >= GameSystem._Instance._MaxY)
+            if ((_X + _shape._size) <= GameSystem._Instance._MinX
+                || (_X - _shape._size) >= GameSystem._Instance._MaxX
+                || (_Y + _shape._size) <= GameSystem._Instance._MinY
+                || (_Y - _shape._size) >= GameSystem._Instance._MaxY)
             {
                 return false; // 벗어남
             }
@@ -123,20 +133,6 @@ namespace Game
         public virtual void OnDestroy()
         {
             ClearShape();
-        }
-
-        public Vector2 _Pos
-        {
-            get
-            {
-                return new Vector2(_x, _y);
-            }
-
-            set
-            {
-                _x = value.x;
-                _y = value.y;
-            }
         }
 
         public int _Frame

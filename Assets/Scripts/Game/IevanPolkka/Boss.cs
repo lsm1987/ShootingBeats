@@ -65,16 +65,16 @@ namespace Game
                     const int shakeInterval = 2;
                     for (int i = 0; i < 8; ++i)
                     {
-                        _Pos = new Vector2(pivotX + shakeOffset, pivotY);
+                        _pos = new Vector2(pivotX + shakeOffset, pivotY);
                         yield return new WaitForFrames(shakeInterval);
-                        _Pos = new Vector2(pivotX, pivotY + shakeOffset);
+                        _pos = new Vector2(pivotX, pivotY + shakeOffset);
                         yield return new WaitForFrames(shakeInterval);
-                        _Pos = new Vector2(pivotX - shakeOffset, pivotY);
+                        _pos = new Vector2(pivotX - shakeOffset, pivotY);
                         yield return new WaitForFrames(shakeInterval);
-                        _Pos = new Vector2(pivotX, pivotY - shakeOffset);
+                        _pos = new Vector2(pivotX, pivotY - shakeOffset);
                         yield return new WaitForFrames(shakeInterval);
                     }
-                    _Pos = new Vector2(pivotX, pivotY);
+                    _pos = new Vector2(pivotX, pivotY);
                 }
 
                 // 아야챠챠
@@ -108,7 +108,7 @@ namespace Game
                 _Logic.CircleBullet(this, "Common/Bullet_Red", 0.25f, 0.02f, 12, false);
                 {
                     Effect crashEffect = GameSystem._Instance.CreateEffect<Effect>();
-                    crashEffect.Init("Common/Effect_BossCrashMiku", _x, _y, 0.0f);
+                    crashEffect.Init("Common/Effect_BossCrashMiku", _X, _Y, 0.0f);
                 }
                 _alive = false;
             }

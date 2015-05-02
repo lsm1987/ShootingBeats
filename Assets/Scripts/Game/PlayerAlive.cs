@@ -44,7 +44,7 @@ namespace Game
                     // 충돌 표시용 플레이어기 생성
                     GameSystem._Instance.PlaySoundEffect("PlayerExplosion");
                     PlayerCrash playerCrash = GameSystem._Instance.CreatePlayer<PlayerCrash>();
-                    playerCrash.Init("Common/Player_Crash", _x, _y, _angle);
+                    playerCrash.Init("Common/Player_Crash", _X, _Y, _angle);
                 }
 //                 else
 //                 {
@@ -73,12 +73,12 @@ namespace Game
         private void CreateShot(bool left, bool diagonal)
         {
             Shot shot = GameSystem._Instance.CreateShot<Shot>();
-            float x = _x + 0.05f * ((left) ? -1.0f : 1.0f);
+            float x = _X + 0.05f * ((left) ? -1.0f : 1.0f);
             if (diagonal)
             {
                 x += (left ? -0.025f : 0.025f);
             }
-            float y = _y + 0.05f;
+            float y = _Y + 0.05f;
             float angle = 0.25f;
             const float diagonalAngle = 0.01f;
             if (diagonal)
@@ -104,8 +104,8 @@ namespace Game
             float mx = GameSystem._Instance._MaxX - _shape._size;
             float my = GameSystem._Instance._MaxY - _shape._size;
 
-            _x = Mathf.Clamp(_x + delta.x * moveRate, -mx, mx);
-            _y = Mathf.Clamp(_y + delta.y * moveRate, -my, my);
+            _X = Mathf.Clamp(_X + delta.x * moveRate, -mx, mx);
+            _Y = Mathf.Clamp(_Y + delta.y * moveRate, -my, my);
         }
 
         private void MoveByKey()
@@ -121,14 +121,14 @@ namespace Game
             float my = GameSystem._Instance._MaxY - _shape._size;
 
             // 이동하려는 위치
-            float x = _x + vx * speed;
-            float y = _y + vy * speed;
+            float x = _X + vx * speed;
+            float y = _Y + vy * speed;
             x = Mathf.Clamp(x, -mx, mx);
             y = Mathf.Clamp(y, -my, my);
 
             // 변위
-            float dx = x - _x;
-            float dy = y - _y;
+            float dx = x - _X;
+            float dy = y - _Y;
             //Debug.Log("dx1:" + dx.ToString() + " dy1:" + dy.ToString());
             float d = Mathf.Sqrt(dx * dx + dy * dy);
             if (d > speed)
@@ -139,8 +139,8 @@ namespace Game
             }
 
             // 실제 이동
-            _x += dx;
-            _y += dy;
+            _X += dx;
+            _Y += dy;
         }
     }
 }

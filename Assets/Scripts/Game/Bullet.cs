@@ -27,8 +27,8 @@ namespace Game
         {
             float rad = _angle * Mathf.PI * 2.0f; // 라디안으로 변환
             
-            _x += _speed * Mathf.Cos(rad); // 이동
-            _y += _speed * Mathf.Sin(rad);
+            _X += _speed * Mathf.Cos(rad); // 이동
+            _Y += _speed * Mathf.Sin(rad);
 
             _angle += _angleRate; // 각도에 각속도 가산
             _speed += _speedRate; // 속도에 가속도 가산

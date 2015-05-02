@@ -42,7 +42,7 @@ namespace Game
         public float GetPlayerAngle(float x, float y)
         {
             // Atan2 의 결과가 라디안이므로 0~1로 변경
-            Vector2 playerPos = GameSystem._Instance._Player._Pos;
+            Vector2 playerPos = GameSystem._Instance._Player._pos;
             return Mathf.Atan2(playerPos.y - y, playerPos.x - x) / Mathf.PI / 2.0f;
         }
 
@@ -53,7 +53,7 @@ namespace Game
         /// <returns></returns>
         public float GetPlayerAngle(Mover startMover)
         {
-            return GetPlayerAngle(startMover._x, startMover._y);
+            return GetPlayerAngle(startMover._X, startMover._Y);
         }
         #endregion Util
 
@@ -63,16 +63,16 @@ namespace Game
         /// </summary>
         public IEnumerator MoveConstantVelocity(Mover mover, Vector2 arrivePos, int duration)
         {
-            Vector2 delta = (arrivePos - mover._Pos) / (float)duration; // 한 프레임에 움직일 거리
+            Vector2 delta = (arrivePos - mover._pos) / (float)duration; // 한 프레임에 움직일 거리
 
             for (int i = 0; i < duration - 1; ++i)
             {
-                mover._Pos += delta;
+                mover._pos += delta;
                 yield return null;
             }
 
             // 마지막 프레임
-            mover._Pos = arrivePos;
+            mover._pos = arrivePos;
         }
 
         /// <summary>
@@ -82,12 +82,12 @@ namespace Game
         {
             for (int i = 0; i < duration - 1; ++i)
             {
-                mover._Pos = Vector2.Lerp(mover._Pos, arrivePos, damp);
+                mover._pos = Vector2.Lerp(mover._pos, arrivePos, damp);
                 yield return null;
             }
 
             // 마지막 프레임
-            mover._Pos = arrivePos;
+            mover._pos = arrivePos;
         }
 
         /// <summary>
@@ -98,7 +98,7 @@ namespace Game
             for (int i = 0; i < count; ++i)
             {
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init(shape, mover._x, mover._y, angle + angleRange * ((float)i / (count - 1) - 0.5f), 0.0f, speed, 0.0f);
+                b.Init(shape, mover._X, mover._Y, angle + angleRange * ((float)i / (count - 1) - 0.5f), 0.0f, speed, 0.0f);
             }
         }
 
@@ -135,7 +135,7 @@ namespace Game
             for (int i = 0; i < count; ++i)
             {
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init(shape, mover._x, mover._y, angleStart + (1.0f / count * i), 0.0f, speed, 0.0f);
+                b.Init(shape, mover._X, mover._Y, angleStart + (1.0f / count * i), 0.0f, speed, 0.0f);
             }
         }
 
@@ -158,7 +158,7 @@ namespace Game
             for (int i = 0; i < count; ++i)
             {
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init(shape, mover._x, mover._y, angleStart + (1.0f / count * i), bulletAngleRate, speed, bulletSpeedRate);
+                b.Init(shape, mover._X, mover._Y, angleStart + (1.0f / count * i), bulletAngleRate, speed, bulletSpeedRate);
             }
         }
 
