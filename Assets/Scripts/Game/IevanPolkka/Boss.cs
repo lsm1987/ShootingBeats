@@ -24,7 +24,6 @@ namespace Game
 
             public override void Move()
             {
-                MoveMain();
                 _coroutineManager.UpdateAllCoroutines();
             }
 

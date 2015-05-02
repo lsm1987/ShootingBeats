@@ -16,107 +16,92 @@ namespace Game
             {
             }
 
+            public override void Init(string shapeSubPath, float x, float y, float angle)
+            {
+                base.Init(shapeSubPath, x, y, angle);
+                _coroutineManager.RegisterCoroutine(MoveMain());
+            }
+
             public override void Move()
             {
-                MoveMain();
                 _coroutineManager.UpdateAllCoroutines();
             }
 
-            // 실제 갱신
-            private void MoveMain()
+            // 메인 코루틴
+            private IEnumerator MoveMain()
             {
-                int frame = _Frame;
-                if (frame == 0)
+                _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.75f), 40));
+
+                yield return new WaitForAbsFrames(50);
+                _coroutineManager.StartCoroutine(Simple3Wave(true));
+
+                yield return new WaitForAbsFrames(140);
+                _coroutineManager.StartCoroutine(Simple3Wave(false));
+
+                yield return new WaitForAbsFrames(249);
+                _coroutineManager.StartCoroutine(Simple4Wave());
+                _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.5f), 75));
+
+                yield return new WaitForAbsFrames(356);
+                _coroutineManager.StartCoroutine(SimpleCircles());
+
+                yield return new WaitForAbsFrames(469);
+                _coroutineManager.StartCoroutine(AimAfterSimpleCircles());
+
+                yield return new WaitForAbsFrames(799);
+                // 왼쪽 코너로 이동
+                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(-0.6f, 0.75f), 30, 0.1f));
+
+                yield return new WaitForAbsFrames(890);
+                _coroutineManager.StartCoroutine(CornerWaves(true));
+
+                yield return new WaitForAbsFrames(1230);
+                // 오른쪽 코너로 이동
+                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.6f, 0.75f), 60, 0.1f));
+
+                yield return new WaitForAbsFrames(1320);
+                _coroutineManager.StartCoroutine(CornerWaves(false));
+
+                yield return new WaitForAbsFrames(1660);
+                // 중앙으로 이동
+                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.0f), 40, 0.1f));
+
+                yield return new WaitForAbsFrames(1750);
+                _coroutineManager.StartCoroutine(RotateCrossTwice());
+
+                yield return new WaitForAbsFrames(2580);
+                _coroutineManager.StartCoroutine(BackwardStep());
+
+                yield return new WaitForAbsFrames(3026);
+                _coroutineManager.StartCoroutine(PigeonSolo());
+
+                yield return new WaitForAbsFrames(4700);
+                // 왼쪽 코너로 이동
+                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(-0.6f, 0.75f), 30, 0.1f));
+
+                yield return new WaitForAbsFrames(4730);
+                _coroutineManager.StartCoroutine(CornerWaves(true));
+
+                yield return new WaitForAbsFrames(5070);
+                // 오른쪽 코너로 이동
+                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.6f, 0.75f), 60, 0.1f));
+
+                yield return new WaitForAbsFrames(5160);
+                _coroutineManager.StartCoroutine(CornerWaves(false));
+
+                yield return new WaitForAbsFrames(5500);
+                // 중앙으로 이동
+                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.0f), 40, 0.1f));
+
+                yield return new WaitForAbsFrames(5590);
+                _coroutineManager.StartCoroutine(RotateCrossTwice());
+
+                yield return new WaitForAbsFrames(6410);
                 {
-                    _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.75f), 40));
+                    Effect crashEffect = GameSystem._Instance.CreateEffect<Effect>();
+                    crashEffect.Init("Common/Effect_BossCrashOrange", _X, _Y, 0.0f);
                 }
-                else if (frame == 50)
-                {
-                    _coroutineManager.StartCoroutine(Simple3Wave(true));
-                }
-                else if (frame == 148)
-                {
-                    _coroutineManager.StartCoroutine(Simple3Wave(false));
-                }
-                else if (frame == 249)
-                {
-                    _coroutineManager.StartCoroutine(Simple4Wave());
-                    _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.5f), 75));
-                }
-                else if (frame == 356)
-                {
-                    _coroutineManager.StartCoroutine(SimpleCircles());
-                }
-                else if (frame == 469)
-                {
-                    _coroutineManager.StartCoroutine(AimAfterSimpleCircles());
-                }
-                else if (frame == 799)
-                {
-                    // 왼쪽 코너로 이동
-                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(-0.6f, 0.75f), 30, 0.1f));
-                }
-                else if (frame == 890)
-                {
-                    _coroutineManager.StartCoroutine(CornerWaves(true));
-                }
-                else if (frame == 1230)
-                {
-                    // 오른쪽 코너로 이동
-                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.6f, 0.75f), 60, 0.1f));
-                }
-                else if (frame == 1320)
-                {
-                    _coroutineManager.StartCoroutine(CornerWaves(false));
-                }
-                else if (frame == 1660)
-                {
-                    // 중앙으로 이동
-                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.0f), 40, 0.1f));
-                }
-                else if (frame == 1750)
-                {
-                    _coroutineManager.StartCoroutine(RotateCrossTwice());
-                }
-                else if (frame == 2580)
-                {
-                    _coroutineManager.StartCoroutine(BackwardStep());
-                }
-                else if (frame == 3026)
-                {
-                    _coroutineManager.StartCoroutine(PigeonSolo());
-                }
-                else if (frame == 4700)
-                {
-                    // 왼쪽 코너로 이동
-                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(-0.6f, 0.75f), 30, 0.1f));
-                }
-                else if (frame == 4730)
-                {
-                    _coroutineManager.StartCoroutine(CornerWaves(true));
-                }
-                else if (frame == 5070)
-                {
-                    // 오른쪽 코너로 이동
-                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.6f, 0.75f), 60, 0.1f));
-                }
-                else if (frame == 5160)
-                {
-                    _coroutineManager.StartCoroutine(CornerWaves(false));
-                }
-                else if (frame == 5500)
-                {
-                    // 중앙으로 이동
-                    _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.0f), 40, 0.1f));
-                }
-                else if (frame == 5590)
-                {
-                    _coroutineManager.StartCoroutine(RotateCrossTwice());
-                }
-                else if (frame == 6410)
-                {
-                    _alive = false;
-                }
+                _alive = false;
             }
 
             // 피격시
