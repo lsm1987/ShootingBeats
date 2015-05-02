@@ -260,35 +260,6 @@ namespace Game
                 yield return new WaitForFrames(75);
             }
 
-            // 다방향 소용돌이탄
-            private IEnumerator ShootIntervalMultipleSpiral(float angle, float angleRate, float speed, int count, int interval, int duration)
-            {
-                int frame = 0;
-                int startFrame = _Frame;
-                float shotAngle = angle;
-
-                while (_Frame < startFrame + duration)
-                {
-                    if (frame == 0)
-                    {
-                        // 지정된 발사 수 만큼 발사
-                        for (int i = 0; i < count; ++i)
-                        {
-                            Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                            b.Init("Common/Bullet_Blue", _X, _Y, shotAngle + ((float)i / count)
-                                , 0.0f, speed, 0.0f);
-                        }
-
-                        shotAngle += angleRate;
-                        shotAngle -= Mathf.Floor(shotAngle);
-                    }
-
-                    // 타이머 갱신
-                    frame = (frame + 1) % interval;
-                    yield return null;
-                }
-            }
-
             // 양회전 소용돌이탄
             private IEnumerator ShootBiDirectionalSpiral(float angle, float angleRate1, float angleRate2,
                 float speed, int count, int interval, int duration)
@@ -357,9 +328,9 @@ namespace Game
             private IEnumerator RotateCrossTwice()
             {
                 _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(false));
-                yield return _coroutineManager.StartCoroutine(ShootIntervalMultipleSpiral(0.125f, 0.005f, 0.05f, 4, 2, 410));
+                yield return _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.125f, 0.005f, 0.05f, 4, 2, 410));
                 _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(true));
-                yield return _coroutineManager.StartCoroutine(ShootIntervalMultipleSpiral(0.125f, -0.005f, 0.05f, 4, 2, 410));
+                yield return _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.125f, -0.005f, 0.05f, 4, 2, 410));
             }
 
             private IEnumerator RotateCrossTwice_DirectionShot(bool clockwise)
@@ -417,8 +388,8 @@ namespace Game
             // 비둘기 솔로
             private IEnumerator PigeonSolo()
             {
-                yield return _coroutineManager.StartCoroutine(ShootIntervalMultipleSpiral(0.0f, 0.02f, 0.01f, 4, 5, 193));
-                yield return _coroutineManager.StartCoroutine(ShootIntervalMultipleSpiral(0.0f, -0.02f, 0.01f, 4, 5, 193));
+                yield return _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.0f, 0.02f, 0.01f, 4, 5, 193));
+                yield return _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.0f, -0.02f, 0.01f, 4, 5, 193));
                 yield return _coroutineManager.StartCoroutine(ShootBiDirectionalSpiral(0.0f, 0.03f, -0.02f, 0.01f, 4, 5, 400));
                 yield return new WaitForFrames(90);
                 yield return _coroutineManager.StartCoroutine(ShootBentSpiral("Common/Bullet_Red", 0.0f, 0.02f, 0.0f, 10, 10, -0.003f, 0.0002f, 400));

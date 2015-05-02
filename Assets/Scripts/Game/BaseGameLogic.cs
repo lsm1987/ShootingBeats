@@ -181,6 +181,31 @@ namespace Game
                 yield return new WaitForFrames(interval);
             }
         }
+
+        /// <summary>
+        /// 다방향 소용돌이탄
+        /// </summary>
+        public IEnumerator MultipleSpiralBullets(Mover mover, string shape, float angle, float angleRate, float speed, int count, int interval, int duration)
+        {
+            float shotAngle = angle;
+            for (int frame = 0; frame < duration; ++frame)
+            {
+                if ((frame % interval) == 0)
+                {
+                    // 지정된 발사 수 만큼 발사
+                    for (int i = 0; i < count; ++i)
+                    {
+                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                        b.Init("Common/Bullet_Blue", mover._X, mover._Y, shotAngle + ((float)i / count)
+                            , 0.0f, speed, 0.0f);
+                    }
+
+                    shotAngle += angleRate;
+                    shotAngle -= Mathf.Floor(shotAngle);
+                }
+                yield return null;
+            }
+        }
         #endregion Pattern
     }
 }
