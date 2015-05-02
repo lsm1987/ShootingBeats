@@ -189,17 +189,6 @@ namespace Game
                     , 0.0f, 0.03f, 0.0f);
             }
 
-            private void ShootCircleBullet(string shape, int count, float speed, bool halfAngleOffset)
-            {
-                float angleOffset = (halfAngleOffset) ? (1.0f / count / 2.0f) : 0.0f;
-                for (int i = 0; i < count; ++i)
-                {
-                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                    b.Init(shape, _X, _Y, (1.0f / count * i) + angleOffset
-                        , 0.0f, speed, 0.0f);
-                }
-            }
-
             // 단순 원형 연속
             private IEnumerator SimpleCircles()
             {
@@ -207,7 +196,7 @@ namespace Game
                 for (int i = 0; i < count; ++i)
                 {
                     bool halfAngleOffset = (i % 2) != 0;
-                    ShootCircleBullet("Common/Bullet_Blue", 20, 0.005f, halfAngleOffset);
+                    _Logic.CircleBullet(this, "Common/Bullet_Blue", 0.0f, 0.005f, 20, halfAngleOffset);
 
                     if (i < count - 1)
                     {
@@ -253,9 +242,9 @@ namespace Game
                     }
                 }
                 // 연타
-                ShootCircleBullet("Common/Bullet_Blue", 12, 0.02f, false);
+                _Logic.CircleBullet(this, "Common/Bullet_Blue", 0.0f, 0.02f, 12, false);
                 yield return new WaitForFrames(26);
-                ShootCircleBullet("Common/Bullet_Blue", 12, 0.02f, true);
+                _Logic.CircleBullet(this, "Common/Bullet_Blue", 0.0f, 0.02f, 12, true);
             }
 
             private IEnumerator CornerWaves_2Wave(bool leftCorner)
