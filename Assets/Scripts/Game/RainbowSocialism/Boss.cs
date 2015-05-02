@@ -260,71 +260,6 @@ namespace Game
                 yield return new WaitForFrames(75);
             }
 
-            // 양회전 소용돌이탄
-            private IEnumerator ShootBiDirectionalSpiral(float angle, float angleRate1, float angleRate2,
-                float speed, int count, int interval, int duration)
-            {
-                int frame = 0;
-                int startFrame = _Frame;
-                float[] shotAngle = new float[2] { angle, angle };
-                float[] shotAngleRate = new float[2] { angleRate1, angleRate2 };
-
-                while (_Frame < startFrame + duration)
-                {
-                    if (frame == 0)
-                    {
-                        // 회전이 다른 2종류의 소용돌이탄 발사
-                        for (int j = 0; j < 2; ++j)
-                        {
-                            // 지정된 발사 수 만큼 발사
-                            for (int i = 0; i < count; ++i)
-                            {
-                                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                                b.Init("Common/Bullet_Blue", _X, _Y, shotAngle[j] + ((float)i / count)
-                                    , 0.0f, speed, 0.0f);
-                            }
-
-                            shotAngle[j] += shotAngleRate[j];
-                            shotAngle[j] -= Mathf.Floor(shotAngle[j]);
-                        }
-                    }
-
-                    // 타이머 갱신
-                    frame = (frame + 1) % interval;
-                    yield return null;
-                }
-            }
-
-            // 선회가속 소용돌이탄
-            private IEnumerator ShootBentSpiral(string shape, float angle, float angleRate, float speed, int count, int interval
-                , float bulletAngleRate, float bulletSpeedRate, int duration)
-            {
-                int frame = 0;
-                int startFrame = _Frame;
-                float shotAngle = angle;
-
-                while (_Frame < startFrame + duration)
-                {
-                    if (frame == 0)
-                    {
-                        // 지정된 발사 수 만큼 발사
-                        for (int i = 0; i < count; ++i)
-                        {
-                            Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                            b.Init(shape, _X, _Y, shotAngle + ((float)i / count)
-                                , bulletAngleRate, speed, bulletSpeedRate);
-                        }
-
-                        shotAngle += angleRate;
-                        shotAngle -= Mathf.Floor(shotAngle);
-                    }
-
-                    // 타이머 갱신
-                    frame = (frame + 1) % interval;
-                    yield return null;
-                }
-            }
-
             private IEnumerator RotateCrossTwice()
             {
                 _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(false));
@@ -390,39 +325,15 @@ namespace Game
             {
                 yield return _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.0f, 0.02f, 0.01f, 4, 5, 193));
                 yield return _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.0f, -0.02f, 0.01f, 4, 5, 193));
-                yield return _coroutineManager.StartCoroutine(ShootBiDirectionalSpiral(0.0f, 0.03f, -0.02f, 0.01f, 4, 5, 400));
+                yield return _coroutineManager.StartCoroutine(_Logic.BiDirectionalSpiralBullets(this, "Common/Bullet_Blue", 0.0f, 0.03f, -0.02f, 0.01f, 4, 5, 400));
                 yield return new WaitForFrames(90);
-                yield return _coroutineManager.StartCoroutine(ShootBentSpiral("Common/Bullet_Red", 0.0f, 0.02f, 0.0f, 10, 10, -0.003f, 0.0002f, 400));
+                yield return _coroutineManager.StartCoroutine(_Logic.BentSpiralBullets(this, "Common/Bullet_Red", 0.0f, 0.02f, 0.0f, 10, 10, -0.003f, 0.0002f, 400));
                 yield return new WaitForFrames(20);
                 // 중앙으로 이동
                 yield return _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.0f), 180));
                 yield return new WaitForFrames(30);
                 // 랜덤 뿌리기
-                yield return _coroutineManager.StartCoroutine(ShootRandomCircle("Common/Bullet_Blue", 0.01f, 3, 3, 150));
-            }
-
-            // 랜덤 원형탄
-            private IEnumerator ShootRandomCircle(string shape, float speed, int count, int interval, int duration)
-            {
-                int frame = 0;
-                int endFrame = _Frame + duration;
-
-                while (_Frame < endFrame)
-                {
-                    if (frame == 0)
-                    {
-                        for (int i = 0; i < count; ++i)
-                        {
-                            Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                            b.Init(shape, _X, _Y, GameSystem._Instance.GetRandom01()
-                                , 0.0f, speed, 0.0f);
-                        }
-                    }
-
-                    // 타이머 갱신
-                    frame = (frame + 1) % interval;
-                    yield return null;
-                }
+                yield return _coroutineManager.StartCoroutine(_Logic.RandomCircleBullets(this, "Common/Bullet_Blue", 0.01f, 3, 3, 150));
             }
             #endregion //Coroutine
 

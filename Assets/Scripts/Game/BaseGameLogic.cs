@@ -182,12 +182,31 @@ namespace Game
             }
         }
 
+        // 랜덤 원형탄
+        public IEnumerator RandomCircleBullets(Mover mover, string shape, float speed, int count, int interval, int duration)
+        {
+            for (int frame = 0; frame < duration; ++frame)
+            {
+                if ((frame % interval) == 0)
+                {
+                    for (int i = 0; i < count; ++i)
+                    {
+                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                        b.Init(shape, mover._X, mover._Y, GameSystem._Instance.GetRandom01()
+                            , 0.0f, speed, 0.0f);
+                    }
+                }
+                yield return null;
+            }
+        }
+
         /// <summary>
         /// 다방향 소용돌이탄
         /// </summary>
         public IEnumerator MultipleSpiralBullets(Mover mover, string shape, float angle, float angleRate, float speed, int count, int interval, int duration)
         {
             float shotAngle = angle;
+            
             for (int frame = 0; frame < duration; ++frame)
             {
                 if ((frame % interval) == 0)
@@ -198,6 +217,68 @@ namespace Game
                         Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
                         b.Init("Common/Bullet_Blue", mover._X, mover._Y, shotAngle + ((float)i / count)
                             , 0.0f, speed, 0.0f);
+                    }
+
+                    shotAngle += angleRate;
+                    shotAngle -= Mathf.Floor(shotAngle);
+                }
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// 양회전 소용돌이탄
+        /// </summary>
+        public IEnumerator BiDirectionalSpiralBullets(Mover mover, string shape
+            , float angle, float angleRate1, float angleRate2
+            , float speed, int count, int interval, int duration)
+        {
+            const int directionCount = 2;   // 회전방향의 수
+            float[] shotAngle = new float[directionCount] { angle, angle };
+            float[] shotAngleRate = new float[directionCount] { angleRate1, angleRate2 };
+
+            for (int frame = 0; frame < duration; ++frame)
+            {
+                if ((frame % interval) == 0)
+                {
+                    // 회전이 다른 2종류의 소용돌이탄 발사
+                    for (int j = 0; j < directionCount; ++j)
+                    {
+                        // 지정된 발사 수 만큼 발사
+                        for (int i = 0; i < count; ++i)
+                        {
+                            Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                            b.Init(shape, mover._X, mover._Y, shotAngle[j] + ((float)i / count)
+                                , 0.0f, speed, 0.0f);
+                        }
+
+                        shotAngle[j] += shotAngleRate[j];
+                        shotAngle[j] -= Mathf.Floor(shotAngle[j]);
+                    }
+                }
+                yield return null;
+            }
+        }
+
+        /// <summary>
+        /// 선회가속 소용돌이탄
+        /// </summary>
+        public IEnumerator BentSpiralBullets(Mover mover, string shape
+            , float angle, float angleRate, float speed, int count, int interval
+            , float bulletAngleRate, float bulletSpeedRate, int duration)
+        {
+            float shotAngle = angle;
+            
+            for (int frame = 0; frame < duration; ++frame)
+            {
+                if ((frame % interval) == 0)
+                {
+                    // 지정된 발사 수 만큼 발사
+                    for (int i = 0; i < count; ++i)
+                    {
+                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                        b.Init(shape, mover._X, mover._Y, shotAngle + ((float)i / count)
+                            , bulletAngleRate, speed, bulletSpeedRate);
                     }
 
                     shotAngle += angleRate;
