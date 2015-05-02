@@ -30,7 +30,7 @@ namespace Game
             // 메인 코루틴
             private IEnumerator MoveMain()
             {
-                _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.75f), 40));
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 40));
 
                 yield return new WaitForAbsFrames(50);
                 _coroutineManager.StartCoroutine(Simple3Wave(true));
@@ -40,7 +40,7 @@ namespace Game
 
                 yield return new WaitForAbsFrames(249);
                 _coroutineManager.StartCoroutine(Simple4Wave());
-                _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.5f), 75));
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.5f), 75));
 
                 yield return new WaitForAbsFrames(356);
                 _coroutineManager.StartCoroutine(SimpleCircles());
@@ -50,21 +50,21 @@ namespace Game
 
                 yield return new WaitForAbsFrames(799);
                 // 왼쪽 코너로 이동
-                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(-0.6f, 0.75f), 30, 0.1f));
+                _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, new Vector2(-0.6f, 0.75f), 30, 0.1f));
 
                 yield return new WaitForAbsFrames(890);
                 _coroutineManager.StartCoroutine(CornerWaves(true));
 
                 yield return new WaitForAbsFrames(1230);
                 // 오른쪽 코너로 이동
-                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.6f, 0.75f), 60, 0.1f));
+                _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, new Vector2(0.6f, 0.75f), 60, 0.1f));
 
                 yield return new WaitForAbsFrames(1320);
                 _coroutineManager.StartCoroutine(CornerWaves(false));
 
                 yield return new WaitForAbsFrames(1660);
                 // 중앙으로 이동
-                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.0f), 40, 0.1f));
+                _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, new Vector2(0.0f, 0.0f), 40, 0.1f));
 
                 yield return new WaitForAbsFrames(1750);
                 _coroutineManager.StartCoroutine(RotateCrossTwice());
@@ -77,21 +77,21 @@ namespace Game
 
                 yield return new WaitForAbsFrames(4700);
                 // 왼쪽 코너로 이동
-                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(-0.6f, 0.75f), 30, 0.1f));
+                _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, new Vector2(-0.6f, 0.75f), 30, 0.1f));
 
                 yield return new WaitForAbsFrames(4730);
                 _coroutineManager.StartCoroutine(CornerWaves(true));
 
                 yield return new WaitForAbsFrames(5070);
                 // 오른쪽 코너로 이동
-                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.6f, 0.75f), 60, 0.1f));
+                _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, new Vector2(0.6f, 0.75f), 60, 0.1f));
 
                 yield return new WaitForAbsFrames(5160);
                 _coroutineManager.StartCoroutine(CornerWaves(false));
 
                 yield return new WaitForAbsFrames(5500);
                 // 중앙으로 이동
-                _coroutineManager.StartCoroutine(MoveDamp(new Vector2(0.0f, 0.0f), 40, 0.1f));
+                _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, new Vector2(0.0f, 0.0f), 40, 0.1f));
 
                 yield return new WaitForAbsFrames(5590);
                 _coroutineManager.StartCoroutine(RotateCrossTwice());
@@ -117,38 +117,6 @@ namespace Game
             }
 
             #region Coroutine
-            // 지정한 위치까지 등속 이동
-            private IEnumerator MoveConstantVelocity(Vector3 arrivePos, int duration)
-            {
-                int startFrame = _Frame;
-                Vector2 startPos = _pos;
-
-                while (_Frame < (startFrame + duration))
-                {
-                    float time = (float)(_Frame - startFrame) / (float)duration;
-                    _pos = Vector2.Lerp(startPos, arrivePos, time);
-                    yield return null;
-                }
-
-                // 마지막 프레임
-                _pos = arrivePos;
-            }
-
-            // 지정한 위치까지 비례감속 이동
-            private IEnumerator MoveDamp(Vector3 arrivePos, int duration, float damp)
-            {
-                int startFrame = _Frame;
-
-                while (_Frame < (startFrame + duration))
-                {
-                    _pos = Vector2.Lerp(_pos, arrivePos, damp);
-                    yield return null;
-                }
-
-                // 마지막 프레임
-                _pos = arrivePos;
-            }
-
             // 단순 3파
             private IEnumerator Simple3Wave(bool leftToRight)
             {
@@ -445,7 +413,7 @@ namespace Game
             private IEnumerator BackwardStep()
             {
                 // 뒷걸음질 치기는 병렬로 수행
-                _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.75f), 360));
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 360));
 
                 // 첫 탄 발사 전 딜레이
                 const int interval = 45;
@@ -485,7 +453,7 @@ namespace Game
                 yield return _coroutineManager.StartCoroutine(ShootBentSpiral("Common/Bullet_Red", 0.0f, 0.02f, 0.0f, 10, 10, -0.003f, 0.0002f, 400));
                 yield return new WaitForFrames(20);
                 // 중앙으로 이동
-                yield return _coroutineManager.StartCoroutine(MoveConstantVelocity(new Vector2(0.0f, 0.0f), 180));
+                yield return _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.0f), 180));
                 yield return new WaitForFrames(30);
                 // 랜덤 뿌리기
                 yield return _coroutineManager.StartCoroutine(ShootRandomCircle("Common/Bullet_Blue", 0.01f, 3, 3, 150));
