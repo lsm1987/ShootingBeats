@@ -268,7 +268,7 @@ namespace Game
                 const int count = 6;
                 for (int i = 0; i < count; ++i)
                 {
-                    float playerAngle = GetPlayerAngle();
+                    float playerAngle = _Logic.GetPlayerAngle(this);
                     Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
                     b.Init("Common/Bullet_Red", _x, _y, playerAngle
                         , 0.0f, 0.02f, 0.0f);
@@ -530,6 +530,11 @@ namespace Game
                 }
             }
             #endregion //Coroutine
+
+            private GameLogic _Logic
+            {
+                get { return GameSystem._Instance.GetLogic<GameLogic>(); }
+            }
         } // Boss
-    }
-}
+    } // RainbowSocialism
+} // Game
