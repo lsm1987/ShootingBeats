@@ -109,7 +109,7 @@ namespace Game
 
                 yield return new WaitForFrames(60 * 4 * 2);
                 // 야바린간
-                _uiStageText.SetText("Colored rect is\nmove touch area");
+                _uiStageText.SetText("Colored rectangle is\nmove touch area");
                 GameSystem._Instance._MoveInputArea.SetVisible(true);
 
                 yield return new WaitForFrames(60 * 4);
@@ -118,7 +118,7 @@ namespace Game
 
                 yield return new WaitForAbsFrames(1986);
                 // 아야챠챠
-                _uiStageText.SetText("Colored rect is\npause touch area");
+                _uiStageText.SetText("Colored rectangle is\npause touch area");
                 GameSystem._Instance._PauseInputArea.SetVisible(true);
                 _coroutineManager.StartCoroutine(SideAim(2, 0.02f, 60, 8));
 
