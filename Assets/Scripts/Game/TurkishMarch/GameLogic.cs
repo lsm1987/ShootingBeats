@@ -19,6 +19,11 @@ namespace Game
                     yield return loadPlayer.Current;
                 }
 
+                // 적기 로딩 /////////////////////
+                GameSystem._Instance._UILoading.SetProgress("Loading Boss");
+                GameSystem._Instance.PoolStackShape("Common/Boss_Orange", 1);
+                GameSystem._Instance.PoolStackMover<Boss>(1);
+
                 // 코루틴
                 _coroutineManager.StopAllCoroutines();
                 _coroutineManager.RegisterCoroutine(Main());    // 메인 코루틴 등록
@@ -35,6 +40,10 @@ namespace Game
                 // 플레이어 생성
                 PlayerAlive player = GameSystem._Instance.CreatePlayer<PlayerAlive>();
                 player.Init("Common/Player_Black", 0.0f, -0.7f, 0.0f);
+
+                // 보스 생성
+                Boss boss = GameSystem._Instance.CreateEnemy<Boss>();
+                boss.Init("Common/Boss_Orange", -0.5f, 1.3f, 0.0f);
 
                 yield return null;
             }
