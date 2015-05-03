@@ -38,10 +38,12 @@ namespace Game
                 _coroutineManager.StartCoroutine(PatternA_11());
                 yield return new WaitForAbsFrames(935);
                 _coroutineManager.StartCoroutine(PatternB());
-                yield return new WaitForAbsFrames(1382);
+                yield return new WaitForAbsFrames(1370);
                 _coroutineManager.StartCoroutine(PatternA_12());
                 yield return new WaitForAbsFrames(1800);
                 _coroutineManager.StartCoroutine(PatternB());
+                yield return new WaitForAbsFrames(2235);
+                _coroutineManager.StartCoroutine(PatternA_12());
             }
 
             // 피격시
@@ -67,19 +69,20 @@ namespace Game
             private IEnumerator PatternA_12()
             {
                 yield return _coroutineManager.StartCoroutine(PatternA_a1());
-                yield return new WaitForFrames(100);
+                yield return new WaitForFrames(110);
                 yield return _coroutineManager.StartCoroutine(PatternA_b2());
             }
 
             private IEnumerator PatternA_a1()
             {
-                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 5));
+                const int interval = 5;
+                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, interval, 5));
                 yield return new WaitForFrames(50);
-                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 5));
+                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, interval, 5));
                 yield return new WaitForFrames(50);
-                _coroutineManager.StartCoroutine(_Logic.AimingNWayLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 4, 0.125f, 3));
+                _coroutineManager.StartCoroutine(_Logic.AimingNWayLineBullets(this, "Common/Bullet_Red", 0.02f, interval, 4, 0.125f, 3));
                 yield return new WaitForFrames(25);
-                _coroutineManager.StartCoroutine(_Logic.AimingNWayLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 9, 0.125f, 3));
+                _coroutineManager.StartCoroutine(_Logic.AimingNWayLineBullets(this, "Common/Bullet_Red", 0.02f, interval, 9, 0.125f, 3));
             }
 
             private IEnumerator PatternA_b1()
@@ -98,17 +101,41 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, false, circleInterval, 4));
                 yield return new WaitForFrames(circleInterval * 4);
 
+                const float lineXOffset = 0.1f;
+                const float lineYOffset = 0.15f;
+                Vector2 pos = _pos;
+                _coroutineManager.StartCoroutine(_Logic.LineBullets(pos, "Common/Bullet_blue", 0.75f, 0.02f, 5, 10));
+                pos.x = _pos.x - lineXOffset;
+                pos.y = _pos.y + lineYOffset;
+                _coroutineManager.StartCoroutine(_Logic.LineBullets(pos, "Common/Bullet_blue", 0.75f, 0.02f, 5, 10));
+                pos.x = _pos.x + lineXOffset;
+                _coroutineManager.StartCoroutine(_Logic.LineBullets(pos, "Common/Bullet_blue", 0.75f, 0.02f, 5, 10));
             }
 
             private IEnumerator PatternB()
             {
+                const float rollingAngleRate = 0.02f;
+                const float rollingAngleRange = 0.22f;
+                const int rollingRepeatCount = 9;
+                const float rollingAngleOffset = (rollingAngleRate * rollingRepeatCount) / 2.0f;
+                const int rollingCount = 5;
+                
+                // 뿌리기
                 _Logic.RandomSpreadBullet(this, "Common/Bullet_Red", 0.2f, 0.02f, 0.02f, 30);
-                yield return new WaitForFrames(120);
-                _Logic.CircleBullet(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, true);
-                yield return new WaitForFrames(120);
+
+                // 반시계 회전
+                yield return new WaitForFrames(100);
+                _coroutineManager.StartCoroutine(_Logic.RollingNWayBullets(this, "Common/Bullet_Blue"
+                    , 0.75f - rollingAngleOffset, rollingAngleRange, rollingAngleRate, 0.02f, rollingCount, 1, 5, rollingRepeatCount));
+
+                // 뿌리기
+                yield return new WaitForFrames(140);
                 _Logic.RandomSpreadBullet(this, "Common/Bullet_Red", 0.2f, 0.02f, 0.02f, 30);
-                yield return new WaitForFrames(120);
-                _Logic.CircleBullet(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, true);
+
+                // 시계 회전
+                yield return new WaitForFrames(100);
+                _coroutineManager.StartCoroutine(_Logic.RollingNWayBullets(this, "Common/Bullet_Blue"
+                    , 0.75f + rollingAngleOffset, rollingAngleRange, -rollingAngleRate, 0.02f, rollingCount, 1, 5, rollingRepeatCount));
             }
             #endregion //Coroutine
 

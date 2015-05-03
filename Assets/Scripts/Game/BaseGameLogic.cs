@@ -289,19 +289,36 @@ namespace Game
         }
 
         /// <summary>
+        /// 직선탄
+        /// </summary>
+        public IEnumerator LineBullets(Vector2 pos, string shape, float angle, float speed, int interval, int repeatCount)
+        {
+            for (int i = 0; i < repeatCount; ++i)
+            {
+                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init(shape, pos.x, pos.y, angle, 0.0f, speed, 0.0f);
+
+                if (i < repeatCount - 1)
+                {
+                    yield return new WaitForFrames(interval);
+                }
+            }
+        }
+
+        /// <summary>
         /// 조준 직선탄
         /// </summary>
-        public IEnumerator AimingLineBullets(Mover mover, string shape, float speed, int interval, int shotCount)
+        public IEnumerator AimingLineBullets(Mover mover, string shape, float speed, int interval, int repeatCount)
         {
             // 발사 시작 시 플레이어와의 각도 계산
             float angle = GetPlayerAngle(mover);
 
-            for (int i = 0; i < shotCount; ++i)
+            for (int i = 0; i < repeatCount; ++i)
             {
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
                 b.Init(shape, mover._X, mover._Y, angle, 0.0f, speed, 0.0f);
 
-                if (i < shotCount - 1)
+                if (i < repeatCount - 1)
                 {
                     yield return new WaitForFrames(interval);
                 }
@@ -311,7 +328,6 @@ namespace Game
         /// <summary>
         /// 조준 N-Way 직선탄
         /// </summary>
-        /// <returns></returns>
         public IEnumerator AimingNWayLineBullets(Mover mover, string shape
             , float speed, int interval, int shotCount, float angleRange, int wayCount)
         {
@@ -323,6 +339,35 @@ namespace Game
                 NWayBullet(mover, shape, angle, angleRange, speed, wayCount);
 
                 if (i < shotCount - 1)
+                {
+                    yield return new WaitForFrames(interval);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 회전 N-Way 탄
+        /// </summary>
+        public IEnumerator RollingNWayBullets(Mover mover, string shape
+            , float angle, float angleRange, float angleRate
+            , float speed, int count, int groupCount, int interval
+            , int repeatCount)
+        {
+            for (int repeat = 0; repeat < repeatCount; ++repeat)
+            {
+                // 그룹 수만큼 n-way 탄 발사
+                for (int group = 0; group < groupCount; ++group)
+                {
+                    // 360도를 n-way 수로 등분하여 n-way탄 발사 방향 결정
+                    float nwayAngle = angle + (float)group / groupCount;
+                    NWayBullet(mover, shape, nwayAngle, angleRange, speed, count);
+                }
+
+                // 발사 각속도 변화
+                angle += angleRate;
+                angle -= Mathf.Floor(angle);
+
+                if (repeat < repeatCount - 1)
                 {
                     yield return new WaitForFrames(interval);
                 }
