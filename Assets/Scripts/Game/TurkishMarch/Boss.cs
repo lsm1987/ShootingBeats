@@ -33,10 +33,14 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 40));
                 
                 yield return new WaitForAbsFrames(90);
-                _coroutineManager.StartCoroutine(PatternA());
+                _coroutineManager.StartCoroutine(PatternA_11());
                 yield return new WaitForAbsFrames(511);
-                _coroutineManager.StartCoroutine(PatternA());
-                yield return new WaitForAbsFrames(932);
+                _coroutineManager.StartCoroutine(PatternA_11());
+                yield return new WaitForAbsFrames(935);
+                _coroutineManager.StartCoroutine(PatternB());
+                yield return new WaitForAbsFrames(1382);
+                _coroutineManager.StartCoroutine(PatternA_12());
+                yield return new WaitForAbsFrames(1800);
                 _coroutineManager.StartCoroutine(PatternB());
             }
 
@@ -53,7 +57,21 @@ namespace Game
             }
 
             #region Coroutine
-            public IEnumerator PatternA()
+            private IEnumerator PatternA_11()
+            {
+                yield return _coroutineManager.StartCoroutine(PatternA_a1());
+                yield return new WaitForFrames(100);
+                yield return _coroutineManager.StartCoroutine(PatternA_b1());
+            }
+
+            private IEnumerator PatternA_12()
+            {
+                yield return _coroutineManager.StartCoroutine(PatternA_a1());
+                yield return new WaitForFrames(100);
+                yield return _coroutineManager.StartCoroutine(PatternA_b2());
+            }
+
+            private IEnumerator PatternA_a1()
             {
                 _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 5));
                 yield return new WaitForFrames(50);
@@ -62,15 +80,27 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.AimingNWayLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 4, 0.125f, 3));
                 yield return new WaitForFrames(25);
                 _coroutineManager.StartCoroutine(_Logic.AimingNWayLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 9, 0.125f, 3));
-                
-                yield return new WaitForFrames(100);
+            }
+
+            private IEnumerator PatternA_b1()
+            {
                 const int circleInterval = 28;
                 _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, true, circleInterval, 7));
                 yield return new WaitForFrames(circleInterval / 2);
                 _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, false, circleInterval, 6));
             }
 
-            public IEnumerator PatternB()
+            private IEnumerator PatternA_b2()
+            {
+                const int circleInterval = 28;
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, true, circleInterval, 4));
+                yield return new WaitForFrames(circleInterval / 2);
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, false, circleInterval, 4));
+                yield return new WaitForFrames(circleInterval * 4);
+
+            }
+
+            private IEnumerator PatternB()
             {
                 _Logic.RandomSpreadBullet(this, "Common/Bullet_Red", 0.2f, 0.02f, 0.02f, 30);
                 yield return new WaitForFrames(120);
