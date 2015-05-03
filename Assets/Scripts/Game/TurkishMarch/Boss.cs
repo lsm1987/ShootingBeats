@@ -31,7 +31,13 @@ namespace Game
             private IEnumerator MoveMain()
             {
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 40));
-                yield return null;
+                
+                yield return new WaitForAbsFrames(90);
+                _coroutineManager.StartCoroutine(PatternA());
+                yield return new WaitForAbsFrames(511);
+                _coroutineManager.StartCoroutine(PatternA());
+                yield return new WaitForAbsFrames(932);
+                _coroutineManager.StartCoroutine(PatternB());
             }
 
             // 피격시
@@ -47,7 +53,33 @@ namespace Game
             }
 
             #region Coroutine
-            
+            public IEnumerator PatternA()
+            {
+                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 5));
+                yield return new WaitForFrames(50);
+                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 5));
+                yield return new WaitForFrames(50);
+                _coroutineManager.StartCoroutine(_Logic.AimingNWayLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 4, 0.125f, 3));
+                yield return new WaitForFrames(25);
+                _coroutineManager.StartCoroutine(_Logic.AimingNWayLineBullets(this, "Common/Bullet_Red", 0.02f, 3, 9, 0.125f, 3));
+                
+                yield return new WaitForFrames(100);
+                const int circleInterval = 28;
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, true, circleInterval, 7));
+                yield return new WaitForFrames(circleInterval / 2);
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, false, circleInterval, 6));
+            }
+
+            public IEnumerator PatternB()
+            {
+                _Logic.RandomSpreadBullet(this, "Common/Bullet_Red", 0.2f, 0.02f, 0.02f, 30);
+                yield return new WaitForFrames(120);
+                _Logic.CircleBullet(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, true);
+                yield return new WaitForFrames(120);
+                _Logic.RandomSpreadBullet(this, "Common/Bullet_Red", 0.2f, 0.02f, 0.02f, 30);
+                yield return new WaitForFrames(120);
+                _Logic.CircleBullet(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, true);
+            }
             #endregion //Coroutine
 
             private GameLogic _Logic

@@ -287,6 +287,65 @@ namespace Game
                 yield return null;
             }
         }
+
+        /// <summary>
+        /// 조준 직선탄
+        /// </summary>
+        public IEnumerator AimingLineBullets(Mover mover, string shape, float speed, int interval, int shotCount)
+        {
+            // 발사 시작 시 플레이어와의 각도 계산
+            float angle = GetPlayerAngle(mover);
+
+            for (int i = 0; i < shotCount; ++i)
+            {
+                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init(shape, mover._X, mover._Y, angle, 0.0f, speed, 0.0f);
+
+                if (i < shotCount - 1)
+                {
+                    yield return new WaitForFrames(interval);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 조준 N-Way 직선탄
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator AimingNWayLineBullets(Mover mover, string shape
+            , float speed, int interval, int shotCount, float angleRange, int wayCount)
+        {
+            // 발사 시작 시 플레이어와의 각도 계산
+            float angle = GetPlayerAngle(mover);
+
+            for (int i = 0; i < shotCount; ++i)
+            {
+                NWayBullet(mover, shape, angle, angleRange, speed, wayCount);
+
+                if (i < shotCount - 1)
+                {
+                    yield return new WaitForFrames(interval);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 랜덤 확산탄
+        /// </summary>
+        public void RandomSpreadBullet(Mover mover, string shape
+            , float angleRange, float speed, float speedRange, int count)
+        {
+            // 한 번에 뿌리지만 속도가 달라 여러번 나눠서 뿌리는 것 같은 효과
+            float angle = GetPlayerAngle(mover);
+            for (int i = 0; i < count; ++i)
+            {
+                // 탄 별로 각도와 속도를 랜덤으로 설정
+                float bulletAngle = angle + angleRange * (GameSystem._Instance.GetRandom01() - 0.5f);
+                float bulletSpeed = speed + speedRange * GameSystem._Instance.GetRandom01();
+                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                b.Init(shape, mover._X, mover._Y, bulletAngle, 0.0f, bulletSpeed, 0.0f);
+            }
+        }
         #endregion Pattern
     }
 }
