@@ -46,11 +46,13 @@ namespace Game
                 yield return new WaitForAbsFrames(2235);
                 _coroutineManager.StartCoroutine(PatternA_12());
                 yield return new WaitForAbsFrames(2670);
-                _coroutineManager.StartCoroutine(PatternC());
+                _coroutineManager.StartCoroutine(PatternC_1());
                 yield return new WaitForAbsFrames(3590);
                 _coroutineManager.StartCoroutine(PatternD_1());
-                yield return new WaitForAbsFrames(3590 + 1680);
+                yield return new WaitForAbsFrames(5270);
                 _coroutineManager.StartCoroutine(PatternD_2());
+                yield return new WaitForAbsFrames(6170);
+                _coroutineManager.StartCoroutine(PatternC_2());
             }
 
             // 피격시
@@ -148,7 +150,7 @@ namespace Game
             /// <summary>
             /// 회전하며 조준탄 뿌린 후 랜덤이동
             /// </summary>
-            private IEnumerator PatternC()
+            private IEnumerator PatternC_1()
             {
                 const float radius = 0.5f;
                 const int repeatCount = 8;
@@ -167,7 +169,39 @@ namespace Game
                         yield return new WaitForFrames(60);
                     }
                 }
-                yield return null;
+            }
+
+            private IEnumerator PatternC_2()
+            {
+                const float radius = 0.5f;
+                const int repeatCount = 8;
+                const int countPerCircle = 10;
+                const float speed1_Cirlce1 = 0.04f;
+                const float speed1_Cirlce2 = 0.03f;
+                const float angle2 = 0.75f;
+                const float speed2 = 0.02f;
+                const int moveDuaraion = 12;
+                const int stopDuaraion = 24;
+                const int placeInterval = 12;
+                for (int i = 0; i < repeatCount; ++i)
+                {
+                    // 설치 원형탄 2개
+                    float angle = 0.75f;
+                    _Logic.PlacedCircleBullet(this, "Common/Bullet_Blue", angle, speed1_Cirlce1, countPerCircle, false, moveDuaraion, stopDuaraion, angle2, speed2);
+                    yield return new WaitForFrames(placeInterval);
+                    _Logic.PlacedCircleBullet(this, "Common/Bullet_Red", angle, speed1_Cirlce2, countPerCircle, true, moveDuaraion, stopDuaraion - placeInterval, angle2, speed2);
+
+                    // 마지막 뿌리기 후에는 이동하지 않음
+                    if (i < repeatCount - 1)
+                    {
+                        yield return new WaitForFrames(60 - placeInterval);
+                        Vector2 nextPos = new Vector2(
+                            GameSystem._Instance.GetRandomRange(GameSystem._Instance._MinX + radius + 0.1f, GameSystem._Instance._MaxX - radius - 0.1f)
+                            , GameSystem._Instance.GetRandomRange(GameSystem._Instance._MinY * 0.2f + radius + 0.1f, GameSystem._Instance._MaxY - radius - 0.1f));
+                        _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, nextPos, 30, 0.1f));
+                        yield return new WaitForFrames(60);
+                    }
+                }
             }
 
             private IEnumerator PatternD_1()

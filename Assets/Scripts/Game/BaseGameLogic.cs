@@ -160,6 +160,20 @@ namespace Game
         }
 
         /// <summary>
+        /// 설치 원형탄
+        /// </summary>
+        public void PlacedCircleBullet(Mover mover, string shape, float angle, float speed, int count, bool halfAngleOffset
+            , int moveDuration, int stopDuration, float angle2, float speed2)
+        {
+            float angleStart = angle + ((halfAngleOffset) ? (1.0f / count / 2.0f) : 0.0f);
+            for (int i = 0; i < count; ++i)
+            {
+                PlacedBullet b = GameSystem._Instance.CreateBullet<PlacedBullet>();
+                b.Init(shape, mover._X, mover._Y, angleStart + (1.0f / count * i), speed, moveDuration, stopDuration, angle2, speed2);
+            }
+        }
+
+        /// <summary>
         /// 선회가속 원형탄
         /// </summary>
         public void BentCircleBullet(Mover mover, string shape, float angle, float speed, int count, float bulletAngleRate, float bulletSpeedRate, bool halfAngleOffset)
@@ -201,6 +215,25 @@ namespace Game
         }
 
         /// <summary>
+        /// 소용돌이탄
+        /// </summary>
+        public IEnumerator SpiralBullets(Mover mover, string shape, float angle, float angleRate, float speed, int interval, int duration)
+        {
+            for (int frame = 0; frame < duration; ++frame)
+            {
+                if ((frame % interval) == 0)
+                {
+                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                    b.Init(shape, mover._X, mover._Y, angle, 0.0f, speed, 0.0f);
+
+                    angle += angleRate;
+                    angle -= Mathf.Floor(angle);
+                }
+                yield return null;
+            }
+        }
+
+        /// <summary>
         /// 다방향 소용돌이탄
         /// </summary>
         public IEnumerator MultipleSpiralBullets(Mover mover, string shape, float angle, float angleRate, float speed, int count, int interval, int duration)
@@ -215,7 +248,7 @@ namespace Game
                     for (int i = 0; i < count; ++i)
                     {
                         Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                        b.Init("Common/Bullet_Blue", mover._X, mover._Y, shotAngle + ((float)i / count)
+                        b.Init(shape, mover._X, mover._Y, shotAngle + ((float)i / count)
                             , 0.0f, speed, 0.0f);
                     }
 
