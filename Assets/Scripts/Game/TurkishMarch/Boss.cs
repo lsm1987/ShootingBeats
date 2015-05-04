@@ -46,6 +46,8 @@ namespace Game
                 _coroutineManager.StartCoroutine(PatternA_12());
                 yield return new WaitForAbsFrames(2670);
                 _coroutineManager.StartCoroutine(PatternC());
+                yield return new WaitForAbsFrames(3590);
+                _coroutineManager.StartCoroutine(PatternD());
             }
 
             // 피격시
@@ -140,21 +142,78 @@ namespace Game
                     , 0.75f + rollingAngleOffset, rollingAngleRange, -rollingAngleRate, 0.02f, rollingCount, 1, 5, rollingRepeatCount));
             }
 
+            /// <summary>
+            /// 회전하며 조준탄 뿌린 후 랜덤이동
+            /// </summary>
             private IEnumerator PatternC()
             {
                 const float radius = 0.5f;
-                for (int i = 0; i < 8; ++i)
+                const int repeatCount = 8;
+                for (int i = 0; i < repeatCount; ++i)
                 {
                     _coroutineManager.StartCoroutine(_Logic.RollingAimingBullets(this, "Common/Bullet_Red", 0.02f, 18, radius, 1, 2));
-                    yield return new WaitForFrames(60);
-                    
-                    Vector2 nextPos = new Vector2(
-                        GameSystem._Instance.GetRandomRange(GameSystem._Instance._MinX + radius + 0.1f, GameSystem._Instance._MaxX - radius - 0.1f)
-                        , GameSystem._Instance.GetRandomRange(GameSystem._Instance._MinY * 0.2f + radius + 0.1f, GameSystem._Instance._MaxY - radius - 0.1f));
-                    _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, nextPos, 30, 0.1f));
-                    yield return new WaitForFrames(60);
+
+                    // 마지막 뿌리기 후에는 이동하지 않음
+                    if (i < repeatCount - 1)
+                    {
+                        yield return new WaitForFrames(60);
+                        Vector2 nextPos = new Vector2(
+                            GameSystem._Instance.GetRandomRange(GameSystem._Instance._MinX + radius + 0.1f, GameSystem._Instance._MaxX - radius - 0.1f)
+                            , GameSystem._Instance.GetRandomRange(GameSystem._Instance._MinY * 0.2f + radius + 0.1f, GameSystem._Instance._MaxY - radius - 0.1f));
+                        _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, nextPos, 30, 0.1f));
+                        yield return new WaitForFrames(60);
+                    }
                 }
                 yield return null;
+            }
+
+            /// <summary>
+            /// 캐릭터 따라가며 탄 설치
+            /// </summary>
+            private IEnumerator PatternD()
+            {
+                const float speed = 0.01f;
+                const float maxAngleRate = 0.01f; // 최대 선회 각속도
+                const int interval = 5; // 발사 간격
+                const int duration = 60 * 14;
+                const string shape = "Common/Bullet_Blue";
+                float angle = _Logic.GetPlayerAngle(this);
+
+                for (int i = 0; i < duration; ++i)
+                {
+                    // 현재 위치에 움직이지 않는 탄 생성
+                    if (i % interval == 0)
+                    {
+                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                        b.Init(shape, _X, _Y, 0.0f, 0.0f, 0.0f, 0.0f);
+                    }
+
+                    // 선회 각속도 계산
+                    float angleRate = _Logic.GetPlayerAngle(this) - angle;
+                    // 선회 각속도를 0~1 범위로 제한
+                    angleRate -= Mathf.Floor(angleRate);
+
+                    // 선회 각속도가 최대 선회 각속도 이하면
+                    // 선회 각속도로 선회
+                    if (angleRate <= maxAngleRate || (1.0f - angleRate) <= maxAngleRate)
+                    {
+                        angle += angleRate;
+                    }
+                    // 선회 각속도가 최대 선회 각속도보다 크면
+                    // 최대 선회 각속도로 선회
+                    else
+                    {
+                        angle += (angleRate < 0.5f) ? maxAngleRate : -maxAngleRate;
+                    }
+                    angle -= Mathf.Floor(angle);
+
+                    // 계산한 각도를 사용해 좌표 갱신
+                    float rad = angle * Mathf.PI * 2.0f;
+                    _X += speed * Mathf.Cos(rad);
+                    _Y += speed * Mathf.Sin(rad);
+
+                    yield return null;
+                }
             }
             #endregion //Coroutine
 
