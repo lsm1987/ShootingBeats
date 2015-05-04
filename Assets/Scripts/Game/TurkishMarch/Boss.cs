@@ -10,6 +10,7 @@ namespace Game
         {
             private int _score = 10; // 피격시 획득 점수
             private CoroutineManager _coroutineManager = new CoroutineManager();
+            private int _patternDPartDuration = 60 * 14;    // 패턴 D의 파트별 지속시간
 
             public Boss()
                 : base()
@@ -47,7 +48,7 @@ namespace Game
                 yield return new WaitForAbsFrames(2670);
                 _coroutineManager.StartCoroutine(PatternC());
                 yield return new WaitForAbsFrames(3590);
-                _coroutineManager.StartCoroutine(PatternD());
+                _coroutineManager.StartCoroutine(PatternD_11());
             }
 
             // 피격시
@@ -167,25 +168,30 @@ namespace Game
                 yield return null;
             }
 
+            private IEnumerator PatternD_11()
+            {
+                yield return _coroutineManager.StartCoroutine(PatternD_Follow());
+                yield return _coroutineManager.StartCoroutine(PatternD_Follow());
+            }
+
             /// <summary>
             /// 캐릭터 따라가며 탄 설치
             /// </summary>
-            private IEnumerator PatternD()
+            private IEnumerator PatternD_Follow()
             {
                 const float speed = 0.01f;
                 const float maxAngleRate = 0.01f; // 최대 선회 각속도
                 const int interval = 5; // 발사 간격
-                const int duration = 60 * 14;
                 const string shape = "Common/Bullet_Blue";
                 float angle = _Logic.GetPlayerAngle(this);
 
-                for (int i = 0; i < duration; ++i)
+                for (int i = 0; i < _patternDPartDuration; ++i)
                 {
-                    // 현재 위치에 움직이지 않는 탄 생성
+                    // 현재 위치에 패턴 종료시까지 움직이지 않는 탄 생성
                     if (i % interval == 0)
                     {
-                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                        b.Init(shape, _X, _Y, 0.0f, 0.0f, 0.0f, 0.0f);
+                        AwayBullet b = GameSystem._Instance.CreateBullet<AwayBullet>();
+                        b.Init(shape, _X, _Y, 0.0f, 0.0f, 0.0f, 0.0f, _patternDPartDuration - i - 1, 0.03f);
                     }
 
                     // 선회 각속도 계산
