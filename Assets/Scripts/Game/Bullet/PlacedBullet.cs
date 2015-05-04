@@ -27,6 +27,19 @@ namespace Game
             _stopDuration = stopDuarion;
         }
 
+        /// <summary>
+        /// 정지 전과 동일한 속도, 각도 사용하는 초기화
+        /// </summary>
+        public void Init(string shapeSubPath, float x, float y, float angle
+            , float speed1
+            , int moveDuration, int stopDuarion)
+        {
+            Init(shapeSubPath, x, y, angle
+                , speed1
+                , moveDuration, stopDuarion
+                , angle, speed1);
+        }
+
         public override void Move()
         {
             // 이동 시간이 끝나면 속도 0으로 하여 멈춤

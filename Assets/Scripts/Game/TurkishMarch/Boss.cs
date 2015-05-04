@@ -53,6 +53,12 @@ namespace Game
                 _coroutineManager.StartCoroutine(PatternD_2());
                 yield return new WaitForAbsFrames(6170);
                 _coroutineManager.StartCoroutine(PatternC_2());
+                yield return new WaitForAbsFrames(7100);
+                // 패턴E 빠져나올 수 있을만큼 위로
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.94f), 60));
+                _coroutineManager.StartCoroutine(PatternE_1());
+                yield return new WaitForAbsFrames(8250);
+                _coroutineManager.StartCoroutine(PatternE_2());
             }
 
             // 피격시
@@ -322,6 +328,62 @@ namespace Game
                         }
                     }
                     yield return null;
+                }
+            }
+
+            private IEnumerator PatternE_1()
+            {
+                const int shooterCount = 2;
+                const int cycle = 700;
+                SpiralPlacedShooterBullet[] bs = new SpiralPlacedShooterBullet[shooterCount];
+                for (int i = 0; i < shooterCount; ++i)
+                {
+                    string shape = (i % 2 == 0) ? "Common/Bullet_BlueLarge" : "Common/Bullet_RedLarge";
+                    string bulletShape = (i % 2 == 0) ? "Common/Bullet_BlueSmall" : "Common/Bullet_RedSmall";
+                    float orbitAngle = 1.0f * ((float)i / (float)shooterCount);
+
+                    bs[i] = GameSystem._Instance.CreateBullet<SpiralPlacedShooterBullet>();
+                    bs[i].Init(shape, orbitAngle, 0.002f, 0.9f
+                        , 30, 30, 3, cycle
+                        , bulletShape, 0.01f, 8);
+                }
+
+                // 사이클 후 슈터 삭제
+                yield return new WaitForFrames(cycle - 1);
+                for (int i = 0; i < shooterCount; ++i)
+                {
+                    bs[i]._alive = false;
+                }
+            }
+
+            private IEnumerator PatternE_2()
+            {
+                const int shooterCount = 4;
+                const int cycle = 630;
+                SpiralPlacedShooterBullet[] bs = new SpiralPlacedShooterBullet[shooterCount];
+                for (int i = 0; i < shooterCount; ++i)
+                {
+                    bool isBlue = (i % 2 == 0);
+                    string shape = (isBlue) ? "Common/Bullet_BlueLarge" : "Common/Bullet_RedLarge";
+                    string bulletShape = (isBlue) ? "Common/Bullet_BlueSmall" : "Common/Bullet_RedSmall";
+                    float orbitAngle = ((float)1 / (float)shooterCount / 2.0f) + ((float)i / (float)shooterCount);
+                    float orbitAngleRate = 0.002f;
+                    float orbitRadius = (isBlue) ? 0.9f : 0.8f;
+                    int shotTime = (isBlue) ? 20 : 25;
+                    int waitTime = (isBlue) ? 40 : 35;
+                    float bulletSpeed = (isBlue) ? 0.01f : 0.008f;
+
+                    bs[i] = GameSystem._Instance.CreateBullet<SpiralPlacedShooterBullet>();
+                    bs[i].Init(shape, orbitAngle, orbitAngleRate, orbitRadius
+                        , shotTime, waitTime, 3, 700
+                        , bulletShape, bulletSpeed, 8);
+                }
+
+                // 사이클 후 슈터 삭제
+                yield return new WaitForFrames(cycle - 1);
+                for (int i = 0; i < shooterCount; ++i)
+                {
+                    bs[i]._alive = false;
                 }
             }
             #endregion //Coroutine
