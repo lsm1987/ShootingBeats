@@ -53,12 +53,32 @@ namespace Game
                 _coroutineManager.StartCoroutine(PatternD_2());
                 yield return new WaitForAbsFrames(6170);
                 _coroutineManager.StartCoroutine(PatternC_2());
+                
                 yield return new WaitForAbsFrames(7100);
                 // 패턴E 빠져나올 수 있을만큼 위로
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.94f), 60));
                 _coroutineManager.StartCoroutine(PatternE_1());
+                
+                // 시간 때우기
+                yield return new WaitForAbsFrames(7880);
+                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 5, 5));
+                yield return new WaitForFrames(70);
+                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 5, 5));
+                yield return new WaitForFrames(50);
+                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 5, 9));
+                yield return new WaitForFrames(110);
+                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 5, 5));
+
                 yield return new WaitForAbsFrames(8250);
                 _coroutineManager.StartCoroutine(PatternE_2());
+
+                // 폭발
+                yield return new WaitForAbsFrames(8870);
+                {
+                    Effect crashEffect = GameSystem._Instance.CreateEffect<Effect>();
+                    crashEffect.Init("Common/Effect_BossCrashOrange", _X, _Y, 0.0f);
+                }
+                _alive = false;
             }
 
             // 피격시
@@ -359,7 +379,7 @@ namespace Game
             private IEnumerator PatternE_2()
             {
                 const int shooterCount = 4;
-                const int cycle = 630;
+                const int cycle = 620;
                 SpiralPlacedShooterBullet[] bs = new SpiralPlacedShooterBullet[shooterCount];
                 for (int i = 0; i < shooterCount; ++i)
                 {
@@ -376,7 +396,7 @@ namespace Game
                     bs[i] = GameSystem._Instance.CreateBullet<SpiralPlacedShooterBullet>();
                     bs[i].Init(shape, orbitAngle, orbitAngleRate, orbitRadius
                         , shotTime, waitTime, 3, 700
-                        , bulletShape, bulletSpeed, 8);
+                        , bulletShape, bulletSpeed, 7);
                 }
 
                 // 사이클 후 슈터 삭제
