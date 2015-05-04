@@ -40,6 +40,20 @@ namespace Game
                 , angle, speed1);
         }
 
+        /// <summary>
+        /// 정지 없이 속도, 각도 변경
+        /// </summary>
+        public void InitNoStop(string shapeSubPath, float x, float y, float angle
+            , float speed1
+            , int moveDuration
+            , float angle2, float speed2)
+        {
+            Init(shapeSubPath, x, y, angle
+                , speed1
+                , moveDuration, 0
+                , angle2, speed2);
+        }
+
         public override void Move()
         {
             // 이동 시간이 끝나면 속도 0으로 하여 멈춤

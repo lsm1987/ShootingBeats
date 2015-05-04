@@ -314,8 +314,8 @@ namespace Game
                 {
                     // 아래로 내려오다가
                     // 페이즈 2 때 절반은 왼쪽으로, 절반은 오른쪽으로 사라짐
-                    TwoPhaseBullet b = GameSystem._Instance.CreateBullet<TwoPhaseBullet>();
-                    b.Init(shape, startX + (i * gapX), y, 0.75f, 0.0f, speed1, 0.0f
+                    PlacedBullet b = GameSystem._Instance.CreateBullet<PlacedBullet>();
+                    b.InitNoStop(shape, startX + (i * gapX), y, 0.75f, speed1
                         , phase1Duration, (i < (count / 2) ? 0.5f : 0.0f), speed2);
                 }
             }
@@ -342,8 +342,8 @@ namespace Game
                         float startAngle = 0.75f + GameSystem._Instance.GetRandomRange(-startAngleOffset, startAngleOffset);
                         for (int i = 0; i < count; ++i)
                         {
-                            TwoPhaseBullet b = GameSystem._Instance.CreateBullet<TwoPhaseBullet>();
-                            b.Init(shape, this._X, this._Y, startAngle + angleRange * ((float)i / (count - 1) - 0.5f), 0.0f, speed1, 0.0f
+                            PlacedBullet b = GameSystem._Instance.CreateBullet<PlacedBullet>();
+                            b.InitNoStop(shape, this._X, this._Y, startAngle + angleRange * ((float)i / (count - 1) - 0.5f), speed1
                                 , phase1Duration, 0.75f, speed2);
                         }
                     }
