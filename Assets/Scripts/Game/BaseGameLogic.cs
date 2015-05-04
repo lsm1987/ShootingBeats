@@ -391,6 +391,32 @@ namespace Game
                 b.Init(shape, mover._X, mover._Y, bulletAngle, 0.0f, bulletSpeed, 0.0f);
             }
         }
+
+        /// <summary>
+        /// 회전하며 조준탄 뿌리기
+        /// </summary>
+        public IEnumerator RollingAimingBullets(Mover mover, string shape
+            , float speed, int count, float radius, int interval, int repeatCount)
+        {
+            float angle = GetPlayerAngle(mover) + 0.25f;    // 시작 각도는 플레이어 방향과 직각
+            for (int repeat = 0; repeat < repeatCount; ++repeat)
+            {
+                for (int i = 0; i < count; ++i)
+                {
+                    // 발사 위치
+                    float spawnAngleRadian = (2.0f * Mathf.PI) * (angle - (1.0f / count * i));  // 반시계방향
+                    float spawnX = mover._X + radius * Mathf.Cos(spawnAngleRadian);
+                    float spawnY = mover._Y + radius * Mathf.Sin(spawnAngleRadian);
+                    // 발사위치로부터 플레이어 방향
+                    float bulletAngle = GetPlayerAngle(spawnX, spawnY);
+
+                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                    b.Init(shape, spawnX, spawnY, bulletAngle, 0.0f, speed, 0.0f);
+
+                    yield return new WaitForFrames(interval);
+                }
+            }
+        }
         #endregion Pattern
     }
 }

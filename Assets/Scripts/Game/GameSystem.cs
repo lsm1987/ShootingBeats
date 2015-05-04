@@ -707,6 +707,22 @@ namespace Game
         {
             return (float)_random.NextDouble();
         }
+
+        /// <summary>
+        /// 범위 내 무작위 실수 구함
+        /// <para>범위 올바르지 않으면 min 리턴</para>
+        /// </summary>
+        public float GetRandomRange(float min, float max)
+        {
+            if (min >= max)
+            {
+                return min;
+            }
+            else
+            {
+                return min + GetRandom01() * (max - min);
+            }
+        }
         #endregion // Random
 
         #region Pause

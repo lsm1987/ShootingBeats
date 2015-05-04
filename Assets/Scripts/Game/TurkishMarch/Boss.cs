@@ -44,6 +44,8 @@ namespace Game
                 _coroutineManager.StartCoroutine(PatternB());
                 yield return new WaitForAbsFrames(2235);
                 _coroutineManager.StartCoroutine(PatternA_12());
+                yield return new WaitForAbsFrames(2670);
+                _coroutineManager.StartCoroutine(PatternC());
             }
 
             // 피격시
@@ -136,6 +138,23 @@ namespace Game
                 yield return new WaitForFrames(100);
                 _coroutineManager.StartCoroutine(_Logic.RollingNWayBullets(this, "Common/Bullet_Blue"
                     , 0.75f + rollingAngleOffset, rollingAngleRange, -rollingAngleRate, 0.02f, rollingCount, 1, 5, rollingRepeatCount));
+            }
+
+            private IEnumerator PatternC()
+            {
+                const float radius = 0.5f;
+                for (int i = 0; i < 8; ++i)
+                {
+                    _coroutineManager.StartCoroutine(_Logic.RollingAimingBullets(this, "Common/Bullet_Red", 0.02f, 18, radius, 1, 2));
+                    yield return new WaitForFrames(60);
+                    
+                    Vector2 nextPos = new Vector2(
+                        GameSystem._Instance.GetRandomRange(GameSystem._Instance._MinX + radius + 0.1f, GameSystem._Instance._MaxX - radius - 0.1f)
+                        , GameSystem._Instance.GetRandomRange(GameSystem._Instance._MinY * 0.2f + radius + 0.1f, GameSystem._Instance._MaxY - radius - 0.1f));
+                    _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, nextPos, 30, 0.1f));
+                    yield return new WaitForFrames(60);
+                }
+                yield return null;
             }
             #endregion //Coroutine
 
