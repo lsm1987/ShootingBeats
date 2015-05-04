@@ -26,7 +26,7 @@ namespace Game
             {
                 _angle = GameSystem._Instance.GetLogic<BaseGameLogic>().GetPlayerAngle(this) + 0.5f;
                 _speed = _awaySpeed;
-            }            
+            }
             base.Move();
         }
     }

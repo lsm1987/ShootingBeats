@@ -48,7 +48,9 @@ namespace Game
                 yield return new WaitForAbsFrames(2670);
                 _coroutineManager.StartCoroutine(PatternC());
                 yield return new WaitForAbsFrames(3590);
-                _coroutineManager.StartCoroutine(PatternD_11());
+                _coroutineManager.StartCoroutine(PatternD_1());
+                yield return new WaitForAbsFrames(3590 + 1680);
+                _coroutineManager.StartCoroutine(PatternD_2());
             }
 
             // 피격시
@@ -168,16 +170,16 @@ namespace Game
                 yield return null;
             }
 
-            private IEnumerator PatternD_11()
+            private IEnumerator PatternD_1()
             {
-                yield return _coroutineManager.StartCoroutine(PatternD_Follow());
-                yield return _coroutineManager.StartCoroutine(PatternD_Follow());
+                yield return _coroutineManager.StartCoroutine(PatternD_1_Follow());
+                yield return _coroutineManager.StartCoroutine(PatternD_1_Follow());
             }
 
             /// <summary>
             /// 캐릭터 따라가며 탄 설치
             /// </summary>
-            private IEnumerator PatternD_Follow()
+            private IEnumerator PatternD_1_Follow()
             {
                 const float speed = 0.01f;
                 const float maxAngleRate = 0.01f; // 최대 선회 각속도
@@ -218,6 +220,73 @@ namespace Game
                     _X += speed * Mathf.Cos(rad);
                     _Y += speed * Mathf.Sin(rad);
 
+                    yield return null;
+                }
+            }
+
+            private IEnumerator PatternD_2()
+            {
+                // 안전선 발사
+                PatternD_2_SafetyLine();
+                // 보스 기준위치로 이동
+                yield return _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 240));
+                yield return new WaitForFrames(240);
+                // 반원 발사
+                yield return _coroutineManager.StartCoroutine(PatternD_2_HalfCircleTwoPhase());
+            }
+
+            /// <summary>
+            /// 이후 패턴을 위한 안전선
+            /// </summary>
+            private void PatternD_2_SafetyLine()
+            {
+                const float speed1 = 0.0045f;
+                const float speed2 = 0.02f;
+                const int phase1Duration = 480;
+                const int count = 10;
+                const string shape = "Common/Bullet_Red";
+
+                float startX = GameSystem._Instance._MinX;
+                float gapX = (GameSystem._Instance._MaxX - GameSystem._Instance._MinX) / (count - 1);
+                float y = GameSystem._Instance._MaxY;
+
+                for (int i = 0; i < count; ++i)
+                {
+                    // 아래로 내려오다가
+                    // 페이즈 2 때 절반은 왼쪽으로, 절반은 오른쪽으로 사라짐
+                    TwoPhaseBullet b = GameSystem._Instance.CreateBullet<TwoPhaseBullet>();
+                    b.Init(shape, startX + (i * gapX), y, 0.75f, 0.0f, speed1, 0.0f
+                        , phase1Duration, (i < (count / 2) ? 0.5f : 0.0f), speed2);
+                }
+            }
+
+            /// <summary>
+            /// 반원 배치로 2단계 탄 발사
+            /// </summary>
+            private IEnumerator PatternD_2_HalfCircleTwoPhase()
+            {
+                // 반원 배치로 빠르게 진행하다가 하단으로 천천히 떨어짐
+                const float speed1 = 0.05f;
+                const float speed2 = 0.01f;
+                const int phase1Duration = 30;
+                const int count = 12;
+                const float angleRange = 120.0f / 360.0f;
+                const float startAngleOffset = (angleRange / (float)(count - 1));
+                const int interval = 20;
+                const string shape = "Common/Bullet_Blue";
+
+                for (int frame = 0; frame < (_patternDPartDuration / 2); ++frame)
+                {
+                    if (frame % interval == 0)
+                    {
+                        float startAngle = 0.75f + GameSystem._Instance.GetRandomRange(-startAngleOffset, startAngleOffset);
+                        for (int i = 0; i < count; ++i)
+                        {
+                            TwoPhaseBullet b = GameSystem._Instance.CreateBullet<TwoPhaseBullet>();
+                            b.Init(shape, this._X, this._Y, startAngle + angleRange * ((float)i / (count - 1) - 0.5f), 0.0f, speed1, 0.0f
+                                , phase1Duration, 0.75f, speed2);
+                        }
+                    }
                     yield return null;
                 }
             }
