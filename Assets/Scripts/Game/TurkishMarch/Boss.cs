@@ -414,8 +414,8 @@ namespace Game
 
                     bs[i] = GameSystem._Instance.CreateBullet<SpiralPlacedShooterBullet>();
                     bs[i].Init(shape, orbitAngle, orbitAngleRate, orbitRadius
-                        , shotTime, waitTime, 3, 700
-                        , bulletShape, bulletSpeed, 7);
+                        , shotTime, waitTime, 4, 700
+                        , bulletShape, bulletSpeed, 6);
                 }
 
                 // 사이클 후 슈터 삭제

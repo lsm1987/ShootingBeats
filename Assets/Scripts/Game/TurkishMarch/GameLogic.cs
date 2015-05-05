@@ -20,24 +20,31 @@ namespace Game
                 }
 
                 // 적기 로딩 /////////////////////
-                GameSystem._Instance._UILoading.SetProgress("Loading Boss");
                 GameSystem._Instance.PoolStackShape("Common/Boss_Orange", 1);
                 GameSystem._Instance.PoolStackMover<Boss>(1);
+                GameSystem._Instance.PoolStackShape("Common/Effect_BossCrashOrange", 1);
+                GameSystem._Instance.PoolStackMover<Effect>(1);
 
                 // 탄 로딩 ///////////////////
                 // 외양 로딩
-                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 1/2");
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 1/3");
                 yield return null;
-                GameSystem._Instance.PoolStackShape("Common/Bullet_Blue", 100);
-                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 2/2");
+                GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 41);
+                GameSystem._Instance.PoolStackShape("Common/Bullet_Blue", 86);
+                GameSystem._Instance.PoolStackShape("Common/Bullet_BlueLarge", 2);
+                GameSystem._Instance.PoolStackShape("Common/Bullet_RedLarge", 2);
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 2/3");
                 yield return null;
-                GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 100);
+                GameSystem._Instance.PoolStackShape("Common/Bullet_BlueSmall", 90);
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 3/3");
+                yield return null;
+                GameSystem._Instance.PoolStackShape("Common/Bullet_RedSmall", 114);
+                
                 // 클래스 로딩
-                GameSystem._Instance.PoolStackMover<Bullet>(100);
-
-                // 이펙트 로딩 ///////////////////
-                GameSystem._Instance.PoolStackShape("Common/Effect_BossCrashOrange", 1);
-                GameSystem._Instance.PoolStackMover<Effect>(1);
+                GameSystem._Instance.PoolStackMover<Bullet>(60);
+                GameSystem._Instance.PoolStackMover<AwayBullet>(86);
+                GameSystem._Instance.PoolStackMover<PlacedBullet>(160);
+                GameSystem._Instance.PoolStackMover<SpiralPlacedShooterBullet>(4);
 
                 // 코루틴
                 _coroutineManager.StopAllCoroutines();

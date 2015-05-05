@@ -56,9 +56,10 @@ namespace Game
             _orbitAngle -= Mathf.Floor(_orbitAngle);
 
             // 화면 바깥쪽을 향해서 방향탄 발사
+            if (_time % 5 == 0)
             {
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init(_bulletShape, _X, _Y, _orbitAngle, 0.0f, _bulletSpeed, 0.0f);
+                b.Init(_bulletShape, _X, _Y, _orbitAngle, 0.0f, _bulletSpeed * 1.5f, 0.0f);
             }
 
             // 설치탄 발사

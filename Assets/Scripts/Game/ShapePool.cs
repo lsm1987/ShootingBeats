@@ -184,7 +184,7 @@ namespace Game
         {
             if (_maxCreatedCount != null)
             {
-                Debug.Log("CreatedCount----------------");
+                Debug.Log("Shape CreatedCount----------------");
                 foreach (KeyValuePair<string, int> pair in _maxCreatedCount)
                 {
                     Debug.Log(pair.Key + " " + pair.Value.ToString());

@@ -111,6 +111,7 @@ namespace Game
                 GlobalSystem.CreateInstance();
             }
             //_shapePoolManager.RecordMaxCreatedCount();
+            //_moverPoolManager.RecordMaxCreatedCount();
             _Players = new List<Player>();
             _Shots = new List<Shot>();
             _Enemys = new List<Enemy>();
@@ -127,6 +128,7 @@ namespace Game
         {
             _instance = null;
             _shapePoolManager.LogCreatedCount();
+            _moverPoolManager.LogCreatedCount();
             if (_isPaused)
             {
                 Time.timeScale = _timeScaleBeforePause;

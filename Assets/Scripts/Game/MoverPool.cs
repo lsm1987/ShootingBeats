@@ -10,6 +10,11 @@ namespace Game
         // 타입별 풀. <class type, 풀>
         private Dictionary<Type, Stack<Mover>> _pools = new Dictionary<Type, Stack<Mover>>();
 
+        #region Debug
+        // 최대 생성 수 기록
+        private Dictionary<Type, int> _maxCreatedCount = null;
+        #endregion Debug
+
         /// <summary>
         /// 지정한 풀을 찾거나, 없으면 생성하여 리턴한다.
         /// </summary>
@@ -32,6 +37,7 @@ namespace Game
         {
             T instance = new T();
             instance.OnFirstCreatedInPool(typeof(T)); // 이 풀에서 생성되었음을 기억
+            AddCreatedCount(typeof(T));
             return instance;
         }
 
@@ -122,5 +128,43 @@ namespace Game
                 return 0;
             }
         }
+
+        #region Debug Func
+        public void RecordMaxCreatedCount()
+        {
+            if (_maxCreatedCount == null)
+            {
+                _maxCreatedCount = new Dictionary<Type, int>();
+            }
+        }
+
+        private void AddCreatedCount(Type type)
+        {
+            if (_maxCreatedCount != null)
+            {
+                int createdCount = 0;
+                if (_maxCreatedCount.TryGetValue(type, out createdCount))
+                {
+                    _maxCreatedCount[type] = (createdCount + 1);
+                }
+                else
+                {
+                    _maxCreatedCount.Add(type, 1);
+                }
+            }
+        }
+
+        public void LogCreatedCount()
+        {
+            if (_maxCreatedCount != null)
+            {
+                Debug.Log("Mover CreatedCount----------------");
+                foreach (KeyValuePair<Type, int> pair in _maxCreatedCount)
+                {
+                    Debug.Log(pair.Key + " " + pair.Value.ToString());
+                }
+            }
+        }
+        #endregion Debug Func
     }
 }
