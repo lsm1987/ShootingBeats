@@ -239,6 +239,7 @@ namespace Game
             private IEnumerator PatternD_1()
             {
                 yield return _coroutineManager.StartCoroutine(PatternD_1_Follow());
+                _coroutineManager.StartCoroutine(PatternD_1_Circle()); // 원형탄과 함께 따라다니기
                 yield return _coroutineManager.StartCoroutine(PatternD_1_Follow());
             }
 
@@ -247,9 +248,9 @@ namespace Game
             /// </summary>
             private IEnumerator PatternD_1_Follow()
             {
-                const float speed = 0.01f;
+                const float speed = 0.007f;
                 const float maxAngleRate = 0.01f; // 최대 선회 각속도
-                const int interval = 5; // 발사 간격
+                const int interval = 10; // 발사 간격
                 const string shape = "Common/Bullet_Blue";
                 float angle = _Logic.GetPlayerAngle(this);
 
@@ -290,6 +291,18 @@ namespace Game
                 }
             }
 
+            /// <summary>
+            /// 주기적으로 원형탄 발사
+            /// </summary>
+            private IEnumerator PatternD_1_Circle()
+            {
+                for (int i = 0; i < 14; ++i)
+                {
+                    _Logic.CircleBullet(this, "Common/Bullet_Red", GameSystem._Instance.GetRandom01(), 0.01f, 6, true);
+                    yield return new WaitForFrames(60);
+                }
+            }
+
             private IEnumerator PatternD_2()
             {
                 // 안전선 발사
@@ -298,7 +311,7 @@ namespace Game
                 yield return _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 240));
                 yield return new WaitForFrames(240);
                 // 반원 발사
-                yield return _coroutineManager.StartCoroutine(PatternD_2_HalfCircleTwoPhase());
+                yield return _coroutineManager.StartCoroutine(PatternD_2_HalfCirclePlaced());
             }
 
             /// <summary>
@@ -307,7 +320,7 @@ namespace Game
             private void PatternD_2_SafetyLine()
             {
                 const float speed1 = 0.0045f;
-                const float speed2 = 0.02f;
+                const float speed2 = 0.01f;
                 const int phase1Duration = 480;
                 const int count = 10;
                 const string shape = "Common/Bullet_Red";
@@ -329,15 +342,15 @@ namespace Game
             /// <summary>
             /// 반원 배치로 2단계 탄 발사
             /// </summary>
-            private IEnumerator PatternD_2_HalfCircleTwoPhase()
+            private IEnumerator PatternD_2_HalfCirclePlaced()
             {
                 // 반원 배치로 빠르게 진행하다가 하단으로 천천히 떨어짐
                 const float speed1 = 0.05f;
                 const float speed2 = 0.01f;
                 const int phase1Duration = 30;
                 const int count = 12;
-                const float angleRange = 120.0f / 360.0f;
-                const float startAngleOffset = (angleRange / (float)(count - 1));
+                const float angleRange = 100.0f / 360.0f;
+                const float startAngleOffset = (angleRange / (float)(count - 1)) / 2.0f;
                 const int interval = 20;
                 const string shape = "Common/Bullet_Blue";
 

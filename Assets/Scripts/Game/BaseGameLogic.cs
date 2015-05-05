@@ -505,6 +505,12 @@ namespace Game
                 }
             }
         }
+
+        public void AimimgBullet(Mover mover, string shape, float speed)
+        {
+            Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+            b.Init(shape, mover._X, mover._Y, GetPlayerAngle(mover), 0.0f, speed, 0.0f);
+        }
         #endregion Pattern
     }
 }
