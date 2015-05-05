@@ -103,7 +103,7 @@ namespace Game
                 yield return new WaitForFrames(60);
                 _coroutineManager.StartCoroutine(_Logic.SideAim(3, 0.02f, 120, 4));
 
-                yield return new WaitForAbsFrames(7800 + 960 - 60);
+                yield return new WaitForAbsFrames(8700);
                 _Logic.CircleBullet(this, "Common/Bullet_Red", 0.25f, 0.02f, 12, false);
                 {
                     Effect crashEffect = GameSystem._Instance.CreateEffect<Effect>();

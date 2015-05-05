@@ -23,24 +23,20 @@ namespace Game
                 }
 
                 // 적기 로딩 /////////////////////
-                GameSystem._Instance._UILoading.SetProgress("Loading Boss");
                 GameSystem._Instance.PoolStackShape("Common/Boss_Miku", 1);
                 GameSystem._Instance.PoolStackMover<Boss>(1);
+                GameSystem._Instance.PoolStackShape("Common/Effect_BossCrashMiku", 1);
+                GameSystem._Instance.PoolStackMover<Effect>(1);
 
                 // 탄 로딩 ///////////////////
                 // 외양 로딩
-                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 1/2");
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets");
                 yield return null;
                 GameSystem._Instance.PoolStackShape("Common/Bullet_Blue", 270);
-                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 2/2");
-                yield return null;
-                GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 50);
+                GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 17);
+                
                 // 클래스 로딩
-                GameSystem._Instance.PoolStackMover<Bullet>(100);
-
-                // 이펙트 로딩 ///////////////////
-                GameSystem._Instance.PoolStackShape("Common/Effect_BossCrashMiku", 1);
-                GameSystem._Instance.PoolStackMover<Effect>(1);
+                GameSystem._Instance.PoolStackMover<Bullet>(270);
 
                 // 스테이지 텍스트
                 if (_uiStageText == null)

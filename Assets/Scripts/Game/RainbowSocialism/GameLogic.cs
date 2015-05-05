@@ -20,9 +20,10 @@ namespace Game
                 }
 
                 // 적기 로딩 /////////////////////
-                GameSystem._Instance._UILoading.SetProgress("Loading Boss");
                 GameSystem._Instance.PoolStackShape("Common/Boss_Orange", 1);
                 GameSystem._Instance.PoolStackMover<Boss>(1);
+                GameSystem._Instance.PoolStackShape("Common/Effect_BossCrashOrange", 1);
+                GameSystem._Instance.PoolStackMover<Effect>(1);
 
                 // 탄 로딩 ///////////////////
                 // 외양 로딩
@@ -32,12 +33,9 @@ namespace Game
                 GameSystem._Instance._UILoading.SetProgress("Loading Bullets 2/2");
                 yield return null;
                 GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 125);
-                // 클래스 로딩
-                GameSystem._Instance.PoolStackMover<Bullet>(100);
 
-                // 이펙트 로딩 ///////////////////
-                GameSystem._Instance.PoolStackShape("Common/Effect_BossCrashOrange", 1);
-                GameSystem._Instance.PoolStackMover<Effect>(1);
+                // 클래스 로딩
+                GameSystem._Instance.PoolStackMover<Bullet>(210);
 
                 // 코루틴
                 _coroutineManager.StopAllCoroutines();
