@@ -11,6 +11,20 @@ namespace Game
             private int _score = 10; // 피격시 획득 점수
             private CoroutineManager _coroutineManager = new CoroutineManager();
             private int _patternDPartDuration = 60 * 14;    // 패턴 D의 파트별 지속시간
+            private readonly byte[] _patternNote =  // 음표모양 패턴
+            {
+                0, 0, 0, 1, 1, 0, 0,
+                0, 0, 0, 1, 0, 1, 0,
+                0, 0, 0, 1, 0, 0, 1,
+                0, 0, 0, 1, 0, 1, 0,
+                0, 0, 0, 1, 0, 0, 0,
+                0, 0, 0, 1, 0, 0, 0,
+                0, 1, 1, 1, 0, 0, 0,
+                1, 1, 1, 1, 1, 0, 0,
+                0, 1, 1, 1, 0, 0, 0,
+            };
+            private readonly int _patternNoteCol = 7;
+            private readonly int _patternNoteRow = 9;
 
             public Boss()
                 : base()
@@ -123,28 +137,20 @@ namespace Game
             private IEnumerator PatternA_b1()
             {
                 const int circleInterval = 28;
-                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, true, circleInterval, 7));
+                _coroutineManager.StartCoroutine(_Logic.RandomAngleCircleBullets(this, "Common/Bullet_Blue", 0.02f, 12, circleInterval, 7));
                 yield return new WaitForFrames(circleInterval / 2);
-                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, false, circleInterval, 6));
+                _coroutineManager.StartCoroutine(_Logic.RandomAngleCircleBullets(this, "Common/Bullet_Blue", 0.02f, 12, circleInterval, 6));
             }
 
             private IEnumerator PatternA_b2()
             {
                 const int circleInterval = 28;
-                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, true, circleInterval, 4));
+                _coroutineManager.StartCoroutine(_Logic.RandomAngleCircleBullets(this, "Common/Bullet_Blue", 0.02f, 12, circleInterval, 4));
                 yield return new WaitForFrames(circleInterval / 2);
-                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.02f, 12, false, circleInterval, 4));
+                _coroutineManager.StartCoroutine(_Logic.RandomAngleCircleBullets(this, "Common/Bullet_Blue", 0.02f, 12, circleInterval, 4));
                 yield return new WaitForFrames(circleInterval * 4);
 
-                const float lineXOffset = 0.1f;
-                const float lineYOffset = 0.15f;
-                Vector2 pos = _pos;
-                _coroutineManager.StartCoroutine(_Logic.LineBullets(pos, "Common/Bullet_blue", 0.75f, 0.02f, 5, 10));
-                pos.x = _pos.x - lineXOffset;
-                pos.y = _pos.y + lineYOffset;
-                _coroutineManager.StartCoroutine(_Logic.LineBullets(pos, "Common/Bullet_blue", 0.75f, 0.02f, 5, 10));
-                pos.x = _pos.x + lineXOffset;
-                _coroutineManager.StartCoroutine(_Logic.LineBullets(pos, "Common/Bullet_blue", 0.75f, 0.02f, 5, 10));
+                _coroutineManager.StartCoroutine(_Logic.PatternBullets(this, "Common/Bullet_Blue", 0.75f, 0.02f, 4, _patternNote, _patternNoteCol, _patternNoteRow, 0.08f));
             }
 
             private IEnumerator PatternB()
@@ -156,7 +162,7 @@ namespace Game
                 const int rollingCount = 5;
                 
                 // 뿌리기
-                _Logic.RandomSpreadBullet(this, "Common/Bullet_Red", 0.2f, 0.02f, 0.02f, 30);
+                _Logic.RandomSpreadBullet(this, "Common/Bullet_Red", 0.2f, 0.02f, 0.02f, 24);
 
                 // 반시계 회전
                 yield return new WaitForFrames(100);
@@ -165,7 +171,7 @@ namespace Game
 
                 // 뿌리기
                 yield return new WaitForFrames(140);
-                _Logic.RandomSpreadBullet(this, "Common/Bullet_Red", 0.2f, 0.02f, 0.02f, 30);
+                _Logic.RandomSpreadBullet(this, "Common/Bullet_Red", 0.2f, 0.02f, 0.02f, 24);
 
                 // 시계 회전
                 yield return new WaitForFrames(100);

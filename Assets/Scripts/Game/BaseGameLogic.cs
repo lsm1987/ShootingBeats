@@ -215,6 +215,18 @@ namespace Game
         }
 
         /// <summary>
+        /// 시작각도 랜덤인 원형탄
+        /// </summary>
+        public IEnumerator RandomAngleCircleBullets(Mover mover, string shape, float speed, int count, int interval, int repeatCount)
+        {
+            for (int i = 0; i < repeatCount; ++i)
+            {
+                CircleBullet(mover, shape, GameSystem._Instance.GetRandom01(), speed, count, true);
+                yield return new WaitForFrames(interval);
+            }
+        }
+
+        /// <summary>
         /// 소용돌이탄
         /// </summary>
         public IEnumerator SpiralBullets(Mover mover, string shape, float angle, float angleRate, float speed, int interval, int duration)
@@ -446,6 +458,49 @@ namespace Game
                     Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
                     b.Init(shape, spawnX, spawnY, bulletAngle, 0.0f, speed, 0.0f);
 
+                    yield return new WaitForFrames(interval);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 배열 패턴 탄
+        /// </summary>
+        public IEnumerator PatternBullets(Mover mover, string shape
+            , float angle, float speed, int interval, byte[] pattern, int col, int row, float colSpace)
+        {
+            // 한줄씩 발사
+            float rad = angle * Mathf.PI * 2.0f;
+            float sin = Mathf.Sin(rad);
+            float cos = Mathf.Cos(rad);
+            float centerCol = ((float)col - 1.0f) / 2.0f;   // 가운데 칸의 인덱스 (예: 2칸 -> [0] "[0.5]" [1])
+            
+            // 아랫줄 부터 출력
+            for (int r = row - 1; r >= 0; --r)
+            {
+                // 이번 줄 첫번째 인덱스
+                int startIndex = col * r;
+
+                // 왼쪽 탄을 위에 보이도록 하기 위해 오른쪽부터 읽음
+                for (int i = col - 1; i >= 0; --i)
+                {
+                    // 0 외의 부분에 탄 발사
+                    int index = startIndex + i;
+                    if (pattern[index] != 0)
+                    {
+                        // 화면 아래로 향할 때(0.75, 270도) 패턴 그대로 출력
+                        // 즉, 0도일 떄는 colOffset이 Y축으로 작동
+                        float xOffset = 0.0f;
+                        float yOffset = ((float)i - centerCol) * colSpace; // 가운데 칸으로부터 얼마나 떨어졌는가?
+                        float x = mover._X + (cos * xOffset + -1.0f * sin * yOffset); // 벡터 회전공식 참고. http://en.wikipedia.org/wiki/Rotation_(mathematics)
+                        float y = mover._Y + (sin * xOffset + cos * yOffset);
+                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                        b.Init(shape, x, y, angle, 0.0f, speed, 0.0f);
+                    }
+                }
+
+                if (r > 0)
+                {
                     yield return new WaitForFrames(interval);
                 }
             }
