@@ -90,7 +90,7 @@ namespace Game
                 yield return new WaitForAbsFrames(8870);
                 {
                     Effect crashEffect = GameSystem._Instance.CreateEffect<Effect>();
-                    crashEffect.Init("Common/Effect_BossCrashOrange", _X, _Y, 0.0f);
+                    crashEffect.Init("Common/Effect_BossCrashRed", _X, _Y, 0.0f);
                 }
                 _alive = false;
             }

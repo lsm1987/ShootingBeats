@@ -20,9 +20,9 @@ namespace Game
                 }
 
                 // 적기 로딩 /////////////////////
-                GameSystem._Instance.PoolStackShape("Common/Boss_Orange", 1);
+                GameSystem._Instance.PoolStackShape("Common/Boss_Red", 1);
                 GameSystem._Instance.PoolStackMover<Boss>(1);
-                GameSystem._Instance.PoolStackShape("Common/Effect_BossCrashOrange", 1);
+                GameSystem._Instance.PoolStackShape("Common/Effect_BossCrashRed", 1);
                 GameSystem._Instance.PoolStackMover<Effect>(1);
 
                 // 탄 로딩 ///////////////////
@@ -65,7 +65,7 @@ namespace Game
 
                 // 보스 생성
                 Boss boss = GameSystem._Instance.CreateEnemy<Boss>();
-                boss.Init("Common/Boss_Orange", -0.5f, 1.3f, 0.0f);
+                boss.Init("Common/Boss_Red", -0.5f, 1.3f, 0.0f);
 
                 yield return null;
             }
