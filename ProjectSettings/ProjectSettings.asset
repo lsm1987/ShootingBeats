@@ -123,8 +123,8 @@ PlayerSettings:
   iOSLaunchScreenCustomXibPath: 
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
-  AndroidKeystoreName: 
-  AndroidKeyaliasName: 
+  AndroidKeystoreName: D:/Study/Unity3D/Files/Keystore/lsm1987.keystore
+  AndroidKeyaliasName: lsm1987
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
   androidEnableBanner: 0
