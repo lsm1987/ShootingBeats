@@ -22,6 +22,7 @@ Assets/UnityVS.meta
 
 #Google Play Game 플러그인에서 Android Setting 으로 변경된 파일들은 개인정보 노출 방지 위해 커밋하지 않음
 Assets/GooglePlayGames/GameInfo.cs
+Assets/GooglePlayGames/GameInfo.cs.meta
 ProjectSettings/GooglePlayGameSettings.txt
 Assets/Plugins/Android/MainLibProj/AndroidManifest.xml
 Assets/Plugins/Android/MainLibProj/AndroidManifest.xml.meta
