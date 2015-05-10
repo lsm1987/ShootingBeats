@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using GooglePlayGames;
 
 // 전역적으로 관리되어야 하는 정보
 public class GlobalSystem
@@ -28,6 +29,62 @@ public class GlobalSystem
             _Instance = new GlobalSystem();
             return _Instance;
         }
+    }
+
+    /// <summary>
+    /// 로그인 시도 중
+    /// </summary>
+    public bool _IsAuthenticating
+    {
+        get;
+        private set;
+    }
+    
+    /// <summary>
+    /// 로그인 되어있는가?
+    /// </summary>
+    public bool _IsAuthenticated
+    {
+        get
+        {
+            return Social.Active.localUser.authenticated;
+        }
+    }
+
+    /// <summary>
+    /// 로그인 수행
+    /// </summary>
+    public void Authenticate()
+    {
+        if (_IsAuthenticated || _IsAuthenticating)
+        {
+            Debug.LogWarning("Ignoring repeated call to Authenticate().");
+            return;
+        }
+
+        PlayGamesPlatform.Activate();
+
+        _IsAuthenticating = true;
+        Social.localUser.Authenticate((bool success) =>
+        {
+            _IsAuthenticating = false;
+            if (success)
+            {
+                Debug.Log("Login successful!");
+            }
+            else
+            {
+                Debug.LogWarning("Failed to sign in with Google Play Games.");
+            }
+        });
+    }
+
+    /// <summary>
+    /// 로그아웃 수행
+    /// </summary>
+    public void SignOut()
+    {
+        ((PlayGamesPlatform)Social.Active).SignOut();
     }
 }
 
