@@ -49,7 +49,18 @@ public class TitleSystem : SceneSystem
     #region UI Event
     public void OnStartClicked()
     {
-        LoadBeatListScene();
+        if (!GlobalSystem._Instance._IsAuthenticated)
+        {
+            // 로그인되어있지 않으면 알림
+            UIMessageBox box = _UISystem.OpenMessageBox();
+            box.SetText("Not signed in Google play.\nHigh score will not recorded at leaderboard.");
+            box.SetButton(0, "OK", LoadBeatListScene);  // 진행
+            box.SetButton(1, "Cancel", null);   // 중지
+        }
+        else
+        {
+            LoadBeatListScene();
+        }
     }
 
     public void OnOptionClicked()

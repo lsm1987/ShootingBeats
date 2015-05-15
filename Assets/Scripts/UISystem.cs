@@ -86,4 +86,12 @@ public class UISystem : MonoBehaviour
         }
         return keyInputFinished;
     }
+
+    /// <summary>
+    /// 메시지 박스 열기
+    /// </summary>
+    public UIMessageBox OpenMessageBox()
+    {
+        return OpenWindow(Define._uiMessageBoxPath) as UIMessageBox;
+    }
 }
