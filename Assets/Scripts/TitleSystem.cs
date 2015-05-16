@@ -63,6 +63,22 @@ public class TitleSystem : SceneSystem
     /// </summary>
     private void QuitAppication()
     {
+        // 종료 시 프로세스가 바로 사라지지 않는 문제가 있어 추가하려했으나, 적용해보니 프로세스가 영영 사라지지 않아 사용하지 않음
+        // http://stackoverflow.com/questions/28031789/unity-with-google-play-plugin-application-freeze-on-quit-application-on-android
+        // https://github.com/playgameservices/play-games-plugin-for-unity/issues/310
+        /*
+#if UNITY_ANDROID
+        if (GlobalSystem._Instance._IsAuthenticated)
+        {
+            GlobalSystem._Instance.SignOut();
+        }
+        using (AndroidJavaClass javaClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+        {
+            AndroidJavaObject unityActivity = javaClass.GetStatic<AndroidJavaObject>("currentActivity");
+            unityActivity.Call<bool>("moveTaskToBack", true);
+        }
+#endif
+        */
         Application.Quit();
     }
 
@@ -80,6 +96,7 @@ public class TitleSystem : SceneSystem
     /// </summary>
     private void OnSignInResult(bool success)
     {
+        GlobalSystem._Instance.SetAutoSignIn(true);    // 로그인 성공하면 자동로그인 지정
         SetSignInButtonText(success);
     }
 
@@ -146,6 +163,7 @@ public class TitleSystem : SceneSystem
             // 로그아웃
             _btnTextSignIn.text = _textSignIn;  // 로그인으로 변경
             GlobalSystem._Instance.SignOut();
+            GlobalSystem._Instance.SetAutoSignIn(false);   // 유저가 직접 로그아웃 수행 시 자동로그인 해제
         }
     }
 

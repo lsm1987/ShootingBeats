@@ -77,7 +77,6 @@ public class GlobalSystem
                 Debug.Log("Login successful!");
 
                 // 로그인 성공시 추가로 할 일
-                SetAutoSignIn(true);    // 로그인 성공하면 자동로그인 지정
                 LoadGameIDs();
             }
             else
@@ -99,13 +98,12 @@ public class GlobalSystem
     public void SignOut()
     {
         ((PlayGamesPlatform)Social.Active).SignOut();
-        SetAutoSignIn(false);   // 로그아웃 수행 시 자동로그인 해제
     }
 
     /// <summary>
     /// 자동로그인 여부 기록
     /// </summary>
-    private void SetAutoSignIn(bool set)
+    public void SetAutoSignIn(bool set)
     {
         PlayerPrefs.SetInt(_autoSignInPrefKey, (set ? 1 : 0));
     }

@@ -2143,7 +2143,6 @@ GameObject:
   - 4: {fileID: 1403484230}
   - 114: {fileID: 1403484231}
   - 81: {fileID: 1403484232}
-  - 114: {fileID: 1403484233}
   m_Layer: 0
   m_Name: GameSystem
   m_TagString: Untagged
@@ -2195,20 +2194,6 @@ AudioListener:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1403484229}
   m_Enabled: 1
---- !u!114 &1403484233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1403484229}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf8f81dcd3b59ed4e99870e30c3109f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isInvincible: 0
-  _startFrame: 0
-  _beatInfo: {fileID: 0}
 --- !u!1 &1446292484
 GameObject:
   m_ObjectHideFlags: 0
