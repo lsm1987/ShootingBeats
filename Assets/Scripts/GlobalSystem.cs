@@ -10,6 +10,7 @@ public class GlobalSystem
     public Config _Config { get; private set; } // 설정 접근용
     public BeatInfo _LoadingBeatInfo { get; set; }  // 스테이지에서 불러올 노래 정보
     private Dictionary<string, string> _gameIDs = null; // GPG 에서 사용하는 ID들
+    private const string _autoSignInPrefKey = "AutoSignIn"; // 자동 로그인 Pref 키
 
     public GlobalSystem()
     {
@@ -76,6 +77,7 @@ public class GlobalSystem
                 Debug.Log("Login successful!");
 
                 // 로그인 성공시 추가로 할 일
+                SetAutoSignIn(true);    // 로그인 성공하면 자동로그인 지정
                 LoadGameIDs();
             }
             else
@@ -97,6 +99,23 @@ public class GlobalSystem
     public void SignOut()
     {
         ((PlayGamesPlatform)Social.Active).SignOut();
+        SetAutoSignIn(false);   // 로그아웃 수행 시 자동로그인 해제
+    }
+
+    /// <summary>
+    /// 자동로그인 여부 기록
+    /// </summary>
+    private void SetAutoSignIn(bool set)
+    {
+        PlayerPrefs.SetInt(_autoSignInPrefKey, (set ? 1 : 0));
+    }
+
+    /// <summary>
+    /// 자동로그인이 지정되어있는가?
+    /// </summary>
+    public bool IsAutoSignInSet()
+    {
+        return (PlayerPrefs.GetInt(_autoSignInPrefKey, 0) != 0);
     }
 
     /// <summary>

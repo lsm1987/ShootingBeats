@@ -17,7 +17,19 @@ public class TitleSystem : SceneSystem
         {
             GlobalSystem.CreateInstance();
         }
-        SetSignInButtonText(GlobalSystem._Instance._IsAuthenticated);
+
+        // 로그인 관련
+        if (GlobalSystem._Instance.IsAutoSignInSet()
+            && !GlobalSystem._Instance._IsAuthenticated
+            && !GlobalSystem._Instance._IsAuthenticating)
+        {
+            // 자동로그인 지정되어있다면 로그인 시도
+            GlobalSystem._Instance.Authenticate(OnSignInResult);
+        }
+        else
+        {
+            SetSignInButtonText(GlobalSystem._Instance._IsAuthenticated);
+        }
     }
 
     protected override void OnUpdate()
@@ -113,14 +125,14 @@ public class TitleSystem : SceneSystem
         else if (!GlobalSystem._Instance._IsAuthenticated)
         {
             // 로그인 시도
+            _btnTextSignIn.text = _textSignInDoing; // 시도 중으로 변경
             GlobalSystem._Instance.Authenticate(OnSignInResult);
-            _btnTextSignIn.text = _textSignInDoing; // 시도 중
         }
         else
         {
             // 로그아웃
+            _btnTextSignIn.text = _textSignIn;  // 로그인으로 변경
             GlobalSystem._Instance.SignOut();
-            _btnTextSignIn.text = _textSignIn;  // 로그인
         }
     }
 
