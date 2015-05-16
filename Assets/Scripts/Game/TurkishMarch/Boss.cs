@@ -54,11 +54,11 @@ namespace Game
                 yield return new WaitForAbsFrames(935);
                 _coroutineManager.StartCoroutine(PatternB());
                 yield return new WaitForAbsFrames(1370);
-                _coroutineManager.StartCoroutine(PatternA_12());
+                _coroutineManager.StartCoroutine(PatternA_22());
                 yield return new WaitForAbsFrames(1800);
                 _coroutineManager.StartCoroutine(PatternB());
                 yield return new WaitForAbsFrames(2235);
-                _coroutineManager.StartCoroutine(PatternA_12());
+                _coroutineManager.StartCoroutine(PatternA_22());
                 yield return new WaitForAbsFrames(2670);
                 _coroutineManager.StartCoroutine(PatternC_1());
                 yield return new WaitForAbsFrames(3590);
@@ -77,11 +77,11 @@ namespace Game
                 yield return new WaitForAbsFrames(7880);
                 _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 5, 5));
                 yield return new WaitForFrames(70);
-                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 5, 5));
+                _coroutineManager.StartCoroutine(Aiming2LineBullets(this, "Common/Bullet_Red", 0.02f, 0.1f, 5, 5));
                 yield return new WaitForFrames(50);
                 _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 5, 9));
                 yield return new WaitForFrames(110);
-                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, 5, 5));
+                _coroutineManager.StartCoroutine(_Logic.RandomAngleCircleBullets(this, "Common/Bullet_Blue", 0.02f, 12, 15, 5));
 
                 yield return new WaitForAbsFrames(8250);
                 _coroutineManager.StartCoroutine(PatternE_2());
@@ -115,9 +115,9 @@ namespace Game
                 yield return _coroutineManager.StartCoroutine(PatternA_b1());
             }
 
-            private IEnumerator PatternA_12()
+            private IEnumerator PatternA_22()
             {
-                yield return _coroutineManager.StartCoroutine(PatternA_a1());
+                yield return _coroutineManager.StartCoroutine(PatternA_a2());
                 yield return new WaitForFrames(110);
                 yield return _coroutineManager.StartCoroutine(PatternA_b2());
             }
@@ -140,6 +140,47 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.RandomAngleCircleBullets(this, "Common/Bullet_Blue", 0.02f, 12, circleInterval, 7));
                 yield return new WaitForFrames(circleInterval / 2);
                 _coroutineManager.StartCoroutine(_Logic.RandomAngleCircleBullets(this, "Common/Bullet_Blue", 0.02f, 12, circleInterval, 6));
+            }
+
+            private IEnumerator Aiming2LineBullets(Mover mover, string shape, float speed, float gap, int interval, int repeatCount)
+            {
+                // 발사 시작 시 플레이어와의 각도 계산
+                float angle = _Logic.GetPlayerAngle(mover);
+                float rad = angle * Mathf.PI * 2.0f;
+                float sin = Mathf.Sin(rad);
+                float cos = Mathf.Cos(rad);
+                float xOffset = 0.0f;
+                float yOffset1 = gap;
+                float yOffset2 = gap * -1.0f;
+                float x1 = mover._X + (cos * xOffset + -1.0f * sin * yOffset1);
+                float y1 = mover._Y + (sin * xOffset + cos * yOffset1);
+                float x2 = mover._X + (cos * xOffset + -1.0f * sin * yOffset2);
+                float y2 = mover._Y + (sin * xOffset + cos * yOffset2);
+
+                for (int i = 0; i < repeatCount; ++i)
+                {
+                    Bullet b1 = GameSystem._Instance.CreateBullet<Bullet>();
+                    b1.Init(shape, x1, y1, angle, 0.0f, speed, 0.0f);
+                    Bullet b2 = GameSystem._Instance.CreateBullet<Bullet>();
+                    b2.Init(shape, x2, y2, angle, 0.0f, speed, 0.0f);
+
+                    if (i < repeatCount - 1)
+                    {
+                        yield return new WaitForFrames(interval);
+                    }
+                }
+            }
+
+            private IEnumerator PatternA_a2()
+            {
+                const int interval = 5;
+                _coroutineManager.StartCoroutine(Aiming2LineBullets(this, "Common/Bullet_Red", 0.02f, 0.15f, interval, 5));
+                yield return new WaitForFrames(50);
+                _coroutineManager.StartCoroutine(_Logic.AimingLineBullets(this, "Common/Bullet_Red", 0.02f, interval, 5));
+                yield return new WaitForFrames(50);
+                _coroutineManager.StartCoroutine(Aiming2LineBullets(this, "Common/Bullet_Red", 0.02f, 0.15f, interval, 4));
+                yield return new WaitForFrames(25);
+                _coroutineManager.StartCoroutine(_Logic.AimingNWayLineBullets(this, "Common/Bullet_Red", 0.02f, interval, 9, 0.125f, 3));
             }
 
             private IEnumerator PatternA_b2()
