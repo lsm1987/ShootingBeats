@@ -24,7 +24,7 @@ public class TitleSystem : SceneSystem
             && !GlobalSystem._Instance._IsAuthenticating)
         {
             // 자동로그인 지정되어있다면 로그인 시도
-            GlobalSystem._Instance.Authenticate(OnSignInResult);
+            TrySignIn();
         }
         else
         {
@@ -64,6 +64,15 @@ public class TitleSystem : SceneSystem
     private void QuitAppication()
     {
         Application.Quit();
+    }
+
+    /// <summary>
+    /// 로그인 시도
+    /// </summary>
+    private void TrySignIn()
+    {
+        _btnTextSignIn.text = _textSignInDoing; // 시도 중으로 변경
+        GlobalSystem._Instance.Authenticate(OnSignInResult);
     }
 
     /// <summary>
@@ -125,8 +134,7 @@ public class TitleSystem : SceneSystem
         else if (!GlobalSystem._Instance._IsAuthenticated)
         {
             // 로그인 시도
-            _btnTextSignIn.text = _textSignInDoing; // 시도 중으로 변경
-            GlobalSystem._Instance.Authenticate(OnSignInResult);
+            TrySignIn();
         }
         else
         {
