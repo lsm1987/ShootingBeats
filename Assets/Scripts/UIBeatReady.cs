@@ -15,6 +15,8 @@ public class UIBeatReady : UIWindow
     private Text _difficulty;
     [SerializeField]
     private Text _length;
+    [SerializeField]
+    private Button _leaderboard;
     private BeatInfo _beatInfo;
     private const string _albumArtRoot = "AlbumArts";   // 앨범아트 스프라이트 경로
 
@@ -32,6 +34,7 @@ public class UIBeatReady : UIWindow
         }
         _difficulty.text = _beatInfo._difficulty.ToString();
         _length.text = Define.ConverBeatLength(_beatInfo._length);
+        _leaderboard.interactable = (GlobalSystem._Instance != null && GlobalSystem._Instance._IsAuthenticated); // 로그인 되었을 때만 사용가능
 
         // 활성화
         _Go.SetActive(true);
@@ -69,5 +72,16 @@ public class UIBeatReady : UIWindow
         }
         GlobalSystem._Instance._LoadingBeatInfo = _beatInfo;
         Application.LoadLevel(SceneName._Stage);
+    }
+
+    /// <summary>
+    /// 리더보드 열기
+    /// </summary>
+    public void OnLeaderboardClicked()
+    {
+        if (GlobalSystem._Instance != null && GlobalSystem._Instance._IsAuthenticated)
+        {
+            Define.OpenSongLeaderboard(_beatInfo);
+        }
     }
 }

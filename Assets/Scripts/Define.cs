@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using GooglePlayGames;
 
 public static class SceneName
 {
@@ -87,5 +88,30 @@ public static class Define
     public static void SetSongHighScore(BeatInfo beatInfo, int highScore)
     {
         PlayerPrefs.SetInt(GetSongHighScorePrefKey(beatInfo), highScore);
+    }
+
+    /// <summary>
+    /// 음악 리더보드 ID 구하기
+    /// </summary>
+    private static string GetSongLeaderboardID(BeatInfo beatInfo)
+    {
+        string key = ("leaderboard" + beatInfo._namespace);
+        if (GlobalSystem._Instance != null)
+        {
+            return GlobalSystem._Instance.GetGameID(key);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 음악 리더보드 UI 열기
+    /// </summary>
+    public static void OpenSongLeaderboard(BeatInfo beatInfo)
+    {
+        string id = GetSongLeaderboardID(beatInfo);
+        PlayGamesPlatform.Instance.ShowLeaderboardUI(id);
     }
 }
