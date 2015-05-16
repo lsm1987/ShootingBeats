@@ -67,7 +67,7 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, new Vector2(0.0f, 0.0f), 40, 0.1f));
 
                 yield return new WaitForAbsFrames(1750);
-                _coroutineManager.StartCoroutine(RotateCrossTwice());
+                _coroutineManager.StartCoroutine(RotateCrossTwice1());
 
                 yield return new WaitForAbsFrames(2580);
                 _coroutineManager.StartCoroutine(BackwardStep());
@@ -94,7 +94,7 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, new Vector2(0.0f, 0.0f), 40, 0.1f));
 
                 yield return new WaitForAbsFrames(5590);
-                _coroutineManager.StartCoroutine(RotateCrossTwice());
+                _coroutineManager.StartCoroutine(RotateCrossTwice2());
 
                 yield return new WaitForAbsFrames(6410);
                 {
@@ -260,28 +260,39 @@ namespace Game
                 yield return new WaitForFrames(75);
             }
 
-            private IEnumerator RotateCrossTwice()
+            private IEnumerator RotateCrossTwice1()
             {
-                _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(false));
+                const int repeatCount = 4;
+                const int interval = 105;
+                _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(false, repeatCount, interval));
                 yield return _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.125f, 0.005f, 0.05f, 4, 2, 410));
-                _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(true));
+                _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(true, repeatCount, interval));
                 yield return _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.125f, -0.005f, 0.05f, 4, 2, 410));
             }
 
-            private IEnumerator RotateCrossTwice_DirectionShot(bool clockwise)
+            private IEnumerator RotateCrossTwice2()
             {
-                const int repeatCount = 4;
+                const int repeatCount = 4 * 2;
+                const int interval = 105 / 2;
+                _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(false, repeatCount, interval));
+                yield return _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.125f, 0.005f, 0.05f, 4, 2, 410));
+                _coroutineManager.StartCoroutine(RotateCrossTwice_DirectionShot(true, repeatCount, interval));
+                yield return _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.125f, -0.005f, 0.05f, 4, 2, 410));
+            }
+
+            private IEnumerator RotateCrossTwice_DirectionShot(bool clockwise, int repeatCount, int interval)
+            {
                 const int directionCount = 4;
                 const float startAngle = 0.75f;
                 const float angleRange = 1.0f - 1.0f / directionCount;
                 for (int i = 0; i < repeatCount; ++i)
                 {
-                    float angle = startAngle + 0.25f * (float)i * (clockwise ? -1.0f : 1.0f);
+                    float angle = startAngle + (1.0f / (float)repeatCount) * (float)i * (clockwise ? -1.0f : 1.0f);
                     _Logic.NWayBullet(this, "Common/Bullet_Red", angle, angleRange, 0.01f, directionCount);
 
                     if (i < repeatCount - 1)
                     {
-                        yield return new WaitForFrames(105);
+                        yield return new WaitForFrames(interval);
                     }
                 }
             }
