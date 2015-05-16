@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GooglePlayGames;
+using System.Collections.Generic;
 
 // 전역적으로 관리되어야 하는 정보
 public class GlobalSystem
@@ -7,6 +8,7 @@ public class GlobalSystem
     public static GlobalSystem _Instance { get; private set; }  // 전역 접근용
     public Config _Config { get; private set; } // 설정 접근용
     public BeatInfo _LoadingBeatInfo { get; set; }  // 스테이지에서 불러올 노래 정보
+    private Dictionary<string, string> _gameIDs = null; // GPG 에서 사용하는 ID들
 
     public GlobalSystem()
     {
@@ -71,6 +73,9 @@ public class GlobalSystem
             if (success)
             {
                 Debug.Log("Login successful!");
+
+                // 로그인 성공시 추가로 할 일
+                LoadGameIDs();
             }
             else
             {
@@ -85,6 +90,48 @@ public class GlobalSystem
     public void SignOut()
     {
         ((PlayGamesPlatform)Social.Active).SignOut();
+    }
+
+    /// <summary>
+    /// GPG 용 ID 읽어들이기
+    /// </summary>
+    public void LoadGameIDs()
+    {
+        if (_gameIDs == null)
+        {
+            _gameIDs = new Dictionary<string, string>();
+            CSVReader csv = new CSVReader("GameIDs");
+            while (true)
+            {
+                string[] line = csv.ReadLine();
+                if (line != null)
+                {
+                    // 키,값
+                    _gameIDs.Add(line[0], line[1]);
+                }
+                else
+                {
+                    // 더 읽을 내용 없음
+                    break;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 지정한 key에 해당하는 ID를 구한다. 찾지 못하면 null 리턴
+    /// </summary>
+    public string GetGameID(string key)
+    {
+        string value = null;
+        if (_gameIDs != null && _gameIDs.TryGetValue(key, out value))
+        {
+            return value;
+        }
+        else
+        {
+            return null;
+        }
     }
 }
 

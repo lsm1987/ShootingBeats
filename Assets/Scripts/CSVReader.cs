@@ -10,10 +10,14 @@ public class CSVReader
 {
     private string[] _lines; // 텍스트 어셋으로부터 읽어들인 문자열을 줄 단위로 저장
     private int _nextReadLine = 0; // ReadLine() 에서 몇 번째 라인을 읽을 차례인가?
-    private List<string> _readLine = new List<string>(); // ReadLine() 에서 읽어들인 한 줄
 
     public CSVReader(string path)
     {
+        // 초기화
+        _lines = null;
+        _nextReadLine = 0;
+        
+        // 파일 찾기
         TextAsset asset = Resources.Load(path) as TextAsset;
         if (asset == null)
         {
@@ -24,8 +28,6 @@ public class CSVReader
         string text = asset.text;
         text = text.Trim().Replace("\r", "") + "\n";
         _lines = text.Split('\n');
-        _nextReadLine = 0;
-        _readLine.Clear();
     }
     
     public string[] ReadLine()
@@ -44,8 +46,6 @@ public class CSVReader
                 _nextReadLine++;
                 continue;
             }
-
-            _readLine.Clear();
 
             _nextReadLine++;
             return ParseLine(line);
