@@ -124,6 +124,11 @@ public class TitleSystem : SceneSystem
         _UISystem.OpenWindow(Define._uiOptionPath);
     }
 
+    public void OnAboutClicked()
+    {
+        _UISystem.OpenWindow(Define._uiAboutPath);
+    }
+
     public void OnSignInClicked()
     {
         if (GlobalSystem._Instance._IsAuthenticating)

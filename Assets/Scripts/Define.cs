@@ -37,6 +37,7 @@ public static class Define
     // UI 프리팹 리소스 경로
     public const string _uiMessageBoxPath = "UI/UIMessageBox";
     public const string _uiOptionPath = "UI/UIOption";
+    public const string _uiAboutPath = "UI/UIAbout";
     public const string _uiLetterBoxBottom = "UI/LetterBoxBottom";
     public const string _uiLetterBoxLeft = "UI/LetterBoxLeft";
     public const string _uiLetterBoxRight= "UI/LetterBoxRight";

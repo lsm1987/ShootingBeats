@@ -33,7 +33,7 @@ public class UIOption : UIWindow
     // 창 닫기
     private void OnBack()
     {
-        Destroy(gameObject);
+        Destroy(_Go);
     }
 
     #region MoveSensitivity
