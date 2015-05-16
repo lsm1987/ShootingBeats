@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using GooglePlayGames;
+using System;
 using System.Collections.Generic;
 
 // 전역적으로 관리되어야 하는 정보
@@ -56,7 +57,7 @@ public class GlobalSystem
     /// <summary>
     /// 로그인 수행
     /// </summary>
-    public void Authenticate()
+    public void Authenticate(Action<bool> callback)
     {
         if (_IsAuthenticated || _IsAuthenticating)
         {
@@ -80,6 +81,12 @@ public class GlobalSystem
             else
             {
                 Debug.LogWarning("Failed to sign in with Google Play Games.");
+            }
+
+            // 결과 발생시 호출부에서 실행할 내용
+            if (callback != null)
+            {
+                callback(success);
             }
         });
     }
