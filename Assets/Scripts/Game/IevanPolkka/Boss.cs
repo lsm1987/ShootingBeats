@@ -78,13 +78,13 @@ namespace Game
 
                 // 아야챠챠
                 yield return new WaitForAbsFrames(5850);
-                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.01f, 12, true, 60, 8));
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.01f, 20, true, 60, 8));
                 yield return new WaitForFrames(30);
-                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Red", 0.25f, 0.02f, 12, false, 60, 8));
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Red", 0.25f, 0.02f, 20, false, 60, 8));
 
                 // 야바린간
                 yield return new WaitForAbsFrames(6330);
-                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.01f, 12, true, 60, 8));
+                _coroutineManager.StartCoroutine(_Logic.CircleBullets(this, "Common/Bullet_Blue", 0.25f, 0.01f, 20, true, 60, 8));
                 _coroutineManager.StartCoroutine(_Logic.CornerAim(0.02f, 60, 2));
 
                 // 아야챠챠
@@ -104,7 +104,7 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.SideAim(3, 0.02f, 120, 4));
 
                 yield return new WaitForAbsFrames(8700);
-                _Logic.CircleBullet(this, "Common/Bullet_Red", 0.25f, 0.02f, 12, false);
+                _Logic.CircleBullet(this, "Common/Bullet_Red", 0.25f, 0.025f, 20, false);
                 {
                     Effect crashEffect = GameSystem._Instance.CreateEffect<Effect>();
                     crashEffect.Init("Common/Effect_BossCrashMiku", _X, _Y, 0.0f);
