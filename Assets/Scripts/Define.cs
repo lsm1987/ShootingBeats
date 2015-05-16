@@ -114,4 +114,27 @@ public static class Define
         string id = GetSongLeaderboardID(beatInfo);
         PlayGamesPlatform.Instance.ShowLeaderboardUI(id);
     }
+
+    /// <summary>
+    /// 음악 리더보드에 점수 올리기
+    /// </summary>
+    public static void ReportScoreToSongLeaderboard(BeatInfo beatInfo, int score)
+    {
+        string id = GetSongLeaderboardID(beatInfo);
+        Social.ReportScore(score, id
+            , success =>
+            {
+                string text = success ? "Reported score successfully" : "Failed to report score";
+                text += ("(song: " + beatInfo._namespace + " score:" + score.ToString() + ")");
+
+                if (success)
+                {
+                    Debug.Log(text);
+                }
+                else
+                {
+                    Debug.LogError(text);
+                }
+            });
+    }
 }

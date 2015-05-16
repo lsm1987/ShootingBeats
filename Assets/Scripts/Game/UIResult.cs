@@ -19,6 +19,9 @@ namespace Game
         private Text _highScore;
         [SerializeField]
         private GameObject _newRecord;
+        [SerializeField]
+        private Button _leaderboard;
+        private BeatInfo _beatInfo;
 
         public override bool OnKeyInput()
         {
@@ -29,13 +32,15 @@ namespace Game
             return true;
         }
 
-        public void SetData(bool cleared, string songTitle, int score, int highScore, bool isNewRecord)
+        public void SetData(BeatInfo beatInfo, bool cleared, int score, int highScore, bool isNewRecord)
         {
+            _beatInfo = beatInfo;
             _result.text = cleared ? _resultClear : _resultGameOver;
-            _songTitle.text = songTitle;
+            _songTitle.text = _beatInfo._title;
             _score.text = score.ToString();
             _highScore.text = highScore.ToString();
             _newRecord.SetActive(isNewRecord);
+            _leaderboard.interactable = (GlobalSystem._Instance != null && GlobalSystem._Instance._IsAuthenticated); // 로그인 되었을 때만 사용가능
         }
 
         public void Open()
@@ -46,6 +51,17 @@ namespace Game
         private void Close()
         {
             _Go.SetActive(false);
+        }
+
+        /// <summary>
+        /// 리더보드 열기
+        /// </summary>
+        public void OnLeaderboardClicked()
+        {
+            if (GlobalSystem._Instance != null && GlobalSystem._Instance._IsAuthenticated)
+            {
+                Define.OpenSongLeaderboard(_beatInfo);
+            }
         }
 
         /// <summary>

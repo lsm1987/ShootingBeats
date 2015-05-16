@@ -799,8 +799,14 @@ namespace Game
                 Define.SetSongCleared(_beatInfo, true);
             }
 
+            // 리더보드 갱신 시도
+            if (GlobalSystem._Instance._IsAuthenticated)
+            {
+                Define.ReportScoreToSongLeaderboard(_beatInfo, _score);
+            }
+
             // 결과 UI
-            _UIResult.SetData(cleared, _beatInfo._title, _score, highScore, newHighScore);
+            _UIResult.SetData(_beatInfo, cleared, _score, highScore, newHighScore);
             _UIResult.Open();
         }
 
