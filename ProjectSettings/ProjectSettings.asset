@@ -76,13 +76,13 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleIdentifier: com.lsm1987.ShootingBeats
-  bundleVersion: 0.01
+  bundleVersion: 0.02
   preloadedAssets: []
   metroEnableIndependentInputSource: 0
   metroEnableLowLatencyPresentationAPI: 0
   xboxOneDisableKinectGpuReservation: 0
   productGUID: 47411a3f45359d44898d04aacde88222
-  AndroidBundleVersionCode: 1
+  AndroidBundleVersionCode: 2
   AndroidMinSdkVersion: 9
   AndroidPreferredInstallLocation: 1
   aotOptions: 
