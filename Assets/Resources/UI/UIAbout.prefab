@@ -430,8 +430,9 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1.10000002
   m_Text: "Shooting Beats! v0.01\n\nDeveloper: EG Factory\nE-mail: 1987lsm@gmail.com\nTwitter:
-    @lsm1987\nSource: https://github.com/lsm1987/ShootingBeats\n\nLicense:\n- Open
-    Sans\nApache License\r\nVersion 2.0, January 2004\r\nhttp://www.apache.org/licenses/"
+    @lsm1987\nSource: https://github.com/lsm1987/ShootingBeats\n\n- Open Sans\n- Google
+    Play Games plugin for Unity\nApache License\nVersion 2.0, January 2004\r\nhttp://www.apache.org/licenses/\n\n-
+    Google Material Design Icons\nAttribution 4.0 International\nhttp://creativecommons.org/licenses/by/4.0/"
 --- !u!114 &11491966
 MonoBehaviour:
   m_ObjectHideFlags: 1
