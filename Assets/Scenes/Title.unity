@@ -1177,7 +1177,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14752900836774c44934e8e4af730171, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _btnStart: {fileID: 35233788}
+  _btnSignIn: {fileID: 132221587}
   _btnTextSignIn: {fileID: 132221585}
+  _btnAchievement: {fileID: 2075666076}
 --- !u!1 &2075666074
 GameObject:
   m_ObjectHideFlags: 0

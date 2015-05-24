@@ -4,10 +4,16 @@ using UnityEngine.UI;
 public class TitleSystem : SceneSystem
 {
     [SerializeField]
+    private Button _btnStart;
+    [SerializeField]
+    private Button _btnSignIn;
+    [SerializeField]
     private Text _btnTextSignIn;
     private const string _textSignIn = "Google Play Sign In";    // 로그인 하기
     private const string _textSignOut = "Google Play Sign Out";  // 로그아웃 하기
     private const string _textSignInDoing = "Sign In...";    // 로그인 도중
+    [SerializeField]
+    private Button _btnAchievement;
 
     protected override void OnAwake()
     {
@@ -28,7 +34,7 @@ public class TitleSystem : SceneSystem
         }
         else
         {
-            SetSignInButtonText(GlobalSystem._Instance._IsAuthenticated);
+            RefreshUIBySignInState();
         }
     }
 
@@ -87,8 +93,8 @@ public class TitleSystem : SceneSystem
     /// </summary>
     private void TrySignIn()
     {
-        _btnTextSignIn.text = _textSignInDoing; // 시도 중으로 변경
         GlobalSystem._Instance.Authenticate(OnSignInResult);
+        RefreshUIBySignInState();
     }
 
     /// <summary>
@@ -97,21 +103,41 @@ public class TitleSystem : SceneSystem
     private void OnSignInResult(bool success)
     {
         GlobalSystem._Instance.SetAutoSignIn(true);    // 로그인 성공하면 자동로그인 지정
-        SetSignInButtonText(success);
+        RefreshUIBySignInState();
     }
 
-    private void SetSignInButtonText(bool athenticated)
+    /// <summary>
+    /// 로그인 상태 따른 UI 갱신
+    /// </summary>
+    private void RefreshUIBySignInState()
     {
-        if (athenticated)
+        // 시작 버튼
+        _btnStart.interactable = !GlobalSystem._Instance._IsAuthenticating; // 시도 중이 아닐 때 가능
+
+        // 로그인 버튼
+        if (GlobalSystem._Instance._IsAuthenticating)
         {
-            // 로그인 중이라면 로그아웃 텍스트로 변경
-            _btnTextSignIn.text = _textSignOut;
+            // 로그인 시도 중
+            _btnSignIn.interactable = false;
+            _btnTextSignIn.text = _textSignInDoing; // 시도 중으로 변경
         }
         else
         {
-            // 로그아웃 중이라면 로그인 텍스트로 변경
-            _btnTextSignIn.text = _textSignIn;
+            _btnSignIn.interactable = true;
+            if (GlobalSystem._Instance._IsAuthenticated)
+            {
+                // 로그인 됨
+                _btnTextSignIn.text = _textSignOut; // 로그아웃 텍스트로 변경
+            }
+            else
+            {
+                // 로그아웃 됨
+                _btnTextSignIn.text = _textSignIn; // 로그인 텍스트로 변경
+            }
         }
+
+        // 업적 버튼
+        _btnAchievement.interactable = GlobalSystem._Instance._IsAuthenticated; // 로그인 되었을 때 가능
     }
 
     #region UI Event
@@ -126,7 +152,7 @@ public class TitleSystem : SceneSystem
         {
             // 로그인되어있지 않으면 알림
             UIMessageBox box = _UISystem.OpenMessageBox();
-            box.SetText("Not signed in Google play.\nHigh score will not recorded at leaderboard.");
+            box.SetText("Not signed in Google play.\nHigh score will not recorded at leaderboard and cannot unlock achievement.");
             box.SetButton(0, "OK", LoadBeatListScene);  // 진행
             box.SetButton(1, "Cancel", null);   // 중지
         }
@@ -161,9 +187,9 @@ public class TitleSystem : SceneSystem
         else
         {
             // 로그아웃
-            _btnTextSignIn.text = _textSignIn;  // 로그인으로 변경
             GlobalSystem._Instance.SignOut();
             GlobalSystem._Instance.SetAutoSignIn(false);   // 유저가 직접 로그아웃 수행 시 자동로그인 해제
+            RefreshUIBySignInState();
         }
     }
 
