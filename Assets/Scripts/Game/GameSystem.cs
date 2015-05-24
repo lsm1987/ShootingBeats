@@ -794,9 +794,15 @@ namespace Game
             }
             // 클리어 여부 갱신
             bool cleared = !_isGameOvered;
-            if (cleared && !Define.IsSongCleared(_beatInfo))
+            if (cleared)
             {
-                Define.SetSongCleared(_beatInfo, true);
+                if (!Define.IsSongCleared(_beatInfo))
+                {
+                    Define.SetSongCleared(_beatInfo, true);
+                }
+
+                // 업적 달성 여부는 로컬로 불러오지 않으므로 매번 시도
+                Define.ReportAchievementProgress(_beatInfo._clearAchievementKey, 100.0);
             }
 
             // 리더보드 갱신 시도
