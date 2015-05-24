@@ -13,6 +13,12 @@ public static class ButtonName
     public const string _start = "Start";
 }
 
+public static class AchievementKey
+{
+    public const string _visitTwitter = "HarmingBird";  // 개발자 트위터 방문
+    public const string _changeMoveSensitivity = "GearShift";   // 이동 민감도 변경
+}
+
 public static class Define
 {
     public const int _fps = 60; // 갱신주기
@@ -127,6 +133,45 @@ public static class Define
             {
                 string text = success ? "Reported score successfully" : "Failed to report score";
                 text += ("(song: " + beatInfo._namespace + " score:" + score.ToString() + ")");
+
+                if (success)
+                {
+                    Debug.Log(text);
+                }
+                else
+                {
+                    Debug.LogError(text);
+                }
+            });
+    }
+
+    /// <summary>
+    /// 업적 ID 구하기
+    /// </summary>
+    private static string GetAchievementID(string key)
+    {
+        key = ("achievement" + key);
+        if (GlobalSystem._Instance != null)
+        {
+            return GlobalSystem._Instance.GetGameID(key);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// 업적 진행상황 지정하기
+    /// </summary>
+    public static void ReportAchievementProgress(string key, double progress)
+    {
+        string id = GetAchievementID(key);
+        Social.ReportProgress(id, progress
+            , success =>
+            {
+                string text = success ? "Reported achievement successfully" : "Failed to report achievement";
+                text += ("(key: " + key + " progress:" + progress.ToString() + ")");
 
                 if (success)
                 {

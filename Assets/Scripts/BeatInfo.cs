@@ -16,6 +16,7 @@ public class BeatInfo : ScriptableObject
     public string _author;  // 저자
     public Difficulty _difficulty;  // 난이도
     public int _length; // 노래 길이. 단위 초
+    public string _clearAchievementKey; // 클리어시 달성할 업적 key
 
     /// <summary>
     /// 목록 우선순위 비교
