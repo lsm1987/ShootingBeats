@@ -43,6 +43,8 @@ public class UIOption : UIWindow
     private void LoadMoveSensitivity()
     {
         int value = GlobalSystem._Instance._Config._MoveSensitivity;
+        _moveSensitivitySlider.minValue = Config._moveSensitivityMin;
+        _moveSensitivitySlider.maxValue = Config._moveSensitivityMax;
         _moveSensitivitySlider.value = (float)value;
         _moveSensitivityValue.text = ConvertToMoveSensitivityString(value);
     }
@@ -76,6 +78,15 @@ public class UIOption : UIWindow
         int value = ConvertMoveSensitivityValue(sliderValue);
         GlobalSystem._Instance._Config._MoveSensitivity = value;
         _moveSensitivityValue.text = ConvertToMoveSensitivityString(value);
+
+        // 최대값 지정 시 업적 시도
+        if (value == Config._moveSensitivityMax)
+        {
+            if (GlobalSystem._Instance._IsAuthenticated)
+            {
+                Define.ReportAchievementProgress(AchievementKey._changeMoveSensitivity, 100.0);
+            }
+        }
     }
     #endregion MoveSensitivity
 

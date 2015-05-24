@@ -802,7 +802,10 @@ namespace Game
                 }
 
                 // 업적 달성 여부는 로컬로 불러오지 않으므로 매번 시도
-                Define.ReportAchievementProgress(_beatInfo._clearAchievementKey, 100.0);
+                if (GlobalSystem._Instance._IsAuthenticated)
+                {
+                    Define.ReportAchievementProgress(_beatInfo._clearAchievementKey, 100.0);
+                }
             }
 
             // 리더보드 갱신 시도

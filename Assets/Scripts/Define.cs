@@ -176,6 +176,7 @@ public static class Define
                 if (success)
                 {
                     Debug.Log(text);
+                    Handheld.Vibrate();
                 }
                 else
                 {
