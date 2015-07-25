@@ -5,6 +5,8 @@ using UnityEngine.UI;
 public class UIBeatListItem : MonoBehaviour
 {
     [SerializeField]
+    private Image _albumArt;
+    [SerializeField]
     private Text _title;
     [SerializeField]
     private Text _difficulty;
@@ -20,6 +22,7 @@ public class UIBeatListItem : MonoBehaviour
         _index = index_;
         _selectedHandler = selectedHandler_;
 
+        _albumArt.sprite = Define.GetAlbumArtSprite(beatInfo);
         _title.text = beatInfo._title;
         _difficulty.text = beatInfo._difficulty.ToString();
         _length.text = Define.ConverBeatLength(beatInfo._length);

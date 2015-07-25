@@ -48,6 +48,7 @@ public static class Define
     public const string _uiLetterBoxLeft = "UI/LetterBoxLeft";
     public const string _uiLetterBoxRight= "UI/LetterBoxRight";
     public const string _uiStageText = "UI/UIStageText";
+    public const string _albumArtRoot = "AlbumArts";    // 앨범아트 스프라이트 경로
 
     /// <summary>
     /// 음악 클리어 여부 저장용 Key 구하기
@@ -182,5 +183,15 @@ public static class Define
                     Debug.LogError(text);
                 }
             });
+    }
+
+    private static string GetAlbumArtPath(BeatInfo beatInfo)
+    {
+        return Define._albumArtRoot + "/" + beatInfo._namespace;
+    }
+
+    public static Sprite GetAlbumArtSprite(BeatInfo beatInfo)
+    {
+        return Resources.Load<Sprite>(GetAlbumArtPath(beatInfo));
     }
 }
