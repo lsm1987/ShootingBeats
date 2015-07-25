@@ -13,6 +13,11 @@ public static class ButtonName
     public const string _start = "Start";
 }
 
+public enum Difficulty
+{
+    Normal, Hard, Extreme,
+}
+
 public static class AchievementKey
 {
     public const string _visitTwitter = "HarmingBird";  // 개발자 트위터 방문

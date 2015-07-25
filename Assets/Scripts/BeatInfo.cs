@@ -5,10 +5,6 @@ using System.Collections;
 public class BeatInfo : ScriptableObject
 {
     public const string _resourcePath = "BeatInfos"; // 리소스 폴더 내에서 어떤 경로에 위치할 것인가?
-    public enum Difficulty
-    {
-        Normal, Hard, Extreme,
-    }
 
     public string _namespace;   // 문자열 구분자. 코드 음악파일명, namespace 등으로 사용
     public int _listPriority = 0;  // 리스트 목록 우선순위. 낮을수록 앞에 위치

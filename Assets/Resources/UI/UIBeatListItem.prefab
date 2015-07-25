@@ -129,6 +129,7 @@ GameObject:
   - 224: {fileID: 22483182}
   - 222: {fileID: 22221662}
   - 114: {fileID: 11476134}
+  - 114: {fileID: 11443942}
   m_Layer: 5
   m_Name: Difficulty
   m_TagString: Untagged
@@ -207,6 +208,19 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11443942
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 174712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2de3925a624989d46b10f1d95a853057, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _background: {fileID: 11476134}
+  _text: {fileID: 11467832}
 --- !u!114 &11451152
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -360,7 +374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: .75, g: .75, b: .75, a: 1}
+  m_Color: {r: .764705896, g: .764705896, b: .764705896, a: 1}
   m_Sprite: {fileID: 21300000, guid: bdb3c2fa2edce14428c2588d923d9431, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
@@ -382,7 +396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _albumArt: {fileID: 11451152}
   _title: {fileID: 11451734}
-  _difficulty: {fileID: 11467832}
+  _difficulty: {fileID: 11443942}
   _length: {fileID: 11456896}
   _cleared: {fileID: 110122}
 --- !u!114 &11497004

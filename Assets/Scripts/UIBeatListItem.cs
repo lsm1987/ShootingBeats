@@ -9,7 +9,7 @@ public class UIBeatListItem : MonoBehaviour
     [SerializeField]
     private Text _title;
     [SerializeField]
-    private Text _difficulty;
+    private UIDifficultyIcon _difficulty;
     [SerializeField]
     private Text _length;
     [SerializeField]
@@ -24,7 +24,7 @@ public class UIBeatListItem : MonoBehaviour
 
         _albumArt.sprite = Define.GetAlbumArtSprite(beatInfo);
         _title.text = beatInfo._title;
-        _difficulty.text = beatInfo._difficulty.ToString();
+        _difficulty.SetDifficulty(beatInfo._difficulty);
         _length.text = Define.ConverBeatLength(beatInfo._length);
         _cleared.SetActive(Define.IsSongCleared(beatInfo));
     }
