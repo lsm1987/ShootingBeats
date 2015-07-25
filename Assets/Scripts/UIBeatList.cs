@@ -12,6 +12,7 @@ public class UIBeatList : UIWindow
 
     private BeatInfo[] _beatInfos; // 정렬된 정보들
     public delegate void InfoSelectedHandler(int index); // 정보 선택되었을 때 호출될 함수 형식
+    private const float _firstItemYOffset = -15.0f; // 첫 항목 상단 여백
 
     protected override void OnAwake()
     {
@@ -29,7 +30,7 @@ public class UIBeatList : UIWindow
             Array.Sort<BeatInfo>(_beatInfos, BeatInfo.CompareByListPriority);
 
             // 정보별 항목 UI 만들기
-            float y = 0.0f;
+            float y = _firstItemYOffset;
             UnityEngine.Object prefabItem = Resources.Load("UI/UIBeatListItem");
             for (int i = 0; i < _beatInfos.Length; ++i)
             {
