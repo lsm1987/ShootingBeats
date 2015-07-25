@@ -19,6 +19,7 @@ sysinfo.txt
 #UnityVS
 Assets/UnityVS
 Assets/UnityVS.meta
+.vs/
 
 #Google Play Game 플러그인에서 Android Setting 으로 변경된 파일들은 개인정보 노출 방지 위해 커밋하지 않음
 Assets/GooglePlayGames/GameInfo.cs
