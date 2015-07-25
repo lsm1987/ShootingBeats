@@ -11,7 +11,7 @@ public class UIBeatListItem : MonoBehaviour
     [SerializeField]
     private Text _length;
     [SerializeField]
-    private Text _cleared;
+    private GameObject _cleared;
     private int _index; // 목록 내 인덱스
     private UIBeatList.InfoSelectedHandler _selectedHandler;
 
@@ -23,7 +23,7 @@ public class UIBeatListItem : MonoBehaviour
         _title.text = beatInfo._title;
         _difficulty.text = beatInfo._difficulty.ToString();
         _length.text = Define.ConverBeatLength(beatInfo._length);
-        _cleared.text = (Define.IsSongCleared(beatInfo) ? "Cleared" : "Not Cleared");
+        _cleared.SetActive(Define.IsSongCleared(beatInfo));
     }
 
     public void OnClicked()
