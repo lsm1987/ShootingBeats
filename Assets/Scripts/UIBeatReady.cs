@@ -18,7 +18,13 @@ public class UIBeatReady : UIWindow
     [SerializeField]
     private Button _leaderboard;
     private BeatInfo _beatInfo;
-    private const string _albumArtRoot = "AlbumArts";   // 앨범아트 스프라이트 경로
+    private const string _uiTitle = "Beat Ready";
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+        AddHeaderPanel(_uiTitle, OnBackClicked);
+    }
 
     public void Open(BeatInfo beatInfo)
     {
