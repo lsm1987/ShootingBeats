@@ -53,6 +53,7 @@ public static class Define
     public const string _uiLetterBoxLeft = "UI/LetterBoxLeft";
     public const string _uiLetterBoxRight= "UI/LetterBoxRight";
     public const string _uiStageText = "UI/UIStageText";
+    public const string _uiHeaderPanel = "UI/UIHeaderPanel";
     public const string _albumArtRoot = "AlbumArts";    // 앨범아트 스프라이트 경로
 
     /// <summary>

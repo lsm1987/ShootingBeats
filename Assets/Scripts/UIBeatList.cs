@@ -12,10 +12,12 @@ public class UIBeatList : UIWindow
 
     private BeatInfo[] _beatInfos; // 정렬된 정보들
     public delegate void InfoSelectedHandler(int index); // 정보 선택되었을 때 호출될 함수 형식
+    private const string _title = "Beat List";
     private const float _firstItemYOffset = -15.0f; // 첫 항목 상단 여백
 
     protected override void OnAwake()
     {
+        AddHeaderPanel(_title, OnBackClicked);
         BuildList();
     }
 
