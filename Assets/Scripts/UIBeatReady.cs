@@ -12,7 +12,7 @@ public class UIBeatReady : UIWindow
     [SerializeField]
     private Text _highScore;
     [SerializeField]
-    private Text _difficulty;
+    private UIDifficultyIcon _difficulty;
     [SerializeField]
     private Text _length;
     [SerializeField]
@@ -38,9 +38,10 @@ public class UIBeatReady : UIWindow
         {
             _highScore.text += " (Not Cleared)";
         }
-        _difficulty.text = _beatInfo._difficulty.ToString();
+        _difficulty.SetDifficulty(beatInfo._difficulty);
         _length.text = Define.ConverBeatLength(_beatInfo._length);
         _leaderboard.interactable = (GlobalSystem._Instance != null && GlobalSystem._Instance._IsAuthenticated); // 로그인 되었을 때만 사용가능
+        _leaderboard.GetComponent<MaterialUI.RippleConfig>().enabled = _leaderboard.interactable;
 
         // 활성화
         _Go.SetActive(true);
