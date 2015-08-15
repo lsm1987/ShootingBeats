@@ -17,6 +17,7 @@ public class UIBeatList : UIWindow
 
     protected override void OnAwake()
     {
+        base.OnAwake();
         AddHeaderPanel(_uiTitle, OnBackClicked);
         BuildList();
     }

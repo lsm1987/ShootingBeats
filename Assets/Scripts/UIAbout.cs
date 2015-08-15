@@ -3,6 +3,14 @@
 // About 창
 public class UIAbout : UIWindow
 {
+    private const string _uiTitle = "About";
+
+    protected override void OnAwake()
+    {
+        base.OnAwake();
+        AddHeaderPanel(_uiTitle, OnBackClicked);
+    }
+
     public override bool OnKeyInput()
     {
         // 창 닫기
