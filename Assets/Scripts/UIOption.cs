@@ -9,8 +9,12 @@ public class UIOption : UIWindow
     [SerializeField]
     private Text _moveSensitivityValue;
 
+    private const string _uiTitle = "Option";
+
     protected override void OnAwake()
     {
+        base.OnAwake();
+        AddHeaderPanel(_uiTitle, OnBackClicked);
         InitMoveSensitivity();
     }
 
