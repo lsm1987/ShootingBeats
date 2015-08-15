@@ -200,13 +200,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   autoSize: 1
-  sizePercentage: 75
+  sizePercentage: 100
   rippleSize: 0
-  rippleSpeed: 6
-  rippleColor: {r: 0, g: 0, b: 0, a: 1}
+  rippleSpeed: 10
+  rippleColor: {r: .654901981, g: .776470602, b: .960784316, a: 1}
   rippleStartAlpha: .5
-  rippleEndAlpha: .300000012
-  highlightWhen: 2
+  rippleEndAlpha: 1
+  highlightWhen: 0
   moveTowardCenter: 0
   toggleMask: 1
   dontRippleOnScroll: 0
@@ -762,7 +762,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: m_Transition
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Navigation.m_Mode
@@ -770,11 +770,63 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: rippleEndAlpha
-      value: .300000012
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: rippleStartAlpha
       value: .5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: rippleSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: rippleColor.r
+      value: .654901981
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: rippleColor.g
+      value: .776470602
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: rippleColor.b
+      value: .960784316
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Colors.m_PressedColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Colors.m_PressedColor.g
+      value: .131034374
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Colors.m_PressedColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: highlightWhen
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: sizePercentage
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: dontRippleOnScroll
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
