@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 
 /// <summary>
@@ -6,6 +7,10 @@ using System.Collections.Generic;
 /// </summary>
 public class UISystem : MonoBehaviour
 {
+    [SerializeField]
+    private CanvasScaler _canvasScaler = null;
+    public CanvasScaler _CanvasScaler { get { return _canvasScaler; } }
+
     // 활성화된 윈도우 목록
     // 상위의 윈도우일수록 앞으로 정렬
     private List<UIWindow> _windows = new List<UIWindow>();

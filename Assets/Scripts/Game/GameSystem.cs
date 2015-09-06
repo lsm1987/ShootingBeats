@@ -56,7 +56,8 @@ namespace Game
         [SerializeField]
         private UIProgressBar _uiProgressBar;
         [SerializeField]
-        private GameObject _letterBox;  // 레터박스 UI가 붙을 오브젝트
+        private LetterBox _letterBox;
+        private LetterBox _LetterBox { get { return _letterBox; } }
         [SerializeField]
         private MoveInputArea _moveInputArea;   // 이동 입력 영역
         public MoveInputArea _MoveInputArea { get { return _moveInputArea; } }
@@ -98,6 +99,13 @@ namespace Game
         public float _MinX { get { return -1.0f; } }
         public float _MaxY { get { return 1.3f; } }
         public float _MinY { get { return -1.3f; } }
+
+        // 기준으로 삼는 화면비
+        private const float _refDeviceWidthRatio = 9.0f;
+        private const float _refDeviceHeightRatio = 16.0f;
+
+        // 9:16 기기화면에서 3:4 게임화면이 상단 3/4를 차지하도록 (3:4 -> 9:12 이므로 12/16 = 3/4)
+        private const float _gameScreenHeightRate = 0.75f;
 
         /// <summary>
         ///  씬 진입 시 한번 실행
@@ -254,6 +262,19 @@ namespace Game
                 return;
             }
 
+            float referenceResolutionHeight = _UISystem._CanvasScaler.referenceResolution.y;
+            _LetterBox.InitializeLetterBox(_refDeviceWidthRatio, _refDeviceHeightRatio
+                , (_MaxX - _MinX), (_MaxY - _MinY)
+                , referenceResolutionHeight);
+
+            // 메인 카메라를 게임 카메라로 사용
+            //Camera gameCam = Camera.main;
+
+            // 기기화면 상단의 3/4에 게임화면이 차도록
+            //float camH = (_MaxY - _MinY) / _gameScreenHeightRate;
+            //gameCam.orthographicSize = camH / 2.0f;
+
+            /*
             // 기기 화면 비율
             int deviceW = Screen.width;
             int deviceH = Screen.height;
@@ -296,7 +317,8 @@ namespace Game
                 letterBoxScreenRate = diffW / camW;
             }
             _gameArea.SetArea(isHorizontalLetterBox, letterBoxScreenRate);
-            CreateLetterBox(isHorizontalLetterBox, letterBoxScreenRate);
+            */
+            //CreateLetterBox(isHorizontalLetterBox, letterBoxScreenRate);
 
             // 카메라 초기화 되었음 표시
             _cameraInitialized = true;
@@ -309,6 +331,7 @@ namespace Game
         /// <param name="screenRate">레터박스가 가릴 화면의 비율. 수직방향이면 절반씩 사용</param>
         private void CreateLetterBox(bool horizontal, float screenRate)
         {
+            /*
             if (horizontal)
             {
                 UnityEngine.Object prefab = Resources.Load(Define._uiLetterBoxBottom);
@@ -343,6 +366,7 @@ namespace Game
                     }
                 }
             }
+            */
         }
         #endregion // Loading
 
