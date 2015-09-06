@@ -51,13 +51,11 @@ namespace Game
         private UILoading _uiLoading;   // 로딩 UI
         public UILoading _UILoading { get { return _uiLoading; } }
         [SerializeField]
-        private GameArea _gameArea;
-        public GameArea _GameArea { get { return _gameArea; } }
-        [SerializeField]
         private UIProgressBar _uiProgressBar;
         [SerializeField]
-        private LetterBox _letterBox;
-        private LetterBox _LetterBox { get { return _letterBox; } }
+        private Layout _layout;
+        private Layout _Layout { get { return _layout; } }
+        public RectTransform _LayoutGameArea { get { return _Layout._GameArea; } }
         [SerializeField]
         private MoveInputArea _moveInputArea;   // 이동 입력 영역
         public MoveInputArea _MoveInputArea { get { return _moveInputArea; } }
@@ -268,8 +266,7 @@ namespace Game
             float refResolutionHeight = _UISystem._CanvasScaler.referenceResolution.y;
             float refDeviceWidth = refResolutionHeight * (_refDeviceWidthRatio / _refDeviceHeightRatio);
 
-            _LetterBox.Initialize(refDeviceWidth, bottomBoxHeightScreenRate);
-            _GameArea.Initialize(refDeviceWidth, bottomBoxHeightScreenRate);
+            _Layout.Initialize(refDeviceWidth, bottomBoxHeightScreenRate);
 
             // 메인 카메라를 게임 카메라로 사용
             Camera gameCam = Camera.main;

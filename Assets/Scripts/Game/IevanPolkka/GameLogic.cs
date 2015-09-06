@@ -45,7 +45,7 @@ namespace Game
                     GameObject obj = Object.Instantiate(prefab) as GameObject;
                     obj.name = prefab.name;
                     _uiStageText = obj.GetComponent<UIStageText>();
-                    _uiStageText.Initialize(GameSystem._Instance._GameArea.transform);
+                    _uiStageText.Initialize(GameSystem._Instance._LayoutGameArea.transform);
                 }
                 _uiStageText.SetActive(false);
                 _uiStageText.SetAlign(TextAnchor.MiddleCenter);
