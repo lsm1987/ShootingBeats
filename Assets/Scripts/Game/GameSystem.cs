@@ -99,13 +99,12 @@ namespace Game
         public float _MinX { get { return -1.0f; } }
         public float _MaxY { get { return 1.3f; } }
         public float _MinY { get { return -1.3f; } }
+        private float _Width { get { return (_MaxX - _MinX); } }
+        private float _Height { get { return (_MaxY - _MinY); } }
 
         // 기준으로 삼는 화면비
         private const float _refDeviceWidthRatio = 9.0f;
         private const float _refDeviceHeightRatio = 16.0f;
-
-        // 9:16 기기화면에서 3:4 게임화면이 상단 3/4를 차지하도록 (3:4 -> 9:12 이므로 12/16 = 3/4)
-        private const float _gameScreenHeightRate = 0.75f;
 
         /// <summary>
         ///  씬 진입 시 한번 실행
@@ -262,111 +261,29 @@ namespace Game
                 return;
             }
 
+            // 기준 기기화면 상단에 가로가 가득차도록 게임영역 배치
+            float gameHeightRatio = _refDeviceWidthRatio * (_Height / _Width); // 기기에서 게임화면 높이의 비
+
             float referenceResolutionHeight = _UISystem._CanvasScaler.referenceResolution.y;
             _LetterBox.InitializeLetterBox(_refDeviceWidthRatio, _refDeviceHeightRatio
-                , (_MaxX - _MinX), (_MaxY - _MinY)
+                , gameHeightRatio
                 , referenceResolutionHeight);
-
-            // 메인 카메라를 게임 카메라로 사용
-            //Camera gameCam = Camera.main;
-
-            // 기기화면 상단의 3/4에 게임화면이 차도록
-            //float camH = (_MaxY - _MinY) / _gameScreenHeightRate;
-            //gameCam.orthographicSize = camH / 2.0f;
-
-            /*
-            // 기기 화면 비율
-            int deviceW = Screen.width;
-            int deviceH = Screen.height;
-            float deviceR = (float)deviceW / (float)deviceH;    // 가로/세로
-
-            // 게임 화면 비율
-            float gameR = (_MaxX - _MinX) / (_MaxY - _MinY);
-            //Debug.Log("deviceR:" + deviceR.ToString() + " gameR:" + gameR.ToString());
 
             // 메인 카메라를 게임 카메라로 사용
             Camera gameCam = Camera.main;
 
-            // 게임 카메라 뷰포트 영역 지정
-            bool isHorizontalLetterBox = true;
-            float letterBoxScreenRate = 0.0f;
-            if (gameR >= deviceR)
-            {
-                // 게임 화면 가로를 기기 가로에 가득 채움. 게임 영역은 화면 세로 상단
-                // 기기W/기기H = 게임W/카메라H
-                float camH = (_MaxX - _MinX) / deviceR;
-                gameCam.orthographicSize = camH / 2.0f;
+            // 게임월드높이와 레터박스 월드높이의 합을 camH라고 할 떄
+            // camH : _Height = _refDeviceHeightRatio : gameHeightRatio
+            float camH = (_refDeviceHeightRatio / gameHeightRatio) * _Height;
+            gameCam.orthographicSize = camH / 2.0f;
 
-                float diffH = camH - (_MaxY - _MinY);
-                Vector3 camPos = gameCam.transform.position;
-                camPos.y = -1.0f * diffH / 2.0f;
-                gameCam.transform.position = camPos;
-                isHorizontalLetterBox = true;
-                letterBoxScreenRate = diffH / camH;
-            }
-            else
-            {
-                // 게임 화면 세로를 기기 세로에 가득 채움. 게임 영역은 화면 가로 중단
-                float camH = (_MaxY - _MinY);
-                gameCam.orthographicSize = camH / 2.0f;
-
-                // 기기W/기기H = 카메라W/게임H
-                float camW = (_MaxY - _MinY) * deviceR;
-                float diffW = camW - (_MaxX - _MinX);
-                isHorizontalLetterBox = false;
-                letterBoxScreenRate = diffW / camW;
-            }
-            _gameArea.SetArea(isHorizontalLetterBox, letterBoxScreenRate);
-            */
-            //CreateLetterBox(isHorizontalLetterBox, letterBoxScreenRate);
+            float diffH = camH - _Height;
+            Vector3 camPos = gameCam.transform.position;
+            camPos.y = -1.0f * diffH / 2.0f;
+            gameCam.transform.position = camPos;
 
             // 카메라 초기화 되었음 표시
             _cameraInitialized = true;
-        }
-
-        /// <summary>
-        /// 레터박스 UI 추가
-        /// </summary>
-        /// <param name="horizontal">수평방향 레터박스인가?</param>
-        /// <param name="screenRate">레터박스가 가릴 화면의 비율. 수직방향이면 절반씩 사용</param>
-        private void CreateLetterBox(bool horizontal, float screenRate)
-        {
-            /*
-            if (horizontal)
-            {
-                UnityEngine.Object prefab = Resources.Load(Define._uiLetterBoxBottom);
-                GameObject obj = Instantiate(prefab) as GameObject;
-                obj.name = prefab.name;
-                obj.transform.SetParent(_letterBox.transform, false);
-
-                RectTransform rectTrans = obj.GetComponent<RectTransform>();
-                rectTrans.anchorMin = Vector2.zero;
-                rectTrans.anchorMax = new Vector2(1.0f, screenRate);
-            }
-            else
-            {
-                // 0: 왼쪽, 1: 오른쪽
-                for (int i = 0; i < 2; ++i)
-                {
-                    UnityEngine.Object prefab = Resources.Load((i == 0) ? Define._uiLetterBoxLeft : Define._uiLetterBoxRight);
-                    GameObject obj = Instantiate(prefab) as GameObject;
-                    obj.name = prefab.name;
-                    obj.transform.SetParent(_letterBox.transform, false);
-
-                    RectTransform rectTrans = obj.GetComponent<RectTransform>();
-                    if (i == 0)
-                    {
-                        rectTrans.anchorMin = Vector2.zero;
-                        rectTrans.anchorMax = new Vector2(screenRate / 2.0f, 1.0f);
-                    }
-                    else
-                    {
-                        rectTrans.anchorMin = new Vector2(1.0f - screenRate / 2.0f, 0.0f);
-                        rectTrans.anchorMax = Vector2.one;
-                    }
-                }
-            }
-            */
         }
         #endregion // Loading
 

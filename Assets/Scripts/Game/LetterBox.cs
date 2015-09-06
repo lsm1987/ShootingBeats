@@ -15,11 +15,9 @@ namespace Game
         private RectTransform _BottomBox { get { return _bottomBox; } }
 
         public void InitializeLetterBox(float refDeviceWidthRatio, float refDeviceHeightRatio
-            , float gameWorldWidth, float gameWorldHeight
+            , float gameHeightRatio
             , float referenceResolutionHeight)
         {
-            // 기준 기기화면 상단에 가로가 가득차도록 게임영역 배치
-            float gameHeightRatio = refDeviceWidthRatio * (gameWorldHeight / gameWorldWidth); // 기기에서 게임화면 높이의 비
             float bottomBoxHeightRatio = refDeviceHeightRatio - gameHeightRatio;
             float bottomBoxHeightScreenRate = bottomBoxHeightRatio / refDeviceHeightRatio;
             _BottomBox.anchorMax = new Vector2(0.5f, bottomBoxHeightScreenRate);
