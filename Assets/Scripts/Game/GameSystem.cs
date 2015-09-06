@@ -263,11 +263,13 @@ namespace Game
 
             // 기준 기기화면 상단에 가로가 가득차도록 게임영역 배치
             float gameHeightRatio = _refDeviceWidthRatio * (_Height / _Width); // 기기에서 게임화면 높이의 비
+            float bottomBoxHeightRatio = _refDeviceHeightRatio - gameHeightRatio;
+            float bottomBoxHeightScreenRate = bottomBoxHeightRatio / _refDeviceHeightRatio;
+            float refResolutionHeight = _UISystem._CanvasScaler.referenceResolution.y;
+            float refDeviceWidth = refResolutionHeight * (_refDeviceWidthRatio / _refDeviceHeightRatio);
 
-            float referenceResolutionHeight = _UISystem._CanvasScaler.referenceResolution.y;
-            _LetterBox.InitializeLetterBox(_refDeviceWidthRatio, _refDeviceHeightRatio
-                , gameHeightRatio
-                , referenceResolutionHeight);
+            _LetterBox.Initialize(refDeviceWidth, bottomBoxHeightScreenRate);
+            _GameArea.Initialize(refDeviceWidth, bottomBoxHeightScreenRate);
 
             // 메인 카메라를 게임 카메라로 사용
             Camera gameCam = Camera.main;

@@ -14,16 +14,11 @@ namespace Game
         private RectTransform _bottomBox;
         private RectTransform _BottomBox { get { return _bottomBox; } }
 
-        public void InitializeLetterBox(float refDeviceWidthRatio, float refDeviceHeightRatio
-            , float gameHeightRatio
-            , float referenceResolutionHeight)
+        public void Initialize(float refDeviceWidth, float bottomBoxHeightScreenRate)
         {
-            float bottomBoxHeightRatio = refDeviceHeightRatio - gameHeightRatio;
-            float bottomBoxHeightScreenRate = bottomBoxHeightRatio / refDeviceHeightRatio;
             _BottomBox.anchorMax = new Vector2(0.5f, bottomBoxHeightScreenRate);
-
-            float refDeviceWidth = referenceResolutionHeight * (refDeviceWidthRatio / refDeviceHeightRatio);
             UIUtil.SetWidth(_BottomBox, refDeviceWidth);
+
             _LeftBox.offsetMax = new Vector2(-refDeviceWidth / 2.0f, 0.0f);
             _RightBox.offsetMin = new Vector2(refDeviceWidth / 2.0f, 0.0f);
         }
