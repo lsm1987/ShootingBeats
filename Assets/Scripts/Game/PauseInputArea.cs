@@ -8,6 +8,9 @@ namespace Game
     /// </summary>
     public class PauseInputArea : MonoBehaviour
     {
+        [SerializeField]
+        private GameObject _area;
+
         public void OnClicked()
         {
             if (GameSystem._Instance != null)
@@ -22,12 +25,9 @@ namespace Game
         /// <param name="visible"></param>
         public void SetVisible(bool visible)
         {
-            Image img = GetComponent<Image>();
-            if (img != null)
+            if (_area != null)
             {
-                Color color = img.color;
-                color.a = (visible) ? 0.1f : 0.0f;
-                img.color = color;
+                _area.SetActive(visible);
             }
         }
     }

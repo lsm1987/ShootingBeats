@@ -12,6 +12,8 @@ namespace Game
         private Vector2 _lastPos; // 마지막 갱신 시 터치 월드좌표
         private Vector2 _curPos;
         [SerializeField]
+        private GameObject _area;
+        [SerializeField]
         private RectTransform _cursor;   // 시각화용 오브젝트
 
         private void Start()
@@ -121,12 +123,9 @@ namespace Game
         /// <param name="visible"></param>
         public void SetVisible(bool visible)
         {
-            Image img = GetComponent<Image>();
-            if (img != null)
+            if (_area != null)
             {
-                Color color = img.color;
-                color.a = (visible) ? 0.1f : 0.0f;
-                img.color = color;
+                _area.SetActive(visible);
             }
         }
     }
