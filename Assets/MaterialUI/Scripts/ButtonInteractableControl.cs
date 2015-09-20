@@ -21,6 +21,7 @@ namespace MaterialUI
 		private Button button;
 
 		private bool lastInteractableState;
+        private bool _isFirstUpdate = false;
 
 		[SerializeField] private CanvasGroup shadows;
 
@@ -28,13 +29,15 @@ namespace MaterialUI
 		{
 			canvasGroup = gameObject.GetComponent<CanvasGroup>();
 			button = gameObject.GetComponent<Button>();
-		}
+            _isFirstUpdate = true;
+        }
 
 		void Update()
 		{
-			if (lastInteractableState != button.interactable)
+			if (_isFirstUpdate || (lastInteractableState != button.interactable))
 			{
-				lastInteractableState = button.interactable;
+                _isFirstUpdate = false;
+                lastInteractableState = button.interactable;
 
 				if (lastInteractableState)
 				{
