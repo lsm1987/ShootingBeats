@@ -1,5 +1,5 @@
 ﻿// <copyright file="GPGSPostBuild.cs" company="Google Inc.">
-// Copyright (C) 2014 Google Inc.
+// Copyright (C) 2014 Google Inc.  All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -14,46 +14,94 @@
 //    limitations under the License.
 // </copyright>
 
-namespace GooglePlayGames
+// Keep this file if NO_GPGS so we can clean up the xcode project
+#if (UNITY_ANDROID || UNITY_IPHONE )
+
+namespace GooglePlayGames.Editor
 {
-    using System;
+    using System.Collections.Generic;
+    using System.IO;
     using UnityEditor.Callbacks;
     using UnityEditor;
     using UnityEngine;
-    using GooglePlayGames;
-    using GooglePlayGames.Editor.Util;
-    using System.Text.RegularExpressions;
+
+    // Use the included xcode support for unity 5+,
+    // otherwise use the backported code.
+#if (UNITY_IOS || UNITY_IPHONE)
+    #if UNITY_5
+        using UnityEditor.iOS.Xcode;
+    #else
+        using GooglePlayGames.xcode;
+    #endif
+#endif
 
     public static class GPGSPostBuild
     {
         private const string UrlTypes = "CFBundleURLTypes";
         private const string UrlBundleName = "CFBundleURLName";
         private const string UrlScheme = "CFBundleURLSchemes";
+        private const string BundleSchemeKey = "com.google.BundleId";
+        private const string ReverseClientIdSchemeKey = "com.google.ReverseClientId";
 
-        [PostProcessBuild]
+        [PostProcessBuild (99999)]
         public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
         {
-#if UNITY_4_6
-            if (target != BuildTarget.iPhone) {
+#if UNITY_5
+            if (target != BuildTarget.iOS)
+            {
+                if (!GPGSProjectSettings.Instance.GetBool(GPGSUtil.ANDROIDSETUPDONEKEY, false))
+                {
+                    EditorUtility.DisplayDialog("Google Play Games not configured!",
+                        "Warning!!  Google Play Games was not configured, Game Services will not work correctly.",
+                        "OK");
+                }
                 return;
             }
 #else
-            if (target != BuildTarget.iOS)
+            if (target != BuildTarget.iPhone)
             {
                 return;
             }
 #endif
 
+#if UNITY_IOS
             #if NO_GPGS
-            Debug.Log("Removing AppController code since NO_GPGS is defined");
-            // remove plugin code from generated project
-            string pluginDir = pathToBuiltProject + "/Libraries/Plugins/iOS";
-            if (System.IO.Directory.Exists(pluginDir))
+
+            string[] filesToRemove = {
+                "Libraries/Plugins/iOS/GPGSAppController.mm",
+                "Libraries/GPGSAppController.mm",
+                "Libraries/Plugins/iOS/GPGSAppController.h",
+                "Libraries/GPGSAppController.h",
+                "Libraries/Plugins/iOS/CustomWebViewApplication.h",
+                "Libraries/CustomWebViewApplication.h",
+                "Libraries/Plugins/iOS/CustomWebViewApplication.mm",
+                "Libraries/CustomWebViewApplication.mm"
+            };
+
+            string pbxprojPath = pathToBuiltProject + "/Unity-iPhone.xcodeproj/project.pbxproj";
+            PBXProject proj = new PBXProject();
+            proj.ReadFromString(File.ReadAllText(pbxprojPath));
+
+            foreach(string name in filesToRemove)
             {
-                GPGSUtil.WriteFile(pluginDir + "/GPGSAppController.mm", "// Empty since NO_GPGS is defined\n");
-                return;
+                string fileGuid = proj.FindFileGuidByProjectPath(name);
+                if (fileGuid != null)
+                {
+                    Debug.Log ("Removing " + name + " from xcode project");
+                    proj.RemoveFile(fileGuid);
+                }
             }
+
+            File.WriteAllText(pbxprojPath, proj.WriteToString());
+
             #else
+
+            if (!GPGSProjectSettings.Instance.GetBool(GPGSUtil.IOSSETUPDONEKEY, false))
+            {
+                EditorUtility.DisplayDialog("Google Play Games not configured!",
+                    "Warning!!  Google Play Games was not configured, Game Services will not work correctly.",
+                    "OK");
+            }
 
             if (GetBundleId() == null)
             {
@@ -63,18 +111,30 @@ namespace GooglePlayGames
                 return;
             }
 
-            UnityEngine.Debug.Log("Adding URL Types for authentication using PlistBuddy.");
+            //Copy the podfile into the project.
+            string podfile = "Assets/GooglePlayGames/Editor/Podfile.txt";
+            string destpodfile = pathToBuiltProject + "/Podfile";
+            if (!System.IO.File.Exists(destpodfile))
+            {
+                FileUtil.CopyFileOrDirectory(podfile, destpodfile);
+            }
 
             UpdateGeneratedInfoPlistFile(pathToBuiltProject + "/Info.plist");
             UpdateGeneratedPbxproj(pathToBuiltProject + "/Unity-iPhone.xcodeproj/project.pbxproj");
 
-            EditorWindow.GetWindow<GPGSInstructionWindow>(
-                utility: true,
-                title: "Building for IOS",
-                focus: true);
-            #endif
+            GPGSInstructionWindow w = EditorWindow.GetWindow<GPGSInstructionWindow>(
+                true,
+                "Building for IOS",
+                true);
+            w.minSize = new UnityEngine.Vector2(400, 300);
+            w.UsingCocoaPod = CocoaPodHelper.Update(pathToBuiltProject);
+
+            UnityEngine.Debug.Log("Adding URL Types for authentication using PlistBuddy.");
+        #endif
+#endif
         }
 
+#if UNITY_IPHONE && !NO_GPGS
         /// <summary>
         /// Updates the new project's Info.plist file to include an entry for the Url scheme mandated
         /// by the Google+ login. This means that the plist file needs to have an entry in the for
@@ -95,87 +155,121 @@ namespace GooglePlayGames
                 buddy.AddArray(UrlTypes);
             }
 
-            var gamesSchemeIndex = GamesUrlSchemeIndex(buddy);
-
-            EnsureGamesUrlScheme(buddy, gamesSchemeIndex);
-        }
-
-
-        /// <summary>
-        /// Ensures the games URL scheme is well formed. This is done by removing the UrlScheme field
-        /// and adding a fresh one in a known-good state.
-        /// </summary>
-        /// <param name="buddy">Buddy.</param>
-        /// <param name="index">Index.</param>
-        private static void EnsureGamesUrlScheme(PlistBuddyHelper buddy, int index)
-        {
-            buddy.RemoveEntry(UrlTypes, index, UrlScheme);
-            buddy.AddArray(UrlTypes, index, UrlScheme);
-            buddy.AddString(PlistBuddyHelper.ToEntryName(UrlTypes, index, UrlScheme, 0),
-                GetBundleId());
-        }
-
-        private static string GetBundleId()
-        {
-            return GPGSProjectSettings.Instance.Get("ios.BundleId", null);
+            AddURLScheme (buddy, BundleSchemeKey, GetBundleId ());
+            AddURLScheme (buddy, ReverseClientIdSchemeKey, GetReverseClientId());
         }
 
         /// <summary>
-        /// Finds the index of the CFBundleURLTypes array where the entry for Play Games is stored. If
-        /// this is not present, a new entry will be appended to the end of this array.
+        /// Adds the URL scheme to the plist.
+        /// If the key already exists, the value is updated to the given value.
+        /// If the key cannot be found, it is added.
         /// </summary>
-        /// <returns>The index in the CFBundleURLTypes array corresponding to Play Games.</returns>
-        /// <param name="buddy">The helper corresponding to the plist file.</param>
-        private static int GamesUrlSchemeIndex(PlistBuddyHelper buddy)
+        /// <param name="buddy">buddy - the plist helper to use.</param>
+        /// <param name="key">Key - the url scheme key to look for</param>
+        /// <param name="value">Value - the value of the scheme.</param>
+        private static void AddURLScheme (PlistBuddyHelper buddy, string key, string value)
         {
             int index = 0;
 
             while (buddy.EntryValue(UrlTypes, index) != null)
             {
-                var urlName = buddy.EntryValue(UrlTypes, index, UrlBundleName);
+               string urlName = buddy.EntryValue(UrlTypes, index, UrlBundleName);
 
-                if (GetBundleId().Equals(urlName))
+                if (key.Equals(urlName))
                 {
-                    return index;
+                    // remove the existing value
+                    buddy.RemoveEntry (UrlTypes, index, UrlScheme);
+                    //add the array back
+                    buddy.AddArray(UrlTypes, index, UrlScheme);
+                    //add the value
+                    buddy.AddString (PlistBuddyHelper.ToEntryName (UrlTypes, index, UrlScheme, 0),
+                        value);
+                    return;
                 }
 
                 index++;
             }
 
-            // The current array does not contain the Games url scheme - add a value to the end.
+            // not found, add new entry
             buddy.AddDictionary(UrlTypes, index);
             buddy.AddString(PlistBuddyHelper.ToEntryName(UrlTypes, index, UrlBundleName),
-                GetBundleId());
+                key);
+            //add the array
+            buddy.AddArray(UrlTypes, index, UrlScheme);
+            //add the value
+            buddy.AddString (PlistBuddyHelper.ToEntryName (UrlTypes, index, UrlScheme, 0),
+                value);
+        }
+#endif
 
-            return index;
+        private static string GetBundleId()
+        {
+            return GPGSProjectSettings.Instance.Get(GPGSUtil.IOSBUNDLEIDKEY);
         }
 
+        private static string GetReverseClientId()
+        {
+            string clientId = GPGSProjectSettings.Instance.Get(GPGSUtil.IOSCLIENTIDKEY);
+            string[] parts = clientId.Split ('.');
+            string revClientId = "";
+            foreach (string p in parts)
+            {
+                if (revClientId.Length == 0)
+                {
+                    revClientId = p;
+                }
+                else
+                {
+                    revClientId = p + "." + revClientId;
+                }
+            }
+            return revClientId;
+        }
+
+#if UNITY_IOS || UNITY_IPHONE
         /// <summary>
         /// Updates the generated pbxproj to reduce manual work required by developers. Currently
-        /// this just adds the '-fobjc-arc' flag for the Play Games ObjC source files.
+        /// this adds the '-fobjc-arc' flag for the Play Games ObjC source file.
         /// </summary>
         /// <param name="pbxprojPath">Pbxproj path.</param>
         private static void UpdateGeneratedPbxproj(string pbxprojPath)
         {
-            // We're looking for lines in the form:
-            // ... = {isa = PBXBuildFile; fileRef = DEADBEEF /* GPGSFileName.mm */; };
-            // And we want to append "settings = {COMPILER_FLAGS = "-fobjc-arc"};" to the content in
-            // between the braces. This is done with a regex replace.
-            // The expression is structured as follows:
-            // - Begin a capturing group.
-            // - Find any line that begins with "<anything>{isa = PBXBuildFile" followed by a
-            //   reference to a file beginning with "GPGS" and ending with ".m" (e.g. "GPGSFile.m")
-            // - Close the capture group - leaving a trailing "};"
-            // - Replace that line with the captured group with
-            //   "settings = {COMPILER_FLAGS = "-fobjc-arc";};};" appended. The trailing "};" is needed
-            //   because we omitted the "};" from the group.
-            var withFlagAdded = Regex.Replace(
-                                    GPGSUtil.ReadFully(pbxprojPath),
-                                    @"(.*\{isa\s*=\s*PBXBuildFile.*GPGS\w*\.m.*)\}\;",
-                                    @"$1settings = {COMPILER_FLAGS = ""-fobjc-arc""; }; };");
+            PBXProject proj = new PBXProject();
+            proj.ReadFromString(File.ReadAllText(pbxprojPath));
 
-            // Overwrite the pbxproj with the updated value.
-            GPGSUtil.WriteFile(pbxprojPath, withFlagAdded);
+            string target =
+                proj.TargetGuidByName(PBXProject.GetUnityTargetName());
+            string testTarget =
+                proj.TargetGuidByName(PBXProject.GetUnityTestTargetName());
+
+            proj.AddBuildProperty(target, "OTHER_LDFLAGS", "$(inherited)");
+            proj.AddBuildProperty(testTarget, "OTHER_LDFLAGS", "$(inherited)");
+            proj.AddBuildProperty(target, "HEADER_SEARCH_PATHS", "$(inherited)");
+            proj.AddBuildProperty(testTarget, "HEADER_SEARCH_PATHS", "$(inherited)");
+            proj.AddBuildProperty(target, "OTHER_CFLAGS", "$(inherited)");
+            proj.AddBuildProperty(testTarget, "OTHER_CFLAGS", "$(inherited)");
+            proj.SetBuildProperty(target, "ENABLE_BITCODE", "NO");
+            proj.SetBuildProperty(testTarget, "ENABLE_BITCODE", "NO");
+
+            string fileGuid =
+                 proj.FindFileGuidByProjectPath("Libraries/Plugins/iOS/GPGSAppController.mm");
+
+            if (fileGuid == null)
+            {
+                // look in the legacy location
+                fileGuid =
+                    proj.FindFileGuidByProjectPath("Libraries/GPGSAppController.mm");
+            }
+
+
+            List<string> list = new List<string>();
+            list.Add("-fobjc-arc");
+
+            proj.SetCompileFlagsForFile(target, fileGuid, list);
+
+            File.WriteAllText(pbxprojPath, proj.WriteToString());
         }
+#endif
     }
 }
+#endif

@@ -1,5 +1,5 @@
 // <copyright file="AchievementManager.cs" company="Google Inc.">
-// Copyright (C) 2014 Google Inc.
+// Copyright (C) 2014 Google Inc. All Rights Reserved.
 //
 //  Licensed under the Apache License, Version 2.0 (the "License");
 //  you may not use this file except in compliance with the License.
@@ -19,10 +19,9 @@
 namespace GooglePlayGames.Native.PInvoke
 {
     using System;
-    using GooglePlayGames.Native.PInvoke;
     using System.Runtime.InteropServices;
-    using GooglePlayGames.OurUtils;
     using System.Collections.Generic;
+    using GooglePlayGames.OurUtils;
     using GooglePlayGames.Native.Cwrapper;
     using C = GooglePlayGames.Native.Cwrapper.AchievementManager;
 
@@ -59,11 +58,36 @@ namespace GooglePlayGames.Native.PInvoke
                 Callbacks.Type.Temporary, response, data);
         }
 
+        internal void Fetch(string achId, Action<FetchResponse> callback)
+        {
+            Misc.CheckNotNull(achId);
+            Misc.CheckNotNull(callback);
+            C.AchievementManager_Fetch(mServices.AsHandle(), Types.DataSource.CACHE_OR_NETWORK,
+                achId, InternalFetchCallback,
+                Callbacks.ToIntPtr<FetchResponse>(callback, FetchResponse.FromPointer));
+        }
+
+        [AOT.MonoPInvokeCallback(typeof(C.FetchCallback))]
+        private static void InternalFetchCallback(IntPtr response, IntPtr data)
+        {
+            Callbacks.PerformInternalCallback("AchievementManager#InternalFetchCallback",
+                Callbacks.Type.Temporary, response, data);
+        }
+
         internal void Increment(string achievementId, uint numSteps)
         {
             Misc.CheckNotNull(achievementId);
 
-            C.AchievementManager_Increment(mServices.AsHandle(), achievementId, numSteps);
+            C.AchievementManager_Increment(mServices.AsHandle(),
+                achievementId, numSteps);
+        }
+
+        internal void SetStepsAtLeast(string achivementId, uint numSteps)
+        {
+            Misc.CheckNotNull(achivementId);
+
+            C.AchievementManager_SetStepsAtLeast(mServices.AsHandle(),
+                achivementId, numSteps);
         }
 
         internal void Reveal(string achievementId)
@@ -78,6 +102,39 @@ namespace GooglePlayGames.Native.PInvoke
             Misc.CheckNotNull(achievementId);
 
             C.AchievementManager_Unlock(mServices.AsHandle(), achievementId);
+        }
+
+        internal class FetchResponse : BaseReferenceHolder
+        {
+            internal FetchResponse(IntPtr selfPointer) : base(selfPointer)
+            {
+            }
+
+            internal CommonErrorStatus.ResponseStatus Status()
+            {
+                return C.AchievementManager_FetchResponse_GetStatus(SelfPtr());
+            }
+
+            internal NativeAchievement Achievement()
+            {
+                IntPtr p =  C.AchievementManager_FetchResponse_GetData(SelfPtr());
+                return new NativeAchievement(p);
+            }
+
+            protected override void CallDispose(HandleRef selfPointer)
+            {
+                C.AchievementManager_FetchResponse_Dispose(selfPointer);
+            }
+
+            internal static FetchResponse FromPointer(IntPtr pointer)
+            {
+                if (pointer.Equals(IntPtr.Zero))
+                {
+                    return null;
+                }
+
+                return new FetchResponse(pointer);
+            }
         }
 
         internal class FetchAllResponse : BaseReferenceHolder, IEnumerable<NativeAchievement>

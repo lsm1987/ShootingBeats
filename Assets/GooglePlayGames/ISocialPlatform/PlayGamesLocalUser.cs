@@ -13,12 +13,13 @@
 //  See the License for the specific language governing permissions and
 //    limitations under the License.
 // </copyright>
+#if (UNITY_ANDROID || (UNITY_IPHONE && !NO_GPGS))
 
 namespace GooglePlayGames
 {
     using System;
+    using GooglePlayGames.BasicApi;
     using UnityEngine.SocialPlatforms;
-    using UnityEngine;
 
     /// <summary>
     /// Represents the Google Play Games local user.
@@ -27,12 +28,16 @@ namespace GooglePlayGames
     {
         internal PlayGamesPlatform mPlatform;
 
-        private WWW mAvatarUrl;
+        private string emailAddress;
+
+        private PlayerStats mStats;
 
         internal PlayGamesLocalUser(PlayGamesPlatform plaf)
+            : base("localUser", string.Empty, string.Empty)
         {
             mPlatform = plaf;
-            mAvatarUrl = null;
+            emailAddress = null;
+            mStats = null;
         }
 
         /// <summary>
@@ -54,25 +59,37 @@ namespace GooglePlayGames
         }
 
         /// <summary>
-        /// Not implemented. Calls the callback with <c>false</c>.
+        /// Loads all friends of the authenticated user.
         /// </summary>
         public void LoadFriends(Action<bool> callback)
         {
-            if (callback != null)
-            {
-                callback.Invoke(false);
-            }
+            mPlatform.LoadFriends(this, callback);
         }
 
         /// <summary>
-        /// Not implemented. Returns an empty list.
+        /// Synchronous version of friends, returns null until loaded.
         /// </summary>
         public IUserProfile[] friends
         {
             get
             {
-                return new IUserProfile[0];
+                return mPlatform.GetFriends();
             }
+        }
+
+        /// <summary>
+        /// Gets an id token for the user.
+        /// NOTE: This property can only be accessed using the main Unity thread.
+        /// </summary>
+        /// <param name="idTokenCallback"> A callback to be invoked after token is retrieved. Will be passed null value
+        /// on failure. </param>
+        [Obsolete("Use PlayGamesPlatform.GetServerAuthCode()")]
+        public void GetIdToken(Action<string> idTokenCallback)
+        {
+            if(authenticated)
+                mPlatform.GetIdToken(idTokenCallback);
+            else
+                idTokenCallback(null);
         }
 
         /// <summary>
@@ -110,13 +127,27 @@ namespace GooglePlayGames
         {
             get
             {
-                return authenticated ? mPlatform.GetUserDisplayName() : string.Empty;
+                string retval = string.Empty;
+                if (authenticated)
+                {
+                    retval = mPlatform.GetUserDisplayName();
+                    if (!base.userName.Equals(retval))
+                    {
+                        ResetIdentity(retval, mPlatform.GetUserId(), mPlatform.GetUserImageUrl());
+                    }
+                }
+                return retval;
             }
         }
 
         /// <summary>
         /// Gets the user's Google id.
         /// </summary>
+        /// <remarks> This id is persistent and uniquely identifies the user
+        ///     across all games that use Google Play Game Services.  It is
+        ///     the preferred method of uniquely identifying a player instead
+        ///     of email address.
+        /// </remarks>
         /// <returns>
         /// The user's Google id.
         /// </returns>
@@ -124,7 +155,32 @@ namespace GooglePlayGames
         {
             get
             {
-                return authenticated ? mPlatform.GetUserId() : string.Empty;
+                string retval = string.Empty;
+                if (authenticated)
+                {
+                    retval = mPlatform.GetUserId();
+                    if (!base.id.Equals(retval))
+                    {
+                        ResetIdentity(mPlatform.GetUserDisplayName(), retval, mPlatform.GetUserImageUrl());
+                    }
+                }
+                return retval;
+            }
+        }
+
+        /// <summary>
+        /// Gets an access token for the user.
+        /// NOTE: This property can only be accessed using the main Unity thread.
+        /// </summary>
+        /// <returns>
+        /// An id token for the user.
+        /// </returns>
+        [Obsolete("Use PlayGamesPlatform.GetServerAuthCode()")]
+        public string accessToken
+        {
+            get
+            {
+                return authenticated ? mPlatform.GetAccessToken() : string.Empty;
             }
         }
 
@@ -151,47 +207,70 @@ namespace GooglePlayGames
             }
         }
 
-        /// <summary>
-        /// Loads the local user's image from the url.  Loading urls
-        /// is asynchronous so the return from this call is fast,
-        /// the image is returned once it is loaded.  null is returned
-        /// up to that point.
-        /// </summary>
-        private Texture2D LoadImage()
-        {
-            string url = mPlatform.GetUserImageUrl();
 
-            // the url can be null if the user does not have an
-            // avatar configured.
-            if (url != null)
-            {
-                if (mAvatarUrl == null || mAvatarUrl.url != url)
-                {
-                    mAvatarUrl = new WWW(url);
-                }
-
-                if (mAvatarUrl.isDone)
-                {
-                    return mAvatarUrl.texture;
-                }
-            }
-
-            // if there is no url, always return null.
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the display image of the user.
-        /// </summary>
-        /// <returns>
-        /// null if the user has no avatar, or it has not loaded yet.
-        /// </returns>
-        public new Texture2D image
+        public new string AvatarURL
         {
             get
             {
-                return LoadImage();
+                string retval = string.Empty;
+                if (authenticated)
+                {
+                    retval = mPlatform.GetUserImageUrl();
+                    if (!base.id.Equals(retval))
+                    {
+                        ResetIdentity(mPlatform.GetUserDisplayName(),
+                            mPlatform.GetUserId(), retval);
+                    }
+                }
+                return retval;
+            }
+        }
+
+        /// <summary>Gets the email of the signed in player.</summary>
+        /// <remarks>If your game requires a persistent, unique id for the
+        /// player, the use of PlayerId is recommendend since it does not
+        /// require extra permission consent from the user.
+        /// This is only available if the Requires Google Plus option
+        /// is added to the setup (which enables additional
+        /// permissions for the application).
+        /// NOTE: This property can only be accessed using the main Unity thread.
+        /// </remarks>
+        /// <value>The email.</value>
+        public string Email
+        {
+            get
+            {
+                // treat null as unitialized, empty as no email.  This can
+                // happen when the web client is not initialized.
+                if (authenticated && string.IsNullOrEmpty(emailAddress))
+                {
+                    emailAddress = mPlatform.GetUserEmail();
+                    emailAddress = emailAddress ?? string.Empty;
+                }
+                return authenticated ? emailAddress : string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Gets the player's stats.
+        /// </summary>
+        /// <param name="callback">Callback when they are available.</param>
+        public void GetStats(Action<CommonStatusCodes, PlayerStats> callback)
+        {
+            if (mStats == null || !mStats.Valid)
+            {
+                mPlatform.GetPlayerStats((rc, stats) =>
+                    {
+                        mStats = stats;
+                        callback(rc, stats);
+                    });
+            }
+            else
+            {
+                // 0 = success
+                callback(CommonStatusCodes.Success, mStats);
             }
         }
     }
 }
+#endif

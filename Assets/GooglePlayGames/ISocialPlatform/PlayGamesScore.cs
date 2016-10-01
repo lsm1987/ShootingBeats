@@ -13,6 +13,7 @@
 //  See the License for the specific language governing permissions and
 //    limitations under the License.
 // </copyright>
+#if (UNITY_ANDROID || (UNITY_IPHONE && !NO_GPGS))
 
 namespace GooglePlayGames
 {
@@ -26,13 +27,29 @@ namespace GooglePlayGames
     {
         private string mLbId = null;
         private long mValue = 0;
+        private ulong mRank = 0;
+        private string mPlayerId = string.Empty;
+        private string mMetadata = string.Empty;
+
+        private DateTime mDate = new DateTime(1970, 1, 1, 0, 0, 0);
+
+        internal PlayGamesScore(DateTime date, string leaderboardId,
+            ulong rank, string playerId, ulong value, string metadata)
+        {
+            this.mDate = date;
+            mLbId = leaderboardID;
+            this.mRank = rank;
+            this.mPlayerId = playerId;
+            this.mValue = (long)value;
+            this.mMetadata = metadata;
+        }
 
         /// <summary>
         /// Reports the score. Equivalent to <see cref="PlayGamesPlatform.ReportScore" />.
         /// </summary>
         public void ReportScore(Action<bool> callback)
         {
-            PlayGamesPlatform.Instance.ReportScore(mValue, mLbId, callback);
+            PlayGamesPlatform.Instance.ReportScore(mValue, mLbId, mMetadata, callback);
         }
 
         /// <summary>
@@ -80,7 +97,7 @@ namespace GooglePlayGames
         {
             get
             {
-                return new DateTime(1970, 1, 1, 0, 0, 0);
+                return mDate;
             }
         }
 
@@ -102,7 +119,7 @@ namespace GooglePlayGames
         {
             get
             {
-                return string.Empty;
+                return mPlayerId;
             }
         }
 
@@ -113,8 +130,9 @@ namespace GooglePlayGames
         {
             get
             {
-                return 1;
+                return (int)mRank;
             }
         }
     }
 }
+#endif
