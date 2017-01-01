@@ -1,19 +1,5 @@
 fileFormatVersion: 2
 guid: bc7797263f0244acf8b7d3c4772ed7ae
 folderAsset: yes
-PluginImporter:
-  serializedVersion: 1
-  iconMap: {}
-  executionOrder: {}
-  isPreloaded: 0
-  platformData:
-    Any:
-      enabled: 1
-      settings: {}
-    Editor:
-      enabled: 0
-      settings:
-        DefaultValueInitialized: true
+DefaultImporter:
   userData: 
-  assetBundleName: 
-  assetBundleVariant: 
