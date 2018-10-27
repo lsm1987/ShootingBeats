@@ -462,7 +462,9 @@ namespace MaterialUI
 			theThing.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 		}
 
+		/* by lsm1987
 		[MenuItem("Component/MaterialUI/Ripple Config")]
+		*/
 		[MenuItem("MaterialUI/Add Component/Ripple Config")]
 		private static void AddRippleConfig()
 		{
@@ -477,7 +479,9 @@ namespace MaterialUI
 			}
 		}
 
+		/* by lsm1987
 		[MenuItem("Component/MaterialUI/Shadow Config")]
+		*/
 		[MenuItem("MaterialUI/Add Component/Shadow Config")]
 		private static void AddShadowConfig()
 		{
@@ -492,7 +496,9 @@ namespace MaterialUI
 			}
 		}
 
+		/* by lsm1987
 		[MenuItem("Component/MaterialUI/Rect Transform Snapper")]
+		*/
 		[MenuItem("MaterialUI/Add Component/Rect Transform Snapper")]
 		private static void AddRectTransformSnap()
 		{
@@ -507,7 +513,9 @@ namespace MaterialUI
 			}
 		}
 
+		/* by lsm1987
 		[MenuItem("Component/MaterialUI/Shadow Generator")]
+		*/
 		[MenuItem("MaterialUI/Add Component/Shadow Generator")]
 		private static void AddShadowGen()
 		{
@@ -522,7 +530,9 @@ namespace MaterialUI
 			}
 		}
 
+		/* by lsm1987
 		[MenuItem("Component/MaterialUI/Toaster")]
+		*/
 		[MenuItem("MaterialUI/Add Component/Toaster")]
 		private static void AddToaster()
 		{
@@ -537,7 +547,9 @@ namespace MaterialUI
 			}
 		}
 
+		/* by lsm1987
 		[MenuItem("Component/MaterialUI/EZAnim")]
+		*/
 		[MenuItem("MaterialUI/Add Component/EZAnim")]
 		private static void AddEZAnim()
 		{
