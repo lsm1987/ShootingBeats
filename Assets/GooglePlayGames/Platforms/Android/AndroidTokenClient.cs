@@ -331,7 +331,7 @@ namespace GooglePlayGames.Android
         }
 
         public
-#if UNITY_2017
+#if UNITY_2017|| UNITY_2018
         override
 #endif
         string toString()
