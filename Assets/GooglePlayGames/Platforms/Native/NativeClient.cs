@@ -27,7 +27,7 @@ namespace GooglePlayGames.Native
     using System;
     using System.Collections.Generic;
     using GooglePlayGames.BasicApi.Events;
-    using GooglePlayGames.BasicApi.Quests;
+    using GooglePlayGames.BasicApi.Video;
     using Types = GooglePlayGames.Native.Cwrapper.Types;
     using Status = GooglePlayGames.Native.Cwrapper.CommonErrorStatus;
     using UnityEngine;
@@ -54,7 +54,7 @@ namespace GooglePlayGames.Native
         private volatile NativeRealtimeMultiplayerClient mRealTimeClient;
         private volatile ISavedGameClient mSavedGameClient;
         private volatile IEventsClient mEventsClient;
-        private volatile IQuestsClient mQuestsClient;
+        private volatile IVideoClient mVideoClient;
         private volatile TokenClient mTokenClient;
         private volatile Action<Invitation, bool> mInvitationDelegate;
         private volatile Dictionary<String, Achievement> mAchievements = null;
@@ -67,22 +67,12 @@ namespace GooglePlayGames.Native
         private volatile bool mSilentAuthFailed = false;
         private volatile bool friendsLoading = false;
 
-        private string rationale;
-
-        private int webclientWarningFreq = 100000;
-        private int noWebClientIdWarningCount = 0;
-
         internal NativeClient(PlayGamesClientConfiguration configuration,
             IClientImpl clientImpl)
         {
             PlayGamesHelperObject.CreateObject();
             this.mConfiguration = Misc.CheckNotNull(configuration);
             this.clientImpl = clientImpl;
-            this.rationale = configuration.PermissionRationale;
-            if (string.IsNullOrEmpty(this.rationale))
-            {
-                this.rationale = "Select email address to send to this game or hit cancel to not share.";
-            }
         }
 
         private GameServices GameServices()
@@ -128,15 +118,28 @@ namespace GooglePlayGames.Native
                 }
             }
 
-            // If game services are uninitialized, creating them will start a silent auth attempt.
-            InitializeGameServices();
-
             // reset friends loading flag
             friendsLoading = false;
 
-            if (!silent)
-            {
-                GameServices().StartAuthorizationUI();
+            InitializeTokenClient();
+
+            // If we need to use the token client to authenticate, do that before initializing the GPG library.
+            if (mTokenClient.NeedsToRun()) {
+                Debug.Log("Starting Auth with token client.");
+                mTokenClient.FetchTokens((int result) => {
+                    InitializeGameServices();
+                    if (result == 0) {
+                        GameServices().StartAuthorizationUI();
+                    } else {
+                        HandleAuthTransition(Types.AuthOperation.SIGN_IN, (Status.AuthStatus)result);
+                    }
+                });
+            } else {
+                // If game services are uninitialized, creating them will start a silent auth attempt.
+                InitializeGameServices();
+                if (!silent) {
+                    GameServices().StartAuthorizationUI();
+                }
             }
         }
 
@@ -191,33 +194,41 @@ namespace GooglePlayGames.Native
 
                 using (var builder = GameServicesBuilder.Create())
                 {
-                    using (var config = clientImpl.CreatePlatformConfiguration())
+                    using (var config = clientImpl.CreatePlatformConfiguration(mConfiguration))
                     {
-                        // We need to make sure that the invitation delegate is registered before the
-                        // services object is initialized - otherwise we might miss a callback if
-                        // the game was opened because of a user accepting an invitation through
-                        // a system notification.
+                        // We need to make sure that the invitation delegate
+                        // is registered before the services object is
+                        // initialized - otherwise we might miss a callback if
+                        // the game was opened because of a user accepting an
+                        // invitation through a system notification.
                         RegisterInvitationDelegate(mConfiguration.InvitationDelegate);
                         builder.SetOnAuthFinishedCallback(HandleAuthTransition);
-                        builder.SetOnTurnBasedMatchEventCallback((eventType, matchId, match) => mTurnBasedClient.HandleMatchEvent(eventType, matchId, match));
-                        builder.SetOnMultiplayerInvitationEventCallback(HandleInvitation);
+                        builder.SetOnTurnBasedMatchEventCallback(
+                            (eventType, matchId, match) =>
+                                mTurnBasedClient.HandleMatchEvent(
+                                    eventType, matchId, match));
+                        builder.SetOnMultiplayerInvitationEventCallback(
+                                    HandleInvitation);
                         if (mConfiguration.EnableSavedGames)
                         {
                             builder.EnableSnapshots();
                         }
-                        if (mConfiguration.RequireGooglePlus)
-                        {
-                            builder.RequireGooglePlus();
-                        }
+
                         string[] scopes = mConfiguration.Scopes;
                         for (int i = 0; i < scopes.Length; i++) {
                             builder.AddOauthScope(scopes[i]);
                         }
+
+                        if (mConfiguration.IsHidingPopups)
+                        {
+                            builder.SetShowConnectingPopup(false);
+                        }
+
                         Debug.Log("Building GPG services, implicitly attempts silent auth");
                         mAuthState = AuthState.SilentPending;
                         mServices = builder.Build(config);
                         mEventsClient = new NativeEventClient(new EventManager(mServices));
-                        mQuestsClient = new NativeQuestClient(new QuestManager(mServices));
+                        mVideoClient = new NativeVideoClient(new VideoManager(mServices));
                         mTurnBasedClient =
                         new NativeTurnBasedMultiplayerClient(this, new TurnBasedManager(mServices));
 
@@ -239,11 +250,31 @@ namespace GooglePlayGames.Native
                         }
 
                         mAuthState = AuthState.SilentPending;
-                        mTokenClient = clientImpl.CreateTokenClient(
-                            (mUser == null) ? null : mUser.id, false);
+                        InitializeTokenClient();
                     }
                 }
             }
+        }
+
+        private void InitializeTokenClient() {
+            if (mTokenClient != null) {
+                return;
+            }
+            mTokenClient = clientImpl.CreateTokenClient(true);
+
+            if (!GameInfo.WebClientIdInitialized() &&
+                (mConfiguration.IsRequestingIdToken || mConfiguration.IsRequestingAuthCode)) {
+                OurUtils.Logger.e("Server Auth Code and ID Token require web clientId to configured.");
+            }
+            string[] scopes = mConfiguration.Scopes;
+            // Set the auth flags in the token client.
+            mTokenClient.SetWebClientId(GameInfo.WebClientId);
+            mTokenClient.SetRequestAuthCode(mConfiguration.IsRequestingAuthCode, mConfiguration.IsForcingRefresh);
+            mTokenClient.SetRequestEmail(mConfiguration.IsRequestingEmail);
+            mTokenClient.SetRequestIdToken(mConfiguration.IsRequestingIdToken);
+            mTokenClient.SetHidePopups(mConfiguration.IsHidingPopups);
+            mTokenClient.AddOauthScopes(scopes);
+            mTokenClient.SetAccountName(mConfiguration.AccountName);
         }
 
         internal void HandleInvitation(Types.MultiplayerEvent eventType, string invitationId,
@@ -292,61 +323,7 @@ namespace GooglePlayGames.Native
                 return null;
             }
 
-            mTokenClient.SetRationale(rationale);
             return mTokenClient.GetEmail();
-        }
-
-        /// <summary>
-        /// Gets the user's email with a callback.
-        /// </summary>
-        /// <remarks>The email address returned is selected by the user from the accounts present
-        /// on the device. There is no guarantee this uniquely identifies the player.
-        /// For unique identification use the id property of the local player.
-        /// The user can also choose to not select any email address, meaning it is not
-        /// available.</remarks>
-        /// <param name="callback">The callback with a status code of the request,
-        /// and string which is the email. It can be null.</param>
-        public void GetUserEmail(Action<CommonStatusCodes, string> callback)
-        {
-            if (!this.IsAuthenticated())
-            {
-                Debug.Log("Cannot get API client - not authenticated");
-                if (callback != null)
-                {
-                    PlayGamesHelperObject.RunOnGameThread(() =>
-                        callback(CommonStatusCodes.SignInRequired, null));
-                    return;
-                }
-            }
-            mTokenClient.SetRationale(rationale);
-            mTokenClient.GetEmail((status, email) =>
-                PlayGamesHelperObject.RunOnGameThread(()=>callback(status,email)));
-        }
-
-        /// <summary>Gets the access token currently associated with the Unity activity.</summary>
-        /// <returns>The OAuth 2.0 access token.</returns>
-        [Obsolete("Use GetServerAuthCode() then exchange it for a token")]
-        public string GetAccessToken()
-        {
-            if (!this.IsAuthenticated())
-            {
-                Debug.Log("Cannot get API client - not authenticated");
-                return null;
-            }
-
-            if(!GameInfo.WebClientIdInitialized())
-            {
-                //don't spam the log, only do this every webclientWarningFreq times.
-                if (noWebClientIdWarningCount++ % webclientWarningFreq == 0)
-                {
-                    Debug.LogError("Web client ID has not been set, cannot request access token.");
-                    // avoid int overflow
-                    noWebClientIdWarningCount = (noWebClientIdWarningCount/ webclientWarningFreq) + 1;
-                }
-                return null;
-            }
-            mTokenClient.SetRationale(rationale);
-            return mTokenClient.GetAccessToken();
         }
 
         /// <summary>
@@ -355,31 +332,14 @@ namespace GooglePlayGames.Native
         /// <param name="idTokenCallback"> A callback to be invoked after token is retrieved. Will be passed null value
         /// on failure. </param>
         /// <returns>The identifier token.</returns>
-        [Obsolete("Use GetServerAuthCode() then exchange it for a token")]
-        public void GetIdToken(Action<string> idTokenCallback)
+        public string GetIdToken()
         {
             if (!this.IsAuthenticated())
             {
                 Debug.Log("Cannot get API client - not authenticated");
-                PlayGamesHelperObject.RunOnGameThread(() =>
-                    idTokenCallback(null));
+                return null;
             }
-
-            if(!GameInfo.WebClientIdInitialized())
-            {
-                //don't spam the log, only do this every webclientWarningFreq times.
-                if (noWebClientIdWarningCount++ % webclientWarningFreq == 0)
-                {
-                    Debug.LogError("Web client ID has not been set, cannot request id token.");
-                    // avoid int overflow
-                    noWebClientIdWarningCount = (noWebClientIdWarningCount/ webclientWarningFreq) + 1;
-                }
-                PlayGamesHelperObject.RunOnGameThread(() =>
-                    idTokenCallback(null));
-            }
-            mTokenClient.SetRationale(rationale);
-            mTokenClient.GetIdToken(GameInfo.WebClientId,
-                AsOnGameThreadCallback(idTokenCallback));
+            return mTokenClient.GetIdToken();
         }
 
         /// <summary>
@@ -388,28 +348,21 @@ namespace GooglePlayGames.Native
         /// <remarks>Note: This function is currently only implemented for Android.</remarks>
         /// <param name="serverClientId">The Client ID.</param>
         /// <param name="callback">Callback for response.</param>
-        public void GetServerAuthCode(string serverClientId, Action<CommonStatusCodes, string> callback)
+        public string GetServerAuthCode()
         {
-            mServices.FetchServerAuthCode(serverClientId, (serverAuthCodeResponse) => {
-                // Translate native errors into CommonStatusCodes.
-                CommonStatusCodes responseCode =
-                    ConversionUtils.ConvertResponseStatusToCommonStatus(serverAuthCodeResponse.Status());
-                // Log errors.
-                if (responseCode != CommonStatusCodes.Success &&
-                    responseCode != CommonStatusCodes.SuccessCached)
-                {
-                    OurUtils.Logger.e("Error loading server auth code: " + serverAuthCodeResponse.Status().ToString());
-                }
-                // Fill in the code & call the callback.
-                if (callback != null)
-                {
-                    // copy the auth code into managed memory before posting
-                    // the callback.
-                    string authCode = serverAuthCodeResponse.Code();
-                    PlayGamesHelperObject.RunOnGameThread(() =>
-                        callback(responseCode, authCode));
-                }
-            });
+            if (!this.IsAuthenticated())
+            {
+                Debug.Log("Cannot get API client - not authenticated");
+                return null;
+            }
+            return mTokenClient.GetAuthCode();
+        }
+
+        public void GetAnotherServerAuthCode(bool reAuthenticateIfNeeded,
+                                             Action<string> callback)
+        {
+            mTokenClient.GetAnotherServerAuthCode(reAuthenticateIfNeeded,
+                                                  callback);
         }
 
         ///<summary></summary>
@@ -584,7 +537,6 @@ namespace GooglePlayGames.Native
 
                 mUser = response.Self().AsPlayer();
                 mFriends = null;
-                mTokenClient = clientImpl.CreateTokenClient(mUser.id, true);
             }
             GooglePlayGames.OurUtils.Logger.d("Found User: " + mUser);
             GooglePlayGames.OurUtils.Logger.d("Maybe finish for User");
@@ -684,7 +636,7 @@ namespace GooglePlayGames.Native
                 mFriends = null;
                 mAchievements = null;
                 mAuthState = AuthState.Unauthenticated;
-                mTokenClient = clientImpl.CreateTokenClient(null, true);
+                mTokenClient = clientImpl.CreateTokenClient(true);
                 mAuthGeneration++;
             }
         }
@@ -700,6 +652,7 @@ namespace GooglePlayGames.Native
                 return;
             }
 
+            mTokenClient.Signout();
             GameServices().SignOut();
         }
 
@@ -738,6 +691,13 @@ namespace GooglePlayGames.Native
 
             return mUser.AvatarURL;
         }
+
+        public void SetGravityForPopups(Gravity gravity)
+        {
+            PlayGamesHelperObject.RunOnGameThread(() => 
+             clientImpl.SetGravityForPopups(GetApiClient(), gravity));
+        }
+
 
         ///<summary></summary>
         /// <seealso cref="GooglePlayGames.BasicApi.IPlayGamesClient.GetPlayerStats"/>
@@ -1164,12 +1124,12 @@ namespace GooglePlayGames.Native
         }
 
         ///<summary></summary>
-        /// <seealso cref="GooglePlayGames.BasicApi.IPlayGamesClient.GetQuestsClient"/>
-        public IQuestsClient GetQuestsClient()
+        /// <seealso cref="GooglePlayGames.BasicApi.IPlayGamesClient.GetVideoClient"/>
+        public IVideoClient GetVideoClient()
         {
             lock (GameServicesLock)
             {
-                return mQuestsClient;
+                return mVideoClient;
             }
         }
 
@@ -1186,18 +1146,6 @@ namespace GooglePlayGames.Native
                 mInvitationDelegate = Callbacks.AsOnGameThreadCallback<Invitation, bool>(
                     (invitation, autoAccept) => invitationDelegate(invitation, autoAccept));
             }
-        }
-
-        /// <summary>Gets the client OAuth 2.0 bearer token.</summary>
-        /// <returns>A string representing the bearer token if the client is valid; otherwise,
-        /// returns null.</returns>
-        public string GetToken()
-        {
-            if (mTokenClient != null)
-            {
-                return mTokenClient.GetAccessToken();
-            }
-            return null;
         }
 
         public IntPtr GetApiClient()

@@ -1,0 +1,6 @@
+<dependencies>
+  <packages>
+    <package>com.google.games:gpgs-plugin-support:0.9.51</package>
+  </packages>
+  <files />
+</dependencies>

@@ -122,25 +122,7 @@ namespace GooglePlayGames.Native.Cwrapper
             CANCELED = 6,
             EXPIRED = 7,
         }
-
-        internal enum QuestState
-        {
-            UPCOMING = 1,
-            OPEN = 2,
-            ACCEPTED = 3,
-            COMPLETED = 4,
-            EXPIRED = 5,
-            FAILED = 6,
-        }
-
-        internal enum QuestMilestoneState
-        {
-            NOT_STARTED = 1,
-            NOT_COMPLETED = 2,
-            COMPLETED_NOT_CLAIMED = 3,
-            CLAIMED = 4,
-        }
-
+         
         internal enum MultiplayerEvent
         {
             UPDATED = 1,
@@ -170,6 +152,28 @@ namespace GooglePlayGames.Native.Cwrapper
             LAST_KNOWN_GOOD = 3,
             MOST_RECENTLY_MODIFIED = 4,
         }
+
+        internal enum VideoCaptureMode {
+            UNKNOWN = -1,
+            FILE = 0,
+            STREAM = 1,
+        }
+
+        internal enum VideoQualityLevel {
+            UNKNOWN = -1,
+            SD = 0,
+            HD = 1,
+            XHD = 2,
+            FULLHD = 3
+        }
+
+        internal enum VideoCaptureOverlayState {
+            UNKNOWN = -1,
+            SHOWN = 1,
+            STARTED = 2,
+            STOPPED = 3,
+            DISMISSED = 4
+        };
     }
 }
 #endif // (UNITY_ANDROID || UNITY_IPHONE)

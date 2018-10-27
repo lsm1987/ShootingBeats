@@ -18,7 +18,6 @@
 namespace GooglePlayGames
 {
     using System;
-    using GooglePlayGames.BasicApi;
 
     internal interface TokenClient
     {
@@ -33,22 +32,42 @@ namespace GooglePlayGames
         /// <returns>The user email or null if not authenticated or the permission is
         /// not available.</returns>
         string GetEmail();
+        string GetAuthCode();
+        string GetIdToken();
 
         /// <summary>
-        /// Gets the user's email with a callback.
+        /// Gets another server auth code.
         /// </summary>
-        /// <remarks>The email address returned is selected by the user from the accounts present
-        /// on the device. There is no guarantee this uniquely identifies the player.
-        /// For unique identification use the id property of the local player.
-        /// The user can also choose to not select any email address, meaning it is not
-        /// available.</remarks>
-        /// <param name="callback">The callback with a status code of the request,
-        /// and string which is the email. It can be null.</param>
-        void GetEmail(Action<CommonStatusCodes, string> callback);
+        /// <remarks>This method should be called after authenticating, and exchanging
+        /// the initial server auth code for a token.  This is implemented by signing in
+        /// silently, which if successful returns almost immediately and with a new
+        /// server auth code.
+        /// </remarks>
+        /// <param name="reAuthenticateIfNeeded">Calls Authenticate if needed when
+        /// retrieving another auth code. </param>
+        /// <param name="callback">Callback.</param>
+        void GetAnotherServerAuthCode(bool reAuthenticateIfNeeded,
+                                      Action<string> callback);
 
-        string GetAccessToken();
-        void GetIdToken(string serverClientId, Action<string> idTokenCallback);
-        void SetRationale(string rationale);
+        void Signout();
+
+        void SetRequestAuthCode(bool flag, bool forceRefresh);
+
+        void SetRequestEmail(bool flag);
+
+        void SetRequestIdToken(bool flag);
+
+        void SetWebClientId(string webClientId);
+
+        void SetAccountName(string accountName);
+
+        void AddOauthScopes(string[] scopes);
+
+        void SetHidePopups(bool flag);
+
+        bool NeedsToRun();
+
+        void FetchTokens(Action<int> callback);
     }
 }
 #endif
