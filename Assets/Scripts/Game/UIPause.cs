@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Game
 {
@@ -59,7 +60,7 @@ namespace Game
         /// </summary>
         public void OnBeatListClicked()
         {
-            Application.LoadLevel(SceneName._BeatList);
+            SceneManager.LoadScene(SceneName._BeatList);
         }
 
         /// <summary>

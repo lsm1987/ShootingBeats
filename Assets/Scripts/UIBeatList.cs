@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System;
 
@@ -87,7 +88,7 @@ public class UIBeatList : UIWindow
     /// </summary>
     private void LoadTitleScene()
     {
-        Application.LoadLevel(SceneName._Title);
+        SceneManager.LoadScene(SceneName._Title);
     }
 
     /// <summary>

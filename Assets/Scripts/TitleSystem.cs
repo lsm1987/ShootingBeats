@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TitleSystem : SceneSystem
@@ -61,7 +62,7 @@ public class TitleSystem : SceneSystem
     /// </summary>
     private void LoadBeatListScene()
     {
-        Application.LoadLevel(SceneName._BeatList);
+        SceneManager.LoadScene(SceneName._BeatList);
     }
 
     /// <summary>

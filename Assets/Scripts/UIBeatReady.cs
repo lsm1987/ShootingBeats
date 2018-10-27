@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UIBeatReady : UIWindow
@@ -78,7 +79,7 @@ public class UIBeatReady : UIWindow
             GlobalSystem.CreateInstance();
         }
         GlobalSystem._Instance._LoadingBeatInfo = _beatInfo;
-        Application.LoadLevel(SceneName._Stage);
+        SceneManager.LoadScene(SceneName._Stage);
     }
 
     /// <summary>
