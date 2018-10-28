@@ -3,7 +3,7 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -17,4 +17,4 @@ MonoBehaviour:
   _author: Hatsune Miku, Otomania
   _difficulty: 0
   _length: 150
-  _clearAchievementKey: LeakSpinner
+  _clearAchievementKey: LeekSpinner
