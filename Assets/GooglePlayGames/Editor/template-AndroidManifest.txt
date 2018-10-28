@@ -15,8 +15,12 @@
      __NEARBY_SERVICE_ELEMENT__
 
         <!-- The space in these forces it to be interpreted as a string vs. int -->
+        <!-- by lsm1987
         <meta-data android:name="com.google.android.gms.games.APP_ID"
             android:value="\ __APP_ID__" />
+        -->
+        <meta-data android:name="com.google.android.gms.games.APP_ID"
+            android:value="\u003__APP_ID__" />
 
         <!-- Keep track of which plugin is being used -->
         <meta-data android:name="com.google.android.gms.games.unityVersion"
