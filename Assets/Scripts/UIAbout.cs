@@ -9,6 +9,12 @@ public class UIAbout : UIWindow
     {
         base.OnAwake();
         AddHeaderPanel(_uiTitle, OnBackClicked);
+
+        // 업적 시도
+        if (GlobalSystem._Instance._IsAuthenticated)
+        {
+            Define.ReportAchievementProgress(AchievementKey._openAbout, 100.0);
+        }
     }
 
     public override bool OnKeyInput()
@@ -31,20 +37,5 @@ public class UIAbout : UIWindow
     private void OnBack()
     {
         Destroy(_Go);
-    }
-
-    /// <summary>
-    /// 트위터 클릭되었을 때
-    /// </summary>
-    public void OnDeveloperTwitterClicked()
-    {
-        const string devTwitter = "https://twitter.com/lsm1987";
-        Application.OpenURL(devTwitter);
-
-        // 업적 시도
-        if (GlobalSystem._Instance._IsAuthenticated)
-        {
-            Define.ReportAchievementProgress(AchievementKey._visitTwitter, 100.0);
-        }
     }
 }

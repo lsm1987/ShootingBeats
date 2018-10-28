@@ -20,7 +20,7 @@ public enum Difficulty
 
 public static class AchievementKey
 {
-    public const string _visitTwitter = "HarmingBird";  // 개발자 트위터 방문
+    public const string _openAbout = "AboutGame";  // About 메뉴 열기
     public const string _changeMoveSensitivity = "GearShift";   // 이동 민감도 변경
 }
 
