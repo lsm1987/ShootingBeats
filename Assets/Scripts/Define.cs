@@ -51,7 +51,7 @@ public static class Define
     public const string _uiAboutPath = "UI/UIAbout";
     public const string _uiLetterBoxBottom = "UI/LetterBoxBottom";
     public const string _uiLetterBoxLeft = "UI/LetterBoxLeft";
-    public const string _uiLetterBoxRight= "UI/LetterBoxRight";
+    public const string _uiLetterBoxRight = "UI/LetterBoxRight";
     public const string _uiStageText = "UI/UIStageText";
     public const string _uiHeaderPanel = "UI/UIHeaderPanel";
     public const string _albumArtRoot = "AlbumArts";    // 앨범아트 스프라이트 경로
@@ -125,8 +125,10 @@ public static class Define
     /// </summary>
     public static void OpenSongLeaderboard(BeatInfo beatInfo)
     {
+#if UNITY_ANDROID
         string id = GetSongLeaderboardID(beatInfo);
         PlayGamesPlatform.Instance.ShowLeaderboardUI(id);
+#endif // UNITY_ANDROID
     }
 
     /// <summary>

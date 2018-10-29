@@ -43,7 +43,7 @@ public class GlobalSystem
         get;
         private set;
     }
-    
+
     /// <summary>
     /// 로그인 되어있는가?
     /// </summary>
@@ -66,6 +66,7 @@ public class GlobalSystem
             return;
         }
 
+#if UNITY_ANDRIOD
         PlayGamesPlatform.Activate();
 
         _IsAuthenticating = true;
@@ -90,6 +91,9 @@ public class GlobalSystem
                 callback(success);
             }
         });
+#else
+        Debug.LogWarning("Authenticate - Not implemented for this platform");
+#endif // UNITY_ANDROID
     }
 
     /// <summary>
@@ -97,7 +101,11 @@ public class GlobalSystem
     /// </summary>
     public void SignOut()
     {
+#if UNITY_ANDRIOD
         ((PlayGamesPlatform)Social.Active).SignOut();
+#else
+        Debug.LogWarning("SignOut - Not implemented for this platform");
+#endif // UNITY_ANDROID
     }
 
     /// <summary>
