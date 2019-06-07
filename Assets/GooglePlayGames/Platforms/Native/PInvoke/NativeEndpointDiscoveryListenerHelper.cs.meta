@@ -1,10 +1,8 @@
 fileFormatVersion: 2
 guid: f4f68519f617446e4b1a56243f7eb10d
-labels:
-- gvh
-- gvh_version-0.9.51
+timeCreated: 1435699551
+licenseType: Pro
 MonoImporter:
-  externalObjects: {}
   serializedVersion: 2
   defaultReferences: []
   executionOrder: 0
@@ -12,3 +10,5 @@ MonoImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+labels:
+- gvh_v0.9.64

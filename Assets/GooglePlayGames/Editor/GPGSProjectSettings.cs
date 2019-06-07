@@ -20,7 +20,11 @@ namespace GooglePlayGames.Editor
 {
     using System.Collections.Generic;
     using System.IO;
+#if UNITY_2017_1_OR_NEWER
+    using UnityEngine.Networking;
+#else
     using UnityEngine;
+#endif
 
     public class GPGSProjectSettings
     {
@@ -45,8 +49,7 @@ namespace GooglePlayGames.Editor
 
         private GPGSProjectSettings()
         {
-            string ds = Path.DirectorySeparatorChar.ToString();
-            mFile = "ProjectSettings/GooglePlayGameSettings.txt".Replace("/", ds);
+            mFile = GPGSUtil.SlashesToPlatformSeparator("ProjectSettings/GooglePlayGameSettings.txt");
 
             StreamReader rd = null;
 
@@ -54,8 +57,8 @@ namespace GooglePlayGames.Editor
             string[] fileLocations =
                 {
                     mFile,
-                    "Assets/GooglePlayGames/Editor/projsettings.txt".Replace("/", ds),
-                    "Assets/Editor/projsettings.txt".Replace("/", ds)
+                    GPGSUtil.SlashesToPlatformSeparator(Path.Combine(GPGSUtil.RootPath, "Editor/projsettings.txt")),
+                    GPGSUtil.SlashesToPlatformSeparator("Assets/Editor/projsettings.txt")
                 };
 
             foreach (string f in fileLocations)
@@ -98,7 +101,11 @@ namespace GooglePlayGames.Editor
             }
             else if (mDict.ContainsKey(key))
             {
+#if UNITY_2017_1_OR_NEWER
+                return UnityWebRequest.UnEscapeURL(mDict[key]);
+#else
                 return WWW.UnEscapeURL(mDict[key]);
+#endif
             }
             else
             {
@@ -110,8 +117,11 @@ namespace GooglePlayGames.Editor
         {
             if (mDict.ContainsKey(key))
             {
-                string val = WWW.UnEscapeURL(mDict[key]);
-                return val;
+#if UNITY_2017_1_OR_NEWER
+                return UnityWebRequest.UnEscapeURL(mDict[key]);
+#else
+                return WWW.UnEscapeURL(mDict[key]);
+#endif
             }
             else
             {
@@ -136,7 +146,11 @@ namespace GooglePlayGames.Editor
 
         public void Set(string key, string val)
         {
+#if UNITY_2017_1_OR_NEWER
+            string escaped = UnityWebRequest.EscapeURL(val);
+#else
             string escaped = WWW.EscapeURL(val);
+#endif
             mDict[key] = escaped;
             mDirty = true;
         }

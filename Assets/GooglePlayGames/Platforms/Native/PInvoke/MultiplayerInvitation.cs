@@ -14,7 +14,7 @@
 //    limitations under the License.
 // </copyright>
 
-#if (UNITY_ANDROID || (UNITY_IPHONE && !NO_GPGS))
+#if UNITY_ANDROID
 
 namespace GooglePlayGames.Native.PInvoke
 {
@@ -50,6 +50,11 @@ namespace GooglePlayGames.Native.PInvoke
         internal uint Variant()
         {
             return C.MultiplayerInvitation_Variant(SelfPtr());
+        }
+
+        internal ulong CreationTime()
+        {
+            return C.MultiplayerInvitation_CreationTime(SelfPtr());
         }
 
         internal Types.MultiplayerInvitationType Type()
@@ -98,6 +103,8 @@ namespace GooglePlayGames.Native.PInvoke
             var type = ToInvType(Type());
             var invitationId = Id();
             int variant = (int)Variant();
+            long creationTime = (long)CreationTime();
+            
             Participant inviter;
 
             using (var nativeInviter = Inviter())
@@ -105,7 +112,7 @@ namespace GooglePlayGames.Native.PInvoke
                 inviter = nativeInviter == null ? null : nativeInviter.AsParticipant();
             }
 
-            return new Invitation(type, invitationId, inviter, variant);
+            return new Invitation(type, invitationId, inviter, variant, creationTime);
         }
 
         internal static MultiplayerInvitation FromPointer(IntPtr selfPointer)
