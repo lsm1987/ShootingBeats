@@ -52,9 +52,10 @@ namespace Game
                 PlayerAlive player = GameSystem._Instance.CreatePlayer<PlayerAlive>();
                 player.Init("Common/Player_Black", 0.0f, -0.7f, 0.0f);
 
+                yield return new WaitForAbsFrames(6*60);
                 // 보스 생성
                 Boss boss = GameSystem._Instance.CreateEnemy<Boss>();
-                boss.Init("Common/Boss_Miku", -0.5f, 1.3f, 0.0f);
+                boss.Init("Common/Boss_Miku", 0.0f, 1.3f, 0.0f);
 
                 yield return null;
             }

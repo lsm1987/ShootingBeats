@@ -139,14 +139,19 @@ namespace Game
         /// <summary>
         /// 원형탄
         /// </summary>
-        public void CircleBullet(Mover mover, string shape, float angle, float speed, int count, bool halfAngleOffset)
+        public void CircleBullet(float x, float y, string shape, float angle, float speed, int count, bool halfAngleOffset)
         {
             float angleStart = angle + ((halfAngleOffset) ? (1.0f / count / 2.0f) : 0.0f);
             for (int i = 0; i < count; ++i)
             {
                 Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                b.Init(shape, mover._X, mover._Y, angleStart + (1.0f / count * i), 0.0f, speed, 0.0f);
+                b.Init(shape, x, y, angleStart + (1.0f / count * i), 0.0f, speed, 0.0f);
             }
+        }
+
+        public void CircleBullet(Mover mover, string shape, float angle, float speed, int count, bool halfAngleOffset)
+        {
+            CircleBullet(mover._X, mover._Y, shape, angle, speed, count, halfAngleOffset);
         }
 
         public IEnumerator CircleBullets(Mover mover, string shape, float angle, float speed, int count, bool halfAngleOffset
