@@ -47,9 +47,10 @@ namespace Game
                 _coroutineManager.StartCoroutine(Pattern_Circle3());
 
                 yield return new WaitForAbsFrames((int)(45f * 60));
-                _coroutineManager.StartCoroutine(Pattern_SideMove_Pendulum());
-                _coroutineManager.StartCoroutine(Pattern_SideMove_Line());
-                _coroutineManager.StartCoroutine(Pattern_SideMove_NWay());
+                Pattern_Pendulumn();
+
+                yield return new WaitForAbsFrames((int)(1f * 3600 + 7f * 60 + 0.3f * 60));
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.25f), 5 * 60));
 
                 // 폭발
                 yield return new WaitForAbsFrames(8700);
@@ -166,21 +167,29 @@ namespace Game
                 _Logic.CircleBullet(this, shape, startAngle, speed, bulletPerCircle, false);
             }
 
-            private IEnumerator Pattern_SideMove_Pendulum()
+            private void Pattern_Pendulumn()
             {
-                const int rotaionCount = 4;
-                float pivotX = _X;
-                const float radius = 0.6f;
-                const int duration = 320;     // 1회 회전에 걸리는 프레임
-                const float startRad = (Mathf.PI / 2.0f); // 90도 위치부터 시작
-                float radSpeed = (Mathf.PI * 2.0f / duration);
+                int rotationCount = 4;
+                int rotationDuration = 320; // 1회 회전에 걸리는 프레임
+                const float rotationRadius = 0.6f;
+                const float moverStartRad = (Mathf.PI / 2.0f); // 90도 위치부터 시작
 
-                for (int rotation = 0; rotation < rotaionCount; ++rotation)
+                _coroutineManager.StartCoroutine(Pattern_Pendulum_Move(rotationCount, rotationDuration, rotationRadius, moverStartRad));
+                _coroutineManager.StartCoroutine(Pattern_Pendulum_Line(rotationCount, rotationDuration, rotationRadius, moverStartRad));
+                _coroutineManager.StartCoroutine(Pattern_Pendulum_NWay());
+            }
+
+            private IEnumerator Pattern_Pendulum_Move(int rotationCount, int rotationDuration, float rotationRadius, float startRad)
+            {
+                float pivotX = _X;
+                float radSpeed = (Mathf.PI * 2.0f / rotationDuration);
+
+                for (int rotation = 0; rotation < rotationCount; ++rotation)
                 {
-                    for (int i = 0; i < duration; ++i)
+                    for (int i = 0; i < rotationDuration; ++i)
                     {
                         float rad = startRad + radSpeed * i;
-                        _X = Mathf.Cos(rad) * radius;
+                        _X = Mathf.Cos(rad) * rotationRadius;
                         yield return null;
                     }
                 }
@@ -188,42 +197,55 @@ namespace Game
                 _X = pivotX;
             }
 
-            private IEnumerator Pattern_SideMove_Line()
+            private IEnumerator Pattern_Pendulum_Line(int rotationCount, int rotationDuration, float rotationRadius, float moverStartRad)
             {
                 float[] offsetXs = new float[2] { -0.4f, 0.4f };
-                const int duration = 320 * 4;
                 const int interval = 4;
                 const string shape = "Common/Bullet_Blue";
-                const float startY = 1.30f;
+                const float fireStartY = 1.30f;
                 const float angle = 0.75f;
                 const float speed = 0.04f;
 
-                for (int frame = 0; frame < duration; ++frame)
+                // 발사 위치가 무버보다 후방에 있으므로 발사 위치는 무버보다 살짝 먼저 움직인다.
+                float moverStartY = _Y;
+                float radSpeed = (Mathf.PI * 2.0f / rotationDuration);
+                int fireToMoverFrameGap = (int)((fireStartY - moverStartY) / speed);
+                float fireStartRad = moverStartRad + radSpeed * fireToMoverFrameGap;
+
+                for (int rotation = 0; rotation < rotationCount; ++rotation)
                 {
-                    if ((frame % interval) == 0)
+                    for (int i = 0; i < rotationDuration; ++i)
                     {
-                        foreach (float offsetX in offsetXs)
+                        float rad = fireStartRad + radSpeed * i;
+                        float fireX = Mathf.Cos(rad) * rotationRadius;
+                        int frame = rotation * rotationDuration + i;
+
+                        if ((frame % interval) == 0)
                         {
-                            Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                            b.Init(shape, _X + offsetX, startY, angle, 0.0f, speed, 0.0f);
+                            foreach (float offsetX in offsetXs)
+                            {
+                                Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                                b.Init(shape, fireX + offsetX, fireStartY, angle, 0.0f, speed, 0.0f);
+                            }
                         }
+
+                        yield return null;
                     }
-                    yield return null;
                 }
             }
 
-            private IEnumerator Pattern_SideMove_NWay()
+            private IEnumerator Pattern_Pendulum_NWay()
             {
                 const int waitDuration = 620;
                 yield return new WaitForFrames(waitDuration);
 
                 const int waveCount = 8;
-                const int waveInterval = 80;
+                const int waveInterval = 85;
                 const float angleRange = 0.0625f;
 
                 for (int wave = 0; wave < waveCount; ++wave)
                 {
-                    _Logic.NWayBullet(this, "Common/Bullet_Red", 0.75f, angleRange, 0.01f, 3);
+                    _Logic.NWayBullet(this, "Common/Bullet_Red", 0.75f, angleRange, 0.01f, 5);
                     yield return new WaitForFrames(waveInterval);
                 }
             }
