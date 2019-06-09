@@ -34,7 +34,7 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 120));
 
                 yield return new WaitForAbsFrames(11 * 60 + 30);
-                _coroutineManager.StartCoroutine(Pattern_CircleWave_4x7());
+                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave());
 
                 yield return new WaitForAbsFrames((int)(22.9f * 60));
                 _coroutineManager.StartCoroutine(Pattern_SideCircle(8));
@@ -74,41 +74,44 @@ namespace Game
             }
 
             #region Coroutine
-            private IEnumerator Pattern_CircleWave_4x7()
+            private IEnumerator Pattern_PlacedCircleWave()
             {
-                const float startAngle = 0.75f;
-                const float speed = 0.01f;
+                const float angle = 0.75f;
+                const float speed1 = 0.03f;
+                const float speed2 = 0.01f;
+                const int phase1Duration = 30;
+
                 const int bulletPerCircle = 20;
-                const int circlePerWave = 4;
+                const int circlePerWave = 7;
                 const int waveCount = 7;
 
-                const int circleInterval = 20;
-                const int waveInterval = 5;
+                const int circleInterval = 10;
+                const int waveInterval = 12;
 
                 for (int wave = 0; wave < waveCount; ++wave)
                 {
                     bool bBlue = wave % 2 == 0;
                     string shape = bBlue ? "Common/Bullet_Blue" : "Common/Bullet_Red";
                     bool bHalfAngleOffset = !bBlue;
-                    bool bLastWave = (wave == waveCount - 1);
+                    float angleStart = angle + ((bHalfAngleOffset) ? (1.0f / bulletPerCircle / 2.0f) : 0.0f);
 
                     for (int circle = 0; circle < circlePerWave; ++circle)
                     {
-                        _Logic.CircleBullet(this, shape, startAngle, speed, bulletPerCircle, bHalfAngleOffset);
-
-                        bool bLastCircle = bLastWave && (circle == circlePerWave - 1);
-
-                        if (!bLastCircle)
+                        for (int i = 0; i < bulletPerCircle; ++i)
                         {
-                            yield return new WaitForFrames(circleInterval);
+                            float angle1 = angleStart + (1.0f / bulletPerCircle * i);
+
+                            PlacedBullet b = GameSystem._Instance.CreateBullet<PlacedBullet>();
+                            b.InitNoStop(shape, _X, _Y, angle1, speed1, phase1Duration, angle1, speed2);
                         }
+
+                        yield return new WaitForFrames(circleInterval);
                     }
 
-                    if (!bLastWave)
-                    {
-                        yield return new WaitForFrames(waveInterval);
-                    }
+                    yield return new WaitForFrames(waveInterval);
                 }
+
+                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 20);
             }
 
             private IEnumerator Pattern_SideCircle(int waveCount)
@@ -131,7 +134,7 @@ namespace Game
                         float x = _X + (bLeft ? -1.0f : 1.0f) * circleOffsetX;
                         float y = _Y;
 
-                        _Logic.CircleBullet(x, y, shape, startAngle, speed, bulletPerCircle, bHalfAngleOffset);
+                        _Logic.CircleBullet(x, y, shape, startAngle, speed, 0.0f, bulletPerCircle, bHalfAngleOffset);
                         yield return new WaitForFrames(circleInterval);
                     }
                 }
