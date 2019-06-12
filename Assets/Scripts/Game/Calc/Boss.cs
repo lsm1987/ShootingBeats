@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Game
 {
@@ -45,8 +46,21 @@ namespace Game
                 yield return new WaitForAbsFrames((int)(45f * 60));
                 Pattern_Pendulumn();
 
-                yield return new WaitForAbsFrames((int)(1f * 3600 + 7f * 60 + 0.3f * 60));
-                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.25f), 5 * 60));
+                //yield return new WaitForAbsFrames(4040);
+                // 화면 밖에서 내려오는 시간 고려해서 좀 더 빠르게
+                yield return new WaitForAbsFrames(4030);
+                {
+                    _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.25f), 5 * 60));
+                    /*
+                    _coroutineManager.StartCoroutine(Pattern_RotateCross());
+
+                    int waveCount = 16;
+                    int interval = 20;
+                    _coroutineManager.StartCoroutine(Pattern_RotateCross_Rain(waveCount, interval));
+                    */
+
+                    _coroutineManager.StartCoroutine(Pattern_NoteList());
+                }
 
                 // 폭발
                 yield return new WaitForAbsFrames(8700);
@@ -283,6 +297,128 @@ namespace Game
                 {
                     _Logic.NWayBullet(this, "Common/Bullet_Red", 0.75f, angleRange, 0.01f, 5);
                     yield return new WaitForFrames(waveInterval);
+                }
+            }
+
+            private IEnumerator Pattern_RotateCross()
+            {
+                int inverval = 20;
+                _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_BlueLarge", 0.75f, -0.1f, 0.01f, 4, inverval, 5 * 60));
+                //_coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_RedLarge", 0.125f, -0.1f, 0.01f, 4, inverval, 5 * 60));
+                yield return new WaitForFrames(inverval);
+                //
+                //yield return new WaitForFrames(inverval / 2);
+                //_coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.125f, -0.1f, 0.01f, 4, inverval * 2, 5 * 60));
+            }
+
+            private IEnumerator Pattern_RotateCross_Rain(int waveCount, int interval)
+            {
+                int bulletCount = 3;
+                float rangeY = GameSystem._Instance._MaxY - 0.05f;
+                float rangeXMin = GameSystem._Instance._MinX + 0.1f;
+                float rangeXMax = GameSystem._Instance._MaxX - 0.1f;
+
+                for (int wave = 0; wave < waveCount; ++wave)
+                {
+                    for (int bullet = 0; bullet < bulletCount; ++bullet)
+                    {
+                        float x = GameSystem._Instance.GetRandomRange(rangeXMin, rangeXMax);
+                        float y = rangeY;
+
+                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                        b.Init("Common/Bullet_Red", x, y, 0.75f, 0.0f, 0.01f, 0.0f);
+                    }
+
+                    yield return new WaitForFrames(interval);
+                }
+            }
+
+            private IEnumerator Pattern_NoteList()
+            {
+                List<List<int>> slots = new List<List<int>> {
+                    new List<int> { 0 },
+                    new List<int> { 1 },
+                    new List<int> { 2 },
+                    new List<int> { 3 },
+                    null,
+                    null,
+                    null,
+                    null,
+                    new List<int> { 4 },
+                    null,
+                    new List<int> { 3 },
+                    new List<int> { 3 },
+                    null,
+                    null,
+                    new List<int> { 5 },
+                    null,
+                    new List<int> { 4 },
+                    new List<int> { 4 },
+                    null,
+                    null,
+                    new List<int> { 3 },
+                    null,
+                    new List<int> { 2 },
+                    new List<int> { 2 },
+                    null,
+                    null,
+                    new List<int> { 1 },
+                    null,
+                    new List<int> { 0 },
+                    new List<int> { 0 },
+                    null,
+                    null,
+                    new List<int> { 1 },
+                    null,
+                    new List<int> { 0 },
+                    new List<int> { 0 },
+                    null,
+                    null,
+                    new List<int> { 3 },
+                    null,
+                    new List<int> { 2 },
+                };
+
+                int interval = 7;
+
+                foreach (var slotsOnTick in slots)
+                {
+                    if (slotsOnTick != null)
+                    {
+                        foreach (var slot in slotsOnTick)
+                        {
+                            Pattern_Node(slot);
+                        }
+                    }
+
+                    yield return new WaitForFrames(interval);
+                }
+            }
+
+            private void Pattern_Node(int slot)
+            {
+                float boardXMin = GameSystem._Instance._MinX;
+                float boardXMax = GameSystem._Instance._MaxX;
+                float startY = GameSystem._Instance._MaxY + 0.05f;
+
+                const int slotCount = 6;
+                float slotWidth = (boardXMax - boardXMin) / slotCount;
+                float slotXMin = boardXMin + slotWidth * slot;
+                float slotXMax = slotXMin + slotWidth;
+
+                const int bulletPerSlot = 6;
+                const float bulletRadius = 0.02f;
+                float bulletXMin = slotXMin + bulletRadius;
+                float bulletXMax = slotXMax - bulletRadius;
+                float bulletXSpace = (bulletXMax - bulletXMin) / (bulletPerSlot - 1);
+
+                for (int i = 0; i < bulletPerSlot; ++i)
+                {
+                    float x = bulletXMin + bulletXSpace * i;
+                    float y = startY;
+
+                    Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
+                    b.Init("Common/Bullet_Red", x, y, 0.75f, 0.0f, 0.01f, 0.0f);
                 }
             }
 
