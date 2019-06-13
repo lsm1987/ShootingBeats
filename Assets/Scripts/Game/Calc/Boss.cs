@@ -35,7 +35,7 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 120));
 
                 yield return new WaitForAbsFrames(11 * 60 + 30);
-                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(0.0f));
+                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(false, 0.0f));
 
                 yield return new WaitForAbsFrames(1374);
                 _coroutineManager.StartCoroutine(Pattern_SideCircle());
@@ -52,7 +52,7 @@ namespace Game
                 _coroutineManager.StartCoroutine(Pattern_NoteList());
 
                 yield return new WaitForAbsFrames(4690);
-                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(0.0f));
+                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(true, 0.0005f));
 
                 // 폭발
                 yield return new WaitForAbsFrames(8700);
@@ -76,7 +76,7 @@ namespace Game
             }
 
             #region Coroutine
-            private IEnumerator Pattern_PlacedCircleWave(float angleRate)
+            private IEnumerator Pattern_PlacedCircleWave(bool bSkipCircleHalf, float angleRate)
             {
                 const float angle = 0.75f;
                 const float speed1 = 0.03f;
@@ -103,12 +103,16 @@ namespace Game
                         for (int i = 0; i < bulletPerCircle; ++i)
                         {
                             float angle1 = angleStart + (1.0f / bulletPerCircle * i);
+                            bool bSkip = bSkipCircleHalf && (circle % 2 == 1);
 
-                            PlacedBullet b = GameSystem._Instance.CreateBullet<PlacedBullet>();
-                            b.Init(shape, _X, _Y
-                                , angle1, 0.0f, speed1, 0.0f
-                                , phase1Duration, 0
-                                , angle1, waveAngleRate, speed2, 0.0f);
+                            if (!bSkip)
+                            {
+                                PlacedBullet b = GameSystem._Instance.CreateBullet<PlacedBullet>();
+                                b.Init(shape, _X, _Y
+                                    , angle1, 0.0f, speed1, 0.0f
+                                    , phase1Duration, 0
+                                    , angle1, waveAngleRate, speed2, 0.0f);
+                            }
                         }
 
                         yield return new WaitForFrames(circleInterval);
