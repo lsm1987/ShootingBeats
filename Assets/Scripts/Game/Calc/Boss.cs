@@ -35,7 +35,7 @@ namespace Game
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 120));
 
                 yield return new WaitForAbsFrames(11 * 60 + 30);
-                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave());
+                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(0.0f));
 
                 yield return new WaitForAbsFrames(1374);
                 _coroutineManager.StartCoroutine(Pattern_SideCircle());
@@ -46,21 +46,13 @@ namespace Game
                 yield return new WaitForAbsFrames((int)(45f * 60));
                 Pattern_Pendulumn();
 
-                //yield return new WaitForAbsFrames(4040);
+                // 원래 타이밍 4040
                 // 화면 밖에서 내려오는 시간 고려해서 좀 더 빠르게
                 yield return new WaitForAbsFrames(4030);
-                {
-                    _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.25f), 5 * 60));
-                    /*
-                    _coroutineManager.StartCoroutine(Pattern_RotateCross());
+                _coroutineManager.StartCoroutine(Pattern_NoteList());
 
-                    int waveCount = 16;
-                    int interval = 20;
-                    _coroutineManager.StartCoroutine(Pattern_RotateCross_Rain(waveCount, interval));
-                    */
-
-                    _coroutineManager.StartCoroutine(Pattern_NoteList());
-                }
+                yield return new WaitForAbsFrames(4690);
+                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(0.0f));
 
                 // 폭발
                 yield return new WaitForAbsFrames(8700);
@@ -84,7 +76,7 @@ namespace Game
             }
 
             #region Coroutine
-            private IEnumerator Pattern_PlacedCircleWave()
+            private IEnumerator Pattern_PlacedCircleWave(float angleRate)
             {
                 const float angle = 0.75f;
                 const float speed1 = 0.03f;
@@ -104,6 +96,7 @@ namespace Game
                     string shape = bBlue ? "Common/Bullet_Blue" : "Common/Bullet_Red";
                     bool bHalfAngleOffset = !bBlue;
                     float angleStart = angle + ((bHalfAngleOffset) ? (1.0f / bulletPerCircle / 2.0f) : 0.0f);
+                    float waveAngleRate = bBlue ? angleRate : -angleRate;
 
                     for (int circle = 0; circle < circlePerWave; ++circle)
                     {
@@ -112,7 +105,10 @@ namespace Game
                             float angle1 = angleStart + (1.0f / bulletPerCircle * i);
 
                             PlacedBullet b = GameSystem._Instance.CreateBullet<PlacedBullet>();
-                            b.InitNoStop(shape, _X, _Y, angle1, speed1, phase1Duration, angle1, speed2);
+                            b.Init(shape, _X, _Y
+                                , angle1, 0.0f, speed1, 0.0f
+                                , phase1Duration, 0
+                                , angle1, waveAngleRate, speed2, 0.0f);
                         }
 
                         yield return new WaitForFrames(circleInterval);
@@ -344,39 +340,88 @@ namespace Game
                     null,
                     null,
                     null,
+                    new List<int> { 3 },
+                    null,
+                    new List<int> { 2 },
+                    null,
+                    null,
+                    null,
                     new List<int> { 4 },
                     null,
                     new List<int> { 3 },
-                    new List<int> { 3 },
                     null,
-                    null,
-                    new List<int> { 5 },
-                    null,
-                    new List<int> { 4 },
-                    new List<int> { 4 },
                     null,
                     null,
                     new List<int> { 3 },
                     null,
                     new List<int> { 2 },
+                    null,
+                    null,
+                    null,
                     new List<int> { 2 },
+                    null,
+                    new List<int> { 1 },
+                    null,
                     null,
                     null,
                     new List<int> { 1 },
                     null,
                     new List<int> { 0 },
-                    new List<int> { 0 },
                     null,
-                    null,
-                    new List<int> { 1 },
-                    null,
-                    new List<int> { 0 },
-                    new List<int> { 0 },
                     null,
                     null,
                     new List<int> { 3 },
                     null,
                     new List<int> { 2 },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    new List<int> { 0 },    // 파트2
+                    new List<int> { 1 },
+                    new List<int> { 2 },
+                    new List<int> { 3 },
+                    null,
+                    null,
+                    null,
+                    null,
+                    new List<int> { 3 },
+                    null,
+                    new List<int> { 2 },
+                    null,
+                    null,
+                    null,
+                    new List<int> { 1 },
+                    null,
+                    new List<int> { 0 },
+                    null,
+                    null,
+                    null,
+                    new List<int> { 3 },
+                    null,
+                    new List<int> { 4 },
+                    null,
+                    null,
+                    null,
+                    new List<int> { 0 },
+                    new List<int> { 1 },
+                    new List<int> { 2 },
+                    null,
+                    null,
+                    new List<int> { 1 },
+                    new List<int> { 2 },
+                    new List<int> { 3 },
+                    null,
+                    null,
+                    new List<int> { 2 },
+                    new List<int> { 3 },
+                    new List<int> { 4 },
+                    null,
+                    null,
+                    new List<int> { 1, 3 },
+                    new List<int> { 0, 4 },
                 };
 
                 int interval = 7;
@@ -401,13 +446,13 @@ namespace Game
                 float boardXMax = GameSystem._Instance._MaxX;
                 float startY = GameSystem._Instance._MaxY + 0.05f;
 
-                const int slotCount = 6;
+                const int slotCount = 5;
                 float slotWidth = (boardXMax - boardXMin) / slotCount;
                 float slotXMin = boardXMin + slotWidth * slot;
                 float slotXMax = slotXMin + slotWidth;
 
-                const int bulletPerSlot = 6;
-                const float bulletRadius = 0.02f;
+                const int bulletPerSlot = 5;
+                const float bulletRadius = 0.04f;
                 float bulletXMin = slotXMin + bulletRadius;
                 float bulletXMax = slotXMax - bulletRadius;
                 float bulletXSpace = (bulletXMax - bulletXMin) / (bulletPerSlot - 1);
@@ -418,7 +463,7 @@ namespace Game
                     float y = startY;
 
                     Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", x, y, 0.75f, 0.0f, 0.01f, 0.0f);
+                    b.Init("Common/Bullet_Red", x, y, 0.75f, 0.0f, 0.012f, 0.0f);
                 }
             }
 

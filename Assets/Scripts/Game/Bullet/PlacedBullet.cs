@@ -12,19 +12,34 @@ namespace Game
         private int _moveDuration = 0;  // 처음 이동할 기간
         private float _stopDuration = 0;    // 정지해 있을 기간
         private float _angle2 = 0.0f;
+        private float _angleRate2 = 0.0f;
         private float _speed2 = 0.0f; // 정지 후 다시 움직일 때 속도
+        private float _speedRate2 = 0.0f;
+
+        public void Init(string shapeSubPath, float x, float y
+            , float angle1, float angleRate1, float speed1, float speedRate1
+            , int moveDuration, int stopDuration
+            , float angle2, float angleRate2, float speed2, float speedRate2)
+        {
+            base.Init(shapeSubPath, x, y, angle1, angleRate1, speed1, speedRate1);
+            _selfFrame = 0;
+            _moveDuration = moveDuration;
+            _stopDuration = stopDuration;
+            _angle2 = angle2;
+            _angleRate2 = angleRate2;
+            _speed2 = speed2;
+            _speedRate2 = speedRate2;
+        }
 
         public void Init(string shapeSubPath, float x, float y, float angle
             , float speed1
-            , int moveDuration, int stopDuarion
+            , int moveDuration, int stopDuration
             , float angle2, float speed2)
         {
-            base.Init(shapeSubPath, x, y, angle, 0.0f, speed1, 0.0f);
-            _selfFrame = 0;
-            _angle2 = angle2;
-            _speed2 = speed2;
-            _moveDuration = moveDuration;
-            _stopDuration = stopDuarion;
+            Init(shapeSubPath, x, y
+                , angle, 0.0f, speed1, 0.0f
+                , moveDuration, stopDuration
+                , angle2, 0.0f, speed2, 0.0f);
         }
 
         /// <summary>
@@ -34,10 +49,10 @@ namespace Game
             , float speed1
             , int moveDuration, int stopDuarion)
         {
-            Init(shapeSubPath, x, y, angle
-                , speed1
+            Init(shapeSubPath, x, y
+                , angle, 0.0f, speed1, 0.0f
                 , moveDuration, stopDuarion
-                , angle, speed1);
+                , angle, 0.0f, speed1, 0.0f);
         }
 
         /// <summary>
@@ -48,10 +63,10 @@ namespace Game
             , int moveDuration
             , float angle2, float speed2)
         {
-            Init(shapeSubPath, x, y, angle
-                , speed1
+            Init(shapeSubPath, x, y
+                , angle, 0.0f, speed1, 0.0f
                 , moveDuration, 0
-                , angle2, speed2);
+                , angle2, 0.0f, speed2, 0.0f);
         }
 
         public override void Move()
@@ -66,7 +81,9 @@ namespace Game
             if (_selfFrame == (_moveDuration + _stopDuration))
             {
                 _angle = _angle2;
+                _angleRate = _angleRate2;
                 _speed = _speed2;
+                _speedRate = _speedRate2;
             }
             
             // 프레임 갱신
