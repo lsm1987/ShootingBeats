@@ -144,7 +144,7 @@ namespace Game
                     bool bEvenWave = bMixed && (wave % 2 == 1);
                     float speed = bEvenWave ? 0.015f : 0.01f;
                     string shape = bEvenWave ? "Common/Bullet_Red" : "Common/Bullet_Blue";
-                    float angle = bEvenWave ? GameSystem._Instance.GetRandom01() : 0.75f;
+                    float angle = GameSystem._Instance.GetRandom01();
 
                     for (int circle = 0; circle < circlePerWave; ++circle)
                     {
@@ -169,7 +169,7 @@ namespace Game
                 {
                     bool bEvenWave = (wave % 2 == 1);
                     float speed = 0.03f;
-                    string shape = (bEvenWave) ? "Common/Bullet_Red" : "Common/Bullet_Blue";
+                    string shape = "Common/Bullet_BlueLarge";
                     bool bHalfAngleOffset = (bEvenWave) ? false : true;
 
                     for (int circle = 0; circle < circlePerWave; ++circle)
