@@ -22,6 +22,10 @@ namespace Game
             _speed = speed;
             _speedRate = speedRate;
         }
+
+        protected virtual void OnAngleUpdated() { }
+
+        protected virtual void OnSpeedUpdated() { }
         
         public override void Move()
         {
@@ -31,7 +35,10 @@ namespace Game
             _Y += _speed * Mathf.Sin(rad);
 
             _angle += _angleRate; // 각도에 각속도 가산
+            OnAngleUpdated();
+
             _speed += _speedRate; // 속도에 가속도 가산
+            OnSpeedUpdated();
 
             if (!IsInStage()) // 스테이지 영역 밖으로 나가면 삭제
             {

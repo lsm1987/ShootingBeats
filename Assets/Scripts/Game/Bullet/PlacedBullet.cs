@@ -77,13 +77,15 @@ namespace Game
                 _speed = 0.0f;
             }
             
-            // 전지 시간이 지나면 속도, 각도 재지정
+            // 정지 시간이 지나면 속도, 각도 재지정
             if (_selfFrame == (_moveDuration + _stopDuration))
             {
                 _angle = _angle2;
                 _angleRate = _angleRate2;
                 _speed = _speed2;
                 _speedRate = _speedRate2;
+
+                OnMove2Started();
             }
             
             // 프레임 갱신
@@ -91,5 +93,7 @@ namespace Game
 
             base.Move();
         }
+
+        protected virtual void OnMove2Started() { }
     }
 }

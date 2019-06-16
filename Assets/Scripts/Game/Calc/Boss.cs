@@ -54,6 +54,9 @@ namespace Game
                 yield return new WaitForAbsFrames(4690);
                 _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(true, 0.0005f));
 
+                yield return new WaitForAbsFrames(5270);
+                _coroutineManager.StartCoroutine(Pattern_SlowCircleWaveExplosion());
+
                 // 폭발
                 yield return new WaitForAbsFrames(8700);
                 {
@@ -471,28 +474,44 @@ namespace Game
                 }
             }
 
-            /*
-            private IEnumerator Pattern_PlacedCircleWave()
+            private IEnumerator Pattern_SlowCircleWaveExplosion()
             {
-                const int waveCount = 16;
-                const int bulletPerCircle = 10;
-                const float speed1 = 0.04f;
-                const float angle2 = 0.75f;
-                const float speed2 = 0.02f;
-                const int moveDuaraion = 12;
-                const int stopDuaraion = 12;
-                const int waveInterval = 20;
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.0f), 420));
+                yield return new WaitForFrames(90);
+                yield return _coroutineManager.StartCoroutine(Pattern_SlowCircleWave(7, 0, 0, 0.0f));
+                yield return _coroutineManager.StartCoroutine(Pattern_SlowCircleWave(6, -4, -5, -0.0001f));
+            }
+
+            private IEnumerator Pattern_SlowCircleWave(int waveCount, int bulletPerCircleRate, int phase1DurationRate, float speedRate2)
+            {
+                const int initialBulletPerCircle = 40;
+                const int waveInterval = 84;
+
+                const string shape = "Common/Bullet_Blue";
+                const float speed1 = 0.03f;
+                const float speed2 = 0.01f;
+                const int initialPhase1Duration = 24;
 
                 for (int wave = 0; wave < waveCount; ++wave)
                 {
-                    bool bLeft = (wave % 2 == 0);
-                    float angle1 = bLeft ? 0.5f : 0.0f;
+                    int bulletPerCircle = Mathf.Max(initialBulletPerCircle + wave * bulletPerCircleRate, 1);
+                    int phase1Duration = Mathf.Max(initialPhase1Duration + wave * phase1DurationRate, 0);
+                    float angleStart = GameSystem._Instance.GetRandom01();
 
-                    _Logic.PlacedCircleBullet(this, "Common/Bullet_Blue", angle1, speed1, bulletPerCircle, false, moveDuaraion, stopDuaraion, angle2, speed2);
+                    for (int i = 0; i < bulletPerCircle; ++i)
+                    {
+                        float angle1 = angleStart + (1.0f / bulletPerCircle * i);
+
+                        SlowPlacedBullet b = GameSystem._Instance.CreateBullet<SlowPlacedBullet>();
+                        b.Init(shape, _X, _Y
+                            , angle1, 0.0f, speed1, 0.0f
+                            , phase1Duration, 0
+                            , angle1, 0.0f, speed2, speedRate2, 0.0f);
+                    }
+
                     yield return new WaitForFrames(waveInterval);
                 }
             }
-            */
             #endregion //Coroutine
 
             private GameLogic _Logic
