@@ -43,7 +43,7 @@ namespace Game
                 yield return new WaitForAbsFrames((int)(43.9f * 60));
                 _coroutineManager.StartCoroutine(Pattern_Circle3());
 
-                yield return new WaitForAbsFrames((int)(45f * 60));
+                yield return new WaitForAbsFrames(2700);
                 Pattern_Pendulumn();
 
                 // 원래 타이밍 4040
@@ -56,6 +56,9 @@ namespace Game
 
                 yield return new WaitForAbsFrames(5270);
                 _coroutineManager.StartCoroutine(Pattern_SlowCircleWaveExplosion());
+
+                yield return new WaitForAbsFrames(6690);
+                Pattern_Pendulumn2();
 
                 // 폭발
                 yield return new WaitForAbsFrames(8700);
@@ -227,14 +230,32 @@ namespace Game
                 const float rotationRadius = 0.6f;
                 const float moverStartRad = (Mathf.PI / 2.0f); // 90도 위치부터 시작
 
-                _coroutineManager.StartCoroutine(Pattern_Pendulum_Move(rotationCount, rotationDuration, rotationRadius, moverStartRad));
+                _coroutineManager.StartCoroutine(Pattern_Pendulum_Move(rotationCount, rotationDuration, rotationRadius, moverStartRad, false));
                 _coroutineManager.StartCoroutine(Pattern_Pendulum_Line(rotationCount, rotationDuration, rotationRadius, moverStartRad));
                 _coroutineManager.StartCoroutine(Pattern_Pendulum_NWay());
             }
 
-            private IEnumerator Pattern_Pendulum_Move(int rotationCount, int rotationDuration, float rotationRadius, float startRad)
+            private void Pattern_Pendulumn2()
             {
-                float pivotX = _X;
+                int rotationCount = 4;
+                int rotationDuration = 320; // 1회 회전에 걸리는 프레임
+                const float rotationRadius = 0.6f;
+                const float moverStartRad = (Mathf.PI / 2.0f); // 90도 위치부터 시작
+
+                // 라인 메모
+                // 본체 y=0.6sin((pi/2)+((2pi)/320)t)+0.15
+                // 라인 y=-0.04t+1.3
+                // t=14.3407
+
+                _coroutineManager.StartCoroutine(Pattern_Pendulum_Move(rotationCount, rotationDuration, rotationRadius, moverStartRad, true));
+                _coroutineManager.StartCoroutine(Pattern_Pendulum_Line(rotationCount, rotationDuration, rotationRadius, moverStartRad));
+                _coroutineManager.StartCoroutine(Pattern_Pendulum_NWay());
+            }
+
+            private IEnumerator Pattern_Pendulum_Move(int rotationCount, int rotationDuration, float rotationRadius, float startRad, bool moveY)
+            {
+                Vector2 startPos = _pos;
+                Vector2 centerPos = new Vector2(startPos.x, startPos.y - rotationRadius);
                 float radSpeed = (Mathf.PI * 2.0f / rotationDuration);
 
                 for (int rotation = 0; rotation < rotationCount; ++rotation)
@@ -242,12 +263,18 @@ namespace Game
                     for (int i = 0; i < rotationDuration; ++i)
                     {
                         float rad = startRad + radSpeed * i;
-                        _X = Mathf.Cos(rad) * rotationRadius;
+                        _X = centerPos.x + rotationRadius * Mathf.Cos(rad);
+
+                        if (moveY)
+                        {
+                            _Y = centerPos.y + rotationRadius * Mathf.Sin(rad);
+                        }
+
                         yield return null;
                     }
                 }
 
-                _X = pivotX;
+                _pos = startPos;
             }
 
             private IEnumerator Pattern_Pendulum_Line(int rotationCount, int rotationDuration, float rotationRadius, float moverStartRad)
