@@ -87,7 +87,9 @@ namespace Game
 
                 OnMove2Started();
             }
-            
+
+            OnUpdateMoveState();
+
             // 프레임 갱신
             ++_selfFrame;
 
@@ -95,5 +97,6 @@ namespace Game
         }
 
         protected virtual void OnMove2Started() { }
+        protected virtual void OnUpdateMoveState() { }
     }
 }

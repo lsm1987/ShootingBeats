@@ -476,13 +476,25 @@ namespace Game
 
             private IEnumerator Pattern_SlowCircleWaveExplosion()
             {
+                Vector2 startPos = _pos;
+
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.0f), 420));
                 yield return new WaitForFrames(90);
-                yield return _coroutineManager.StartCoroutine(Pattern_SlowCircleWave(7, 0, 0, 0.0f));
-                yield return _coroutineManager.StartCoroutine(Pattern_SlowCircleWave(6, -4, -5, -0.0001f));
+                yield return _coroutineManager.StartCoroutine(Pattern_SlowCircleWave(7, 0, 0, 0.0f, -1, 0.0f));
+
+                const int explosionAbsFrame = 6513;
+                _coroutineManager.StartCoroutine(Pattern_SlowCircleWave(6, -4, -5, -0.0001f, 6513, 0.04f));
+                yield return new WaitForAbsFrames(explosionAbsFrame);
+                _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, startPos, 60, 0.1f));
+
+                yield return new WaitForFrames(90);
+                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.3f, 0.02f, 10);
+                yield return new WaitForFrames(12);
+                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.3f, 0.02f, 11);
             }
 
-            private IEnumerator Pattern_SlowCircleWave(int waveCount, int bulletPerCircleRate, int phase1DurationRate, float speedRate2)
+            private IEnumerator Pattern_SlowCircleWave(int waveCount, int bulletPerCircleRate, int phase1DurationRate, float speedRate2
+                , int explosionAbsFrame, float explosionSpeed)
             {
                 const int initialBulletPerCircle = 40;
                 const int waveInterval = 84;
@@ -506,7 +518,8 @@ namespace Game
                         b.Init(shape, _X, _Y
                             , angle1, 0.0f, speed1, 0.0f
                             , phase1Duration, 0
-                            , angle1, 0.0f, speed2, speedRate2, 0.0f);
+                            , angle1, 0.0f, speed2, speedRate2, 0.0f
+                            , explosionAbsFrame, explosionSpeed);
                     }
 
                     yield return new WaitForFrames(waveInterval);
