@@ -55,7 +55,7 @@ namespace Game
                 yield return new WaitForAbsFrames(6*60);
                 // 보스 생성
                 Boss boss = GameSystem._Instance.CreateEnemy<Boss>();
-                boss.Init("Common/Boss_Miku", 0.0f, 1.3f, 0.0f);
+                boss.Init("Common/Boss_Miku", 0.0f, 1.5f, 0.0f);
 
                 yield return null;
             }
