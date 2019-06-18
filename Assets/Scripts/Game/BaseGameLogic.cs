@@ -33,6 +33,17 @@ namespace Game
         }
 
         #region Util
+        static public float CalcluatePointToPointAngle(float x1, float y1, float x2, float y2)
+        {
+            // Atan2 의 결과가 라디안이므로 0~1로 변경
+            return Mathf.Atan2(y2 - y1, x2 - x1) / Mathf.PI / 2.0f;
+        }
+
+        static public float CalcluatePointToPointAngle(Vector2 pos1, Vector2 pos2)
+        {
+            return CalcluatePointToPointAngle(pos1.x, pos1.y, pos2.x, pos2.y);
+        }
+
         /// <summary>
         /// 지정한 좌표로부터 플레이어로 향하는 각도 구하기
         /// </summary>
@@ -41,9 +52,8 @@ namespace Game
         /// <returns></returns>
         public float GetPlayerAngle(float x, float y)
         {
-            // Atan2 의 결과가 라디안이므로 0~1로 변경
             Vector2 playerPos = GameSystem._Instance._Player._pos;
-            return Mathf.Atan2(playerPos.y - y, playerPos.x - x) / Mathf.PI / 2.0f;
+            return CalcluatePointToPointAngle(x, y, playerPos.x, playerPos.y);
         }
 
         /// <summary>

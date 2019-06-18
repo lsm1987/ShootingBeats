@@ -245,6 +245,7 @@ namespace Game
                 _coroutineManager.StartCoroutine(Pattern_Pendulum_Move(rotationCount, rotationDuration, rotationRadius, moverStartRad, true));
                 _coroutineManager.StartCoroutine(Pattern_CirclePendulum_Line(rotationCount, rotationDuration, rotationRadius, moverStartRad));
                 _coroutineManager.StartCoroutine(Pattern_Pendulum_NWay());
+                Pattern_DrawPattern();
             }
 
             private IEnumerator Pattern_Pendulum_Move(int rotationCount, int rotationDuration, float rotationRadius, float startRad, bool moveY)
@@ -441,7 +442,6 @@ namespace Game
                 }
             }
 
-
             private IEnumerator Pattern_Pendulum_NWay()
             {
                 const int waitDuration = 620;
@@ -455,6 +455,81 @@ namespace Game
                 {
                     _Logic.NWayBullet(this, "Common/Bullet_Red", 0.75f, angleRange, 0.01f, 5);
                     yield return new WaitForFrames(waveInterval);
+                }
+            }
+
+            private void Pattern_DrawPattern()
+            {
+                byte[,] pattern =  // 하트모양 패턴
+                {
+                    { 0, 1, 1, 0, 0, 0, 1, 1, 0 },
+                    { 1, 0, 0, 1, 0, 1, 0, 0, 1 },
+                    { 1, 0, 0, 0, 1, 0, 0, 0, 1 },
+                    { 1, 0, 0, 0, 0, 0, 0, 0, 1 },
+                    { 0, 1, 0, 0, 0, 0, 0, 1, 0 },
+                    { 0, 0, 1, 0, 0, 0, 1, 0, 0 },
+                    { 0, 0, 0, 1, 0, 1, 0, 0, 0 },
+                    { 0, 0, 0, 0, 1, 0, 0, 0, 0 }
+                };
+
+                _coroutineManager.StartCoroutine(DrawPattern(pattern, 0.9f, 0.8f));
+            }
+
+            private IEnumerator DrawPattern(byte[,] pattern, float patternWidth, float patternHeight)
+            {
+                const int interval = 8;
+                Vector2 patternCenterPos = new Vector2(0.0f, 0.0f);
+                const float speed1 = 0.005f; // 목표지점까지 날아가는 속도
+                const float speed2 = 0.01f; // 정지 종료 후 밖으로 날아가는 속도
+                const int waitEndFrame = 320 + 300;  // 정지 종료 프레임
+                const string shape = "Common/Bullet_Red";
+
+                int row = pattern.GetLength(0);
+                int col = pattern.GetLength(1);
+                List<Vector2Int> indexes = new List<Vector2Int>();
+
+                for (int r = 0; r < row; ++r)
+                {
+                    for (int c = 0; c < col; ++c)
+                    {
+                        if (pattern[r, c] != 0)
+                        {
+                            indexes.Add(new Vector2Int(r, c));
+                        }
+                    }
+                }
+
+                // TODO: indexes 랜덤하게 섞기
+
+                int waitEndAbsFrame = _Frame + waitEndFrame;
+                // 좌표계 우상단이 (+, +)
+                Vector2 patternLeftTopPos = new Vector2(patternCenterPos.x - (patternWidth / 2.0f), patternCenterPos.y + (patternHeight / 2.0f));
+                float patternRowSpace = patternHeight / (row - 1);
+                float patternColSpace = patternWidth / (col - 1);
+
+                foreach (var patternIndex in indexes)
+                {
+                    // 목표 지점
+                    int r = patternIndex.x;
+                    int c = patternIndex.y;
+                    Vector2 targetPos = patternLeftTopPos + new Vector2(c * patternColSpace, r * -patternRowSpace);
+
+                    // 목표지점을 향하는 각도
+                    float angle1 = BaseGameLogic.CalcluatePointToPointAngle(_pos, targetPos);
+
+                    // 현재 위치에서 발사한 탄이 목표지점에 도달하기까지 걸리는 시간
+                    int moveDuration = (int)(Vector2.Distance(_pos, targetPos) / speed1);
+
+                    // 목표 지점 도달 후 정지 해 있을 시간
+                    int stopDuration = waitEndAbsFrame - (_Frame + moveDuration);
+
+                    // 정지 종료 후 패턴 중앙의 반대방향으로
+                    float angle2 = BaseGameLogic.CalcluatePointToPointAngle(patternCenterPos, targetPos);
+
+                    PlacedBullet b = GameSystem._Instance.CreateBullet<PlacedBullet>();
+                    b.Init(shape, _pos.x, _pos.y, angle1, speed1, moveDuration, stopDuration, angle2, speed2);
+
+                    yield return new WaitForFrames(interval);
                 }
             }
 

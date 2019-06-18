@@ -10,7 +10,7 @@ namespace Game
     {
         private int _selfFrame = 0;      // 생성 후 상대적인 프레임
         private int _moveDuration = 0;  // 처음 이동할 기간
-        private float _stopDuration = 0;    // 정지해 있을 기간
+        private int _stopDuration = 0;    // 정지해 있을 기간
         private float _angle2 = 0.0f;
         private float _angleRate2 = 0.0f;
         private float _speed2 = 0.0f; // 정지 후 다시 움직일 때 속도
