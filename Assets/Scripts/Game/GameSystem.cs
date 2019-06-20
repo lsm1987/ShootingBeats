@@ -642,9 +642,9 @@ namespace Game
         }
 
         /// <summary>
-        /// 0~1 사이의 무작위 실수 구함
+        /// 0 <= n < 1 인 무작위 실수 구함
         /// </summary>
-        /// <returns>0~1 사이 실수</returns>
+        /// <returns>0 <= n < 1 인 실수</returns>
         public float GetRandom01()
         {
             return (float)_random.NextDouble();

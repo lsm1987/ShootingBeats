@@ -245,7 +245,7 @@ namespace Game
                 _coroutineManager.StartCoroutine(Pattern_Pendulum_Move(rotationCount, rotationDuration, rotationRadius, moverStartRad, true));
                 _coroutineManager.StartCoroutine(Pattern_CirclePendulum_Line(rotationCount, rotationDuration, rotationRadius, moverStartRad));
                 _coroutineManager.StartCoroutine(Pattern_Pendulum_NWay());
-                Pattern_DrawPattern();
+                _coroutineManager.StartCoroutine(Pattern_DrawPattern());
             }
 
             private IEnumerator Pattern_Pendulum_Move(int rotationCount, int rotationDuration, float rotationRadius, float startRad, bool moveY)
@@ -458,7 +458,7 @@ namespace Game
                 }
             }
 
-            private void Pattern_DrawPattern()
+            private IEnumerator Pattern_DrawPattern()
             {
                 byte[,] pattern =  // 하트모양 패턴
                 {
@@ -472,16 +472,17 @@ namespace Game
                     { 0, 0, 0, 0, 1, 0, 0, 0, 0 }
                 };
 
-                _coroutineManager.StartCoroutine(DrawPattern(pattern, 0.9f, 0.8f));
+                yield return new WaitForFrames(320 * 3);
+                yield return _coroutineManager.StartCoroutine(DrawPattern(pattern, 0.13f));
             }
 
-            private IEnumerator DrawPattern(byte[,] pattern, float patternWidth, float patternHeight)
+            private IEnumerator DrawPattern(byte[,] pattern, float patternSpace)
             {
                 const int interval = 8;
                 Vector2 patternCenterPos = new Vector2(0.0f, 0.0f);
-                const float speed1 = 0.005f; // 목표지점까지 날아가는 속도
-                const float speed2 = 0.01f; // 정지 종료 후 밖으로 날아가는 속도
-                const int waitEndFrame = 320 + 300;  // 정지 종료 프레임
+                const float speed1 = 0.007f; // 목표지점까지 날아가는 속도
+                const float speed2 = 0.025f; // 정지 종료 후 밖으로 날아가는 속도
+                const int waitEndFrame = 320 + 120;  // 정지 종료 프레임
                 const string shape = "Common/Bullet_Red";
 
                 int row = pattern.GetLength(0);
@@ -499,20 +500,21 @@ namespace Game
                     }
                 }
 
-                // TODO: indexes 랜덤하게 섞기
+                // indexes 랜덤하게 섞기
+                BaseGameLogic.Shuffle(indexes);
 
                 int waitEndAbsFrame = _Frame + waitEndFrame;
                 // 좌표계 우상단이 (+, +)
+                float patternWidth = patternSpace * (col - 1);
+                float patternHeight = patternSpace * (row - 1);
                 Vector2 patternLeftTopPos = new Vector2(patternCenterPos.x - (patternWidth / 2.0f), patternCenterPos.y + (patternHeight / 2.0f));
-                float patternRowSpace = patternHeight / (row - 1);
-                float patternColSpace = patternWidth / (col - 1);
 
                 foreach (var patternIndex in indexes)
                 {
                     // 목표 지점
                     int r = patternIndex.x;
                     int c = patternIndex.y;
-                    Vector2 targetPos = patternLeftTopPos + new Vector2(c * patternColSpace, r * -patternRowSpace);
+                    Vector2 targetPos = patternLeftTopPos + new Vector2(c * patternSpace, r * -patternSpace);
 
                     // 목표지점을 향하는 각도
                     float angle1 = BaseGameLogic.CalcluatePointToPointAngle(_pos, targetPos);

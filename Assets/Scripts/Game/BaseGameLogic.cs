@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Game
 {
@@ -64,6 +65,20 @@ namespace Game
         public float GetPlayerAngle(Mover startMover)
         {
             return GetPlayerAngle(startMover._X, startMover._Y);
+        }
+
+        public static void Shuffle<T>(List<T> Datas)
+        {
+            int n = Datas.Count;
+
+            for (int i = 0; i < n; i++)
+            {
+                int r = i + (int)(GameSystem._Instance.GetRandom01() * (n - i));
+                var tempData = Datas[r];
+                Datas[r] = Datas[i];
+                Datas[i] = tempData;
+            }
+
         }
         #endregion Util
 
