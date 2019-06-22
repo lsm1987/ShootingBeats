@@ -248,7 +248,7 @@ namespace Game
                 yield return new WaitForAbsFrames(1374);
                 _coroutineManager.StartCoroutine(Pattern_SideCircle());
 
-                yield return new WaitForAbsFrames((int)(43.9f * 60));
+                yield return new WaitForAbsFrames(2634);
                 _coroutineManager.StartCoroutine(Pattern_Circle3());
 
                 yield return new WaitForAbsFrames(2700);
@@ -273,6 +273,7 @@ namespace Game
 
                 // 폭발
                 yield return new WaitForAbsFrames(9490);
+                _Logic.CircleBullet(this, "Common/Bullet_BlueLarge", 0.75f, 0.01f, 8, true);
                 {
                     Effect crashEffect = GameSystem._Instance.CreateEffect<Effect>();
                     crashEffect.Init("Common/Effect_BossCrashMiku", _X, _Y, 0.0f);
@@ -316,15 +317,14 @@ namespace Game
                 yield return new WaitForFrames(84);
                 _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(false, true, 0.0005f, 6));
 
-                /*
-                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 20);
-                yield return new WaitForFrames(20);
-                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 19);
-                yield return new WaitForFrames(20);
-                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 20);
-                yield return new WaitForFrames(20);
-                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 19);
-                */
+                yield return new WaitForFrames(492);
+                _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.0f), 100));
+
+                yield return _coroutineManager.StartCoroutine(_Logic.RandomAngleCircleBullets(this, "Common/Bullet_Blue", 0.016f, 20, 20, 5));
+
+                const int explosionAbsFrame = 9490;
+                _coroutineManager.StartCoroutine(Pattern_SlowCircleWave("Common/Bullet_Red", 2, 40, 32, -5, 18, -5, -0.00015f, explosionAbsFrame, 0.04f));
+
             }
 
             private IEnumerator Pattern_PlacedCircleWave(bool bHalfAngleOffsetOnBlue, bool bSkipCircleHalf, float angleRate, int waveCount)
@@ -655,39 +655,6 @@ namespace Game
                 }
             }
 
-            private IEnumerator Pattern_RotateCross()
-            {
-                int inverval = 20;
-                _coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_BlueLarge", 0.75f, -0.1f, 0.01f, 4, inverval, 5 * 60));
-                //_coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_RedLarge", 0.125f, -0.1f, 0.01f, 4, inverval, 5 * 60));
-                yield return new WaitForFrames(inverval);
-                //
-                //yield return new WaitForFrames(inverval / 2);
-                //_coroutineManager.StartCoroutine(_Logic.MultipleSpiralBullets(this, "Common/Bullet_Blue", 0.125f, -0.1f, 0.01f, 4, inverval * 2, 5 * 60));
-            }
-
-            private IEnumerator Pattern_RotateCross_Rain(int waveCount, int interval)
-            {
-                int bulletCount = 3;
-                float rangeY = GameSystem._Instance._MaxY - 0.05f;
-                float rangeXMin = GameSystem._Instance._MinX + 0.1f;
-                float rangeXMax = GameSystem._Instance._MaxX - 0.1f;
-
-                for (int wave = 0; wave < waveCount; ++wave)
-                {
-                    for (int bullet = 0; bullet < bulletCount; ++bullet)
-                    {
-                        float x = GameSystem._Instance.GetRandomRange(rangeXMin, rangeXMax);
-                        float y = rangeY;
-
-                        Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                        b.Init("Common/Bullet_Red", x, y, 0.75f, 0.0f, 0.01f, 0.0f);
-                    }
-
-                    yield return new WaitForFrames(interval);
-                }
-            }
-
             private IEnumerator Pattern_NoteList(List<List<int>> slots, int interval, int slotCount, int bulletPerSlot, float slotMargin, float speed)
             {
                 foreach (var slotsOnTick in slots)
@@ -734,10 +701,10 @@ namespace Game
 
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.0f), 420));
                 yield return new WaitForFrames(90);
-                yield return _coroutineManager.StartCoroutine(Pattern_SlowCircleWave(7, 0, 0, 0.0f, -1, 0.0f));
+                yield return _coroutineManager.StartCoroutine(Pattern_SlowCircleWave("Common/Bullet_Blue", 7, 84, 40, 0, 24, 0, 0.0f, -1, 0.0f));
 
                 const int explosionAbsFrame = 6513;
-                _coroutineManager.StartCoroutine(Pattern_SlowCircleWave(6, -4, -5, -0.0001f, 6513, 0.04f));
+                _coroutineManager.StartCoroutine(Pattern_SlowCircleWave("Common/Bullet_Blue", 6, 84, 40, -4, 24, -5, -0.0001f, explosionAbsFrame, 0.04f));
                 yield return new WaitForAbsFrames(explosionAbsFrame);
                 _coroutineManager.StartCoroutine(_Logic.MoveDamp(this, startPos, 60, 0.1f));
 
@@ -747,16 +714,11 @@ namespace Game
                 _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.3f, 0.02f, 11);
             }
 
-            private IEnumerator Pattern_SlowCircleWave(int waveCount, int bulletPerCircleRate, int phase1DurationRate, float speedRate2
+            private IEnumerator Pattern_SlowCircleWave(string shape, int waveCount, int waveInterval, int initialBulletPerCircle, int bulletPerCircleRate, int initialPhase1Duration, int phase1DurationRate, float speedRate2
                 , int explosionAbsFrame, float explosionSpeed)
             {
-                const int initialBulletPerCircle = 40;
-                const int waveInterval = 84;
-
-                const string shape = "Common/Bullet_Blue";
                 const float speed1 = 0.03f;
                 const float speed2 = 0.01f;
-                const int initialPhase1Duration = 24;
 
                 for (int wave = 0; wave < waveCount; ++wave)
                 {

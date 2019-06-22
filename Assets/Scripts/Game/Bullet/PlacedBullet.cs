@@ -75,6 +75,7 @@ namespace Game
             if (_selfFrame == _moveDuration)
             {
                 _speed = 0.0f;
+                _speedRate = 0.0f;
             }
             
             // 정지 시간이 지나면 속도, 각도 재지정
