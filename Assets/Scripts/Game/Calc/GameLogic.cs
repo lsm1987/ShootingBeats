@@ -27,13 +27,22 @@ namespace Game
 
                 // 탄 로딩 ///////////////////
                 // 외양 로딩
-                GameSystem._Instance._UILoading.SetProgress("Loading Bullets");
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 1/3");
                 yield return null;
-                GameSystem._Instance.PoolStackShape("Common/Bullet_Blue", 270);
-                GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 27);
-                
+                GameSystem._Instance.PoolStackShape("Common/Bullet_Blue", 212);
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 2/3");
+                yield return null;
+                GameSystem._Instance.PoolStackShape("Common/Bullet_Red", 212);
+                GameSystem._Instance._UILoading.SetProgress("Loading Bullets 3/3");
+                yield return null;
+                GameSystem._Instance.PoolStackShape("Common/Bullet_BlueLarge", 54);
+                GameSystem._Instance.PoolStackShape("Common/Bullet_RedLarge", 55);
+
                 // 클래스 로딩
-                GameSystem._Instance.PoolStackMover<Bullet>(270);
+                GameSystem._Instance.PoolStackMover<Bullet>(130);
+                GameSystem._Instance.PoolStackMover<PlacedBullet>(271);
+                GameSystem._Instance.PoolStackMover<SlowPlacedBullet>(160);
+                GameSystem._Instance.PoolStackMover<PosPlacedBullet>(30);
 
                 // 코루틴
                 _coroutineManager.StopAllCoroutines();
