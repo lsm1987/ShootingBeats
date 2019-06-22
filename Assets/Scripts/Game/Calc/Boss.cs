@@ -117,8 +117,8 @@ namespace Game
                 { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0 },
             };
 
-            // 노트 패턴. 슬롯 목록
-            private readonly List<List<int>> _noteListSlots = new List<List<int>> {
+            // 기타 노트 슬롯
+            private readonly List<List<int>> _guitarNoteSlots = new List<List<int>> {
                 new List<int> { 0 },
                 new List<int> { 1 },
                 new List<int> { 2 },
@@ -210,6 +210,14 @@ namespace Game
                 new List<int> { 1, 3 },
                 new List<int> { 0, 4 },
             };
+
+            // 상승 노트 슬롯
+            private readonly List<List<int>> _ascNoteSlots = new List<List<int>> {
+                new List<int> { 0 },
+                new List<int> { 1 },
+                new List<int> { 2 },
+                new List<int> { 3 },
+            };
             #endregion Pattern Const
 
             public Boss()
@@ -234,8 +242,8 @@ namespace Game
                 // 등장
                 _coroutineManager.StartCoroutine(_Logic.MoveConstantVelocity(this, new Vector2(0.0f, 0.75f), 120));
 
-                yield return new WaitForAbsFrames(11 * 60 + 30);
-                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(false, 0.0f));
+                yield return new WaitForAbsFrames(690);
+                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave_Straight());
 
                 yield return new WaitForAbsFrames(1374);
                 _coroutineManager.StartCoroutine(Pattern_SideCircle());
@@ -249,10 +257,10 @@ namespace Game
                 // 원래 타이밍 4040
                 // 화면 밖에서 내려오는 시간 고려해서 좀 더 빠르게
                 yield return new WaitForAbsFrames(4030);
-                _coroutineManager.StartCoroutine(Pattern_NoteList());
+                _coroutineManager.StartCoroutine(Pattern_NoteList(_guitarNoteSlots, 7, 5, 5, 0.04f, 0.012f));
 
                 yield return new WaitForAbsFrames(4690);
-                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(true, 0.0005f));
+                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave_Curve());
 
                 yield return new WaitForAbsFrames(5270);
                 _coroutineManager.StartCoroutine(Pattern_SlowCircleWaveExplosion());
@@ -260,8 +268,11 @@ namespace Game
                 yield return new WaitForAbsFrames(6690);
                 _coroutineManager.StartCoroutine(Pattern_Pendulumn2());
 
+                yield return new WaitForAbsFrames(8110);
+                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave_Complex());
+
                 // 폭발
-                yield return new WaitForAbsFrames(8700);
+                yield return new WaitForAbsFrames(9490);
                 {
                     Effect crashEffect = GameSystem._Instance.CreateEffect<Effect>();
                     crashEffect.Init("Common/Effect_BossCrashMiku", _X, _Y, 0.0f);
@@ -282,7 +293,41 @@ namespace Game
             }
 
             #region Coroutine
-            private IEnumerator Pattern_PlacedCircleWave(bool bSkipCircleHalf, float angleRate)
+            private IEnumerator Pattern_PlacedCircleWave_Straight()
+            {
+                yield return _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(false, false, 0.0f, 7));
+                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 20);
+            }
+
+            private IEnumerator Pattern_PlacedCircleWave_Curve()
+            {
+                yield return _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(false, true, 0.0005f, 7));
+                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 20);
+            }
+
+            private IEnumerator Pattern_PlacedCircleWave_Complex()
+            {
+                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(true, false, 0.0f, 7));
+
+                // 화면 밖에서 내려오는 시간 고려해서 좀 더 빠르게
+                yield return new WaitForFrames(574 - 4);
+                _coroutineManager.StartCoroutine(Pattern_NoteList(_ascNoteSlots, 20, 4, 5, 0.04f, 0.03f));
+
+                yield return new WaitForFrames(84);
+                _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(false, true, 0.0005f, 6));
+
+                /*
+                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 20);
+                yield return new WaitForFrames(20);
+                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 19);
+                yield return new WaitForFrames(20);
+                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 20);
+                yield return new WaitForFrames(20);
+                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 19);
+                */
+            }
+
+            private IEnumerator Pattern_PlacedCircleWave(bool bHalfAngleOffsetOnBlue, bool bSkipCircleHalf, float angleRate, int waveCount)
             {
                 const float angle = 0.75f;
                 const float speed1 = 0.03f;
@@ -291,7 +336,6 @@ namespace Game
 
                 const int bulletPerCircle = 40;
                 const int circlePerWave = 7;
-                const int waveCount = 7;
 
                 const int circleInterval = 10;
                 const int waveInterval = 12;
@@ -300,7 +344,7 @@ namespace Game
                 {
                     bool bBlue = wave % 2 == 0;
                     string shape = bBlue ? "Common/Bullet_Blue" : "Common/Bullet_Red";
-                    bool bHalfAngleOffset = !bBlue;
+                    bool bHalfAngleOffset = bHalfAngleOffsetOnBlue ? bBlue : !bBlue;
                     float angleStart = angle + ((bHalfAngleOffset) ? (1.0f / bulletPerCircle / 2.0f) : 0.0f);
                     float waveAngleRate = bBlue ? angleRate : -angleRate;
 
@@ -326,8 +370,6 @@ namespace Game
 
                     yield return new WaitForFrames(waveInterval);
                 }
-
-                _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 20);
             }
 
             private IEnumerator Pattern_SideCircle()
@@ -646,17 +688,15 @@ namespace Game
                 }
             }
 
-            private IEnumerator Pattern_NoteList()
+            private IEnumerator Pattern_NoteList(List<List<int>> slots, int interval, int slotCount, int bulletPerSlot, float slotMargin, float speed)
             {
-                int interval = 7;
-
-                foreach (var slotsOnTick in _noteListSlots)
+                foreach (var slotsOnTick in slots)
                 {
                     if (slotsOnTick != null)
                     {
                         foreach (var slot in slotsOnTick)
                         {
-                            Pattern_Node(slot);
+                            Pattern_Note(slot, slotCount, bulletPerSlot, slotMargin, speed);
                         }
                     }
 
@@ -664,21 +704,18 @@ namespace Game
                 }
             }
 
-            private void Pattern_Node(int slot)
+            private void Pattern_Note(int slotIndex, int slotCount, int bulletPerSlot, float slotMargin, float speed)
             {
                 float boardXMin = GameSystem._Instance._MinX;
                 float boardXMax = GameSystem._Instance._MaxX;
                 float startY = GameSystem._Instance._MaxY + 0.05f;
 
-                const int slotCount = 5;
                 float slotWidth = (boardXMax - boardXMin) / slotCount;
-                float slotXMin = boardXMin + slotWidth * slot;
+                float slotXMin = boardXMin + slotWidth * slotIndex;
                 float slotXMax = slotXMin + slotWidth;
 
-                const int bulletPerSlot = 5;
-                const float bulletRadius = 0.04f;
-                float bulletXMin = slotXMin + bulletRadius;
-                float bulletXMax = slotXMax - bulletRadius;
+                float bulletXMin = slotXMin + slotMargin;
+                float bulletXMax = slotXMax - slotMargin;
                 float bulletXSpace = (bulletXMax - bulletXMin) / (bulletPerSlot - 1);
 
                 for (int i = 0; i < bulletPerSlot; ++i)
@@ -687,7 +724,7 @@ namespace Game
                     float y = startY;
 
                     Bullet b = GameSystem._Instance.CreateBullet<Bullet>();
-                    b.Init("Common/Bullet_Red", x, y, 0.75f, 0.0f, 0.012f, 0.0f);
+                    b.Init("Common/Bullet_Red", x, y, 0.75f, 0.0f, speed, 0.0f);
                 }
             }
 
