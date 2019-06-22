@@ -343,14 +343,15 @@ namespace Game
                 const int bulletPerCircle = 20;
                 const int circlePerWave = 2;
                 const int circleInterval = 20;
-                const bool bHalfAngleOffset = true;
 
                 for (int wave = 0; wave < waveCount; ++wave)
                 {
                     bool bEvenWave = bMixed && (wave % 2 == 1);
+                    bool b4TimesWave = bMixed && (wave % 4 == 3);
                     float speed = bEvenWave ? 0.015f : 0.01f;
                     string shape = bEvenWave ? "Common/Bullet_Red" : "Common/Bullet_Blue";
-                    float angle = GameSystem._Instance.GetRandom01();
+                    float angle = bEvenWave ? 0.75f : _Logic.GetPlayerAngle(this);
+                    bool bHalfAngleOffset = b4TimesWave ? false : true;
 
                     for (int circle = 0; circle < circlePerWave; ++circle)
                     {
