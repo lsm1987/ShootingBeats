@@ -66,7 +66,7 @@ public class GlobalSystem
             return;
         }
 
-#if UNITY_ANDRIOD
+#if UNITY_ANDROID
         PlayGamesPlatform.Activate();
 
         _IsAuthenticating = true;
@@ -101,7 +101,7 @@ public class GlobalSystem
     /// </summary>
     public void SignOut()
     {
-#if UNITY_ANDRIOD
+#if UNITY_ANDROID
         ((PlayGamesPlatform)Social.Active).SignOut();
 #else
         Debug.LogWarning("SignOut - Not implemented for this platform");
