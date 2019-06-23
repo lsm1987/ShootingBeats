@@ -22,7 +22,7 @@ namespace MaterialUI
 		bool selected;
 		public float animationDuration = 0.75f;
 
-		[SerializeField] private RectTransform parentRect = null;
+		//[SerializeField] private RectTransform parentRect = null;
         [SerializeField] private Text placeholderText = null;
         [SerializeField] private Text inputText = null;
         [SerializeField] private Text displayText = null;
