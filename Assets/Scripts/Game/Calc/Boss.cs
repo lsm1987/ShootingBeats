@@ -296,7 +296,7 @@ namespace Game
             #region Coroutine
             private IEnumerator Pattern_PlacedCircleWave_Straight()
             {
-                yield return _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(false, false, 0.0f, 7));
+                yield return _coroutineManager.StartCoroutine(Pattern_PlacedCircleWave(true, false, 0.0f, 7));
                 _Logic.NWayBullet(this, "Common/Bullet_RedLarge", 0.75f, 0.5f, 0.01f, 20);
             }
 
