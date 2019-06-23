@@ -5,7 +5,7 @@ using MaterialUI;
 public class Example04 : MonoBehaviour
 {
 	#region group1
-	[SerializeField] private Text m_selectedValue1Text;
+	[SerializeField] private Text m_selectedValue1Text = null;
 	
 	public void onRadioButton1ToggleChanged(bool isOn)
 	{
@@ -33,9 +33,9 @@ public class Example04 : MonoBehaviour
 	#endregion
 
 	#region group2
-	[SerializeField] private Text m_selectedValue2Text;
-	[SerializeField] private GameObject m_radioButtonsParent;
-	[SerializeField] private GameObject m_radioButtonDraftPrefab;
+	[SerializeField] private Text m_selectedValue2Text = null;
+	[SerializeField] private GameObject m_radioButtonsParent = null;
+	[SerializeField] private GameObject m_radioButtonDraftPrefab = null;
 
 	void Start()
 	{
@@ -87,7 +87,7 @@ public class Example04 : MonoBehaviour
 	#endregion
 
 	#region group3
-	[SerializeField] private Text m_selectedValue3Text;
+	[SerializeField] private Text m_selectedValue3Text = null;
 	
 	public void onRadioButton4ToggleChanged(bool isOn)
 	{

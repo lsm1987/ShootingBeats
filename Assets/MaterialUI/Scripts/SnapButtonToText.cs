@@ -15,9 +15,9 @@ namespace MaterialUI
 	[ExecuteInEditMode()]
 	public class SnapButtonToText : MonoBehaviour
 	{
-		[SerializeField] private RectTransform buttonRectTransform;
+		[SerializeField] private RectTransform buttonRectTransform = null;
 
-		public bool snapEveryFrame = true;
+        public bool snapEveryFrame = true;
 
 		private RectTransform thisRectTransform;
 

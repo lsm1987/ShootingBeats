@@ -33,9 +33,9 @@ namespace Game
         private MoverPoolManager _moverPoolManager = new MoverPoolManager();    // Mover 풀
         private const string _songRoot = "Sounds";  // 노래 파일 경로
         [SerializeField]
-        private AudioSource _srcSong;    // 노래 재생할 소스
+        private AudioSource _srcSong = null;    // 노래 재생할 소스
         [SerializeField]
-        private AudioSource _srcEffect; // 사운드 이펙트 재생할 소스
+        private AudioSource _srcEffect = null; // 사운드 이펙트 재생할 소스
         public Player _Player { get; set; } // 활성화된 플레이어기
         public List<Player> _Players { get; private set; }    // 살아있는 플레이어기 목록
         public List<Shot> _Shots { get; private set; }    // 살아있는 샷(플레이어기가 발사) 목록
@@ -48,25 +48,25 @@ namespace Game
 
         // UI 관련 //////////////////////////
         [SerializeField]
-        private UILoading _uiLoading;   // 로딩 UI
+        private UILoading _uiLoading = null;   // 로딩 UI
         public UILoading _UILoading { get { return _uiLoading; } }
         [SerializeField]
-        private UIProgressBar _uiProgressBar;
+        private UIProgressBar _uiProgressBar = null;
         [SerializeField]
-        private Layout _layout;
+        private Layout _layout = null;
         private Layout _Layout { get { return _layout; } }
         public RectTransform _LayoutGameArea { get { return _Layout._GameArea; } }
         [SerializeField]
-        private MoveInputArea _moveInputArea;   // 이동 입력 영역
+        private MoveInputArea _moveInputArea = null;   // 이동 입력 영역
         public MoveInputArea _MoveInputArea { get { return _moveInputArea; } }
         [SerializeField]
-        private PauseInputArea _pauseInputArea;   // 일시정지 입력 영역
+        private PauseInputArea _pauseInputArea = null;   // 일시정지 입력 영역
         public PauseInputArea _PauseInputArea { get { return _pauseInputArea; } }
         [SerializeField]
-        private UIPause _uiPause;   // 일시정지 UI
+        private UIPause _uiPause = null;   // 일시정지 UI
         private UIPause _UIPause { get { return _uiPause; } }
         [SerializeField]
-        private UIResult _uiResult; // 결과 UI
+        private UIResult _uiResult = null; // 결과 UI
         private UIResult _UIResult { get { return _uiResult; } }
 
         // 음악별 설정 //////////////////////////
@@ -74,7 +74,7 @@ namespace Game
         private BaseGameLogic _logic;   // 음악별 다른 동작
 
         [SerializeField]
-        private ScoreBoard _scoreBoard;
+        private ScoreBoard _scoreBoard = null;
         private int _score = 0;
         private System.Random _random = null;   // 게임 내에서 사용할 랜덤. 시드값 항상 동일
         private bool _isPaused = false;     // 일시정지 중인가?

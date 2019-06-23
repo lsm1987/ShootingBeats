@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class UIStageText : MonoBehaviour
 {
     [SerializeField]
-    private RectTransform _rectTrans;
+    private RectTransform _rectTrans = null;
     [SerializeField]
-    private Text _text;
+    private Text _text = null;
 
     private GameObject _go;
     protected GameObject _Go { get { if (_go == null) { _go = gameObject; } return _go; } }

@@ -7,9 +7,9 @@ namespace Game
     public class UIProgressBar : MonoBehaviour
     {
         [SerializeField]
-        private RectTransform _rectRemain;  // 남은 양
+        private RectTransform _rectRemain = null;  // 남은 양
         [SerializeField]
-        private RectTransform _rectProgress;    // 진행한 양
+        private RectTransform _rectProgress = null;    // 진행한 양
 
         private float _lastRate = 0.0f;
 

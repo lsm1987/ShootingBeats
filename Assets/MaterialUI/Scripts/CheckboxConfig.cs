@@ -39,13 +39,13 @@ namespace MaterialUI
 
 
 		[HideInInspector]
-		[SerializeField] private Image checkImage;
-		[HideInInspector]
-		[SerializeField] private Image frameImage;
-		[HideInInspector]
-		[SerializeField] private Text text;
+		[SerializeField] private Image checkImage = null;
+        [HideInInspector]
+		[SerializeField] private Image frameImage = null;
+        [HideInInspector]
+		[SerializeField] private Text text = null;
 
-		private RectTransform checkRectTransform;
+        private RectTransform checkRectTransform;
 		private CanvasGroup frameCanvasGroup;
 		private CheckBoxToggler checkBoxToggler;
 		private RippleConfig rippleConfig;

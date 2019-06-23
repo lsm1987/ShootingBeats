@@ -5,9 +5,9 @@ using UnityEngine.UI;
 public class UIOption : UIWindow
 {
     [SerializeField]
-    private Slider _moveSensitivitySlider; // 이동 민감도
+    private Slider _moveSensitivitySlider = null; // 이동 민감도
     [SerializeField]
-    private Text _moveSensitivityValue;
+    private Text _moveSensitivityValue = null;
 
     private const string _uiTitle = "Option";
 

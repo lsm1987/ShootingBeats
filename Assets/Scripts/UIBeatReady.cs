@@ -5,19 +5,19 @@ using UnityEngine.UI;
 public class UIBeatReady : UIWindow
 {
     [SerializeField]
-    private Image _albumArt;
+    private Image _albumArt = null;
     [SerializeField]
-    private Text _title;
+    private Text _title = null;
     [SerializeField]
-    private Text _author;
+    private Text _author = null;
     [SerializeField]
-    private Text _highScore;
+    private Text _highScore = null;
     [SerializeField]
-    private UIDifficultyIcon _difficulty;
+    private UIDifficultyIcon _difficulty = null;
     [SerializeField]
-    private Text _length;
+    private Text _length = null;
     [SerializeField]
-    private Button _leaderboard;
+    private Button _leaderboard = null;
     private BeatInfo _beatInfo;
     private const string _uiTitle = "Beat Ready";
 

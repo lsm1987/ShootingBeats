@@ -7,15 +7,15 @@ using UnityEngine.Events;
 public class UIMessageBox : UIWindow
 {
     [SerializeField]
-    private Text _text; // 본문
+    private Text _text = null; // 본문
     [SerializeField]
-    private Button _btn1;
+    private Button _btn1 = null;
     [SerializeField]
-    private Text _btn1Text;
+    private Text _btn1Text = null;
     [SerializeField]
-    private Button _btn2;
+    private Button _btn2 = null;
     [SerializeField]
-    private Text _btn2Text;
+    private Text _btn2Text = null;
 
     // 버튼이 눌렸을 때 호출될 함수 형식
     public delegate void OnButtonClicked();

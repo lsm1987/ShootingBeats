@@ -23,9 +23,9 @@ namespace MaterialUI
 		private bool lastInteractableState;
         private bool _isFirstUpdate = false;
 
-		[SerializeField] private CanvasGroup shadows;
+		[SerializeField] private CanvasGroup shadows = null;
 
-		private void OnEnable()
+        private void OnEnable()
 		{
 			canvasGroup = gameObject.GetComponent<CanvasGroup>();
 			button = gameObject.GetComponent<Button>();

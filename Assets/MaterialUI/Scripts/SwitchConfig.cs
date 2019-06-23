@@ -33,9 +33,9 @@ namespace MaterialUI
 		public bool changeRippleColor;
 
 
-		[SerializeField] private Image switchImage;
-		[SerializeField] private Image backImage;
-		[SerializeField] private Text text;
+		[SerializeField] private Image switchImage = null;
+		[SerializeField] private Image backImage = null;
+		[SerializeField] private Text text = null;
 
 		private RectTransform switchRectTransform;
 		private CheckBoxToggler checkBoxToggler;

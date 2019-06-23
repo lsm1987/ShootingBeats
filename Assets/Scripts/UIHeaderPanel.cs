@@ -4,9 +4,9 @@ using UnityEngine.UI;
 public class UIHeaderPanel : MonoBehaviour
 {
     [SerializeField]
-    private Text _title;
+    private Text _title = null;
     [SerializeField]
-    private Button _backButton;
+    private Button _backButton = null;
 
     private Transform _trans;
     public Transform _Trans { get { if (_trans == null) { _trans = transform; } return _trans; } }

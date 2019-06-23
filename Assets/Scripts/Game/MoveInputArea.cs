@@ -12,9 +12,9 @@ namespace Game
         private Vector2 _lastPos; // 마지막 갱신 시 터치 월드좌표
         private Vector2 _curPos;
         [SerializeField]
-        private GameObject _area;
+        private GameObject _area = null;
         [SerializeField]
-        private RectTransform _cursor;   // 시각화용 오브젝트
+        private RectTransform _cursor = null;   // 시각화용 오브젝트
 
         private void Start()
         {

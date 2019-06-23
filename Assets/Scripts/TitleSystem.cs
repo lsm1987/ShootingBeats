@@ -5,16 +5,16 @@ using UnityEngine.UI;
 public class TitleSystem : SceneSystem
 {
     [SerializeField]
-    private Button _btnStart;
+    private Button _btnStart = null;
     [SerializeField]
-    private Button _btnSignIn;
+    private Button _btnSignIn = null;
     [SerializeField]
-    private Text _btnTextSignIn;
+    private Text _btnTextSignIn = null;
     private const string _textSignIn = "Google Play Sign In";    // 로그인 하기
     private const string _textSignOut = "Google Play Sign Out";  // 로그아웃 하기
     private const string _textSignInDoing = "Sign In...";    // 로그인 도중
     [SerializeField]
-    private Button _btnAchievement;
+    private Button _btnAchievement = null;
 
     protected override void OnAwake()
     {

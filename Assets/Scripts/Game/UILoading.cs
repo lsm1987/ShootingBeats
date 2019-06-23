@@ -7,7 +7,7 @@ namespace Game
     public class UILoading : UIWindow
     {
         [SerializeField]
-        private Text _progress; // 진행상태
+        private Text _progress = null; // 진행상태
 
         public override bool OnKeyInput()
         {

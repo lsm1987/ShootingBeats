@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class UIDifficultyIcon : MonoBehaviour
 {
     [SerializeField]
-    private Image _background;
+    private Image _background = null;
     [SerializeField]
-    private Text _text;
+    private Text _text = null;
 
     private readonly Color[] _backgroundColors =
         {

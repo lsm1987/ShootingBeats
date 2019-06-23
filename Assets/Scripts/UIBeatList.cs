@@ -7,9 +7,9 @@ using System;
 public class UIBeatList : UIWindow
 {
     [SerializeField]
-    private RectTransform _transContents;
+    private RectTransform _transContents = null;
     [SerializeField]
-    private UIBeatReady _uiBeatReady;
+    private UIBeatReady _uiBeatReady = null;
 
     private BeatInfo[] _beatInfos; // 정렬된 정보들
     public delegate void InfoSelectedHandler(int index); // 정보 선택되었을 때 호출될 함수 형식

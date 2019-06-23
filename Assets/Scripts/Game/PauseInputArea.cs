@@ -9,7 +9,7 @@ namespace Game
     public class PauseInputArea : MonoBehaviour
     {
         [SerializeField]
-        private GameObject _area;
+        private GameObject _area = null;
 
         public void OnClicked()
         {

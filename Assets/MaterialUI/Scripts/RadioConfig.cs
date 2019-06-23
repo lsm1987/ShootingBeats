@@ -32,11 +32,11 @@ namespace MaterialUI
 		public bool changeRippleColor;
 
 
-		[SerializeField] private Image dotImage;
-		[SerializeField] private Image ringImage;
-		[SerializeField] private Text text;
+		[SerializeField] private Image dotImage = null;
+        [SerializeField] private Image ringImage = null;
+        [SerializeField] private Text text = null;
 
-		private RectTransform dotRectTransform;
+        private RectTransform dotRectTransform;
 		private CheckBoxToggler checkBoxToggler;
 		private RippleConfig rippleConfig;
 

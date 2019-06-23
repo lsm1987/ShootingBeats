@@ -11,17 +11,17 @@ namespace Game
         private const string _resultGameOver = "Game Over";
 
         [SerializeField]
-        private Text _result;
+        private Text _result = null;
         [SerializeField]
-        private Text _songTitle;
+        private Text _songTitle = null;
         [SerializeField]
-        private Text _score;
+        private Text _score = null;
         [SerializeField]
-        private Text _highScore;
+        private Text _highScore = null;
         [SerializeField]
-        private GameObject _newRecord;
+        private GameObject _newRecord = null;
         [SerializeField]
-        private Button _leaderboard;
+        private Button _leaderboard = null;
         private BeatInfo _beatInfo;
 
         public override bool OnKeyInput()

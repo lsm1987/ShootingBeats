@@ -5,15 +5,15 @@ using UnityEngine.UI;
 public class UIBeatListItem : MonoBehaviour
 {
     [SerializeField]
-    private Image _albumArt;
+    private Image _albumArt = null;
     [SerializeField]
-    private Text _title;
+    private Text _title = null;
     [SerializeField]
-    private UIDifficultyIcon _difficulty;
+    private UIDifficultyIcon _difficulty = null;
     [SerializeField]
-    private Text _length;
+    private Text _length = null;
     [SerializeField]
-    private GameObject _cleared;
+    private GameObject _cleared = null;
     private int _index; // 목록 내 인덱스
     private UIBeatList.InfoSelectedHandler _selectedHandler;
 

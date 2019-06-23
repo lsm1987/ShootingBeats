@@ -5,15 +5,15 @@ using MaterialUI;
 public class Example05 : MonoBehaviour
 {
 	#region groupRGB
-	[SerializeField] private Text m_sliderTextR;
-	[SerializeField] private Text m_sliderTextG;
-	[SerializeField] private Text m_sliderTextB;
-	[SerializeField] private Slider m_sliderR;
-	[SerializeField] private Slider m_sliderG;
-	[SerializeField] private Slider m_sliderB;
-	[SerializeField] private Image m_RGBImage;
+	[SerializeField] private Text m_sliderTextR = null;
+    [SerializeField] private Text m_sliderTextG = null;
+    [SerializeField] private Text m_sliderTextB = null;
+    [SerializeField] private Slider m_sliderR = null;
+    [SerializeField] private Slider m_sliderG = null;
+    [SerializeField] private Slider m_sliderB = null;
+    [SerializeField] private Image m_RGBImage = null;
 
-	void Awake()
+    void Awake()
 	{
 		onSliderRValueChanged();
 		onSliderGValueChanged();
