@@ -17,6 +17,9 @@
 #Unity3D Generated File On Crash Reports
 sysinfo.txt
 
+#Unity ETC
+*.log
+
 #UnityVS
 Assets/UnityVS
 Assets/UnityVS.meta
