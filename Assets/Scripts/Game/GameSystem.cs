@@ -104,6 +104,8 @@ namespace Game
         private const float _refDeviceWidthRatio = 9.0f;
         private const float _refDeviceHeightRatio = 16.0f;
 
+        private const float _topBoxMinHeightScreenRate = 0.05f;  // 상단 박스의 화면 내 최소 세로 비중
+
         /// <summary>
         ///  씬 진입 시 한번 실행
         /// </summary>
@@ -259,24 +261,29 @@ namespace Game
                 return;
             }
 
-            // 기준 기기화면 상단에 가로가 가득차도록 게임영역 배치
-            float gameHeightRatio = _refDeviceWidthRatio * (_Height / _Width); // 기기에서 게임화면 높이의 비
-            float bottomBoxHeightRatio = _refDeviceHeightRatio - gameHeightRatio;
-            float bottomBoxHeightScreenRate = bottomBoxHeightRatio / _refDeviceHeightRatio;
-            float refResolutionHeight = _UISystem._CanvasScaler.referenceResolution.y;
-            float refDeviceWidth = refResolutionHeight * (_refDeviceWidthRatio / _refDeviceHeightRatio);
+            // 종횡비 = 가로 / 세로
+            float refDeviceAspect = _refDeviceWidthRatio / _refDeviceHeightRatio;
+            float screenAspect = (float)Screen.width / Screen.height;
+            float layoutAspect = Mathf.Min(refDeviceAspect, screenAspect);  // 세로가 더 긴쪽을 레이아웃 종횡비로 사용
 
-            _Layout.Initialize(refDeviceWidth, bottomBoxHeightScreenRate);
+            float gameHeightLayoutRate = layoutAspect * (_Height / _Width); // 레이아웃 가로가 가득 차도록 게임화면을 배치했을 때 세로 비중
+            float topBoxHeightLayoutRate = _topBoxMinHeightScreenRate + (UIUtil.SafeArea.y / Screen.height);
+            float bottomBoxHeightLayoutRate = 1.0f - gameHeightLayoutRate - topBoxHeightLayoutRate;
+
+            float refResolutionHeight = _UISystem._CanvasScaler.referenceResolution.y;
+            float gameAreaLayoutWidth = refResolutionHeight * layoutAspect;
+
+            _Layout.Initialize(gameAreaLayoutWidth, topBoxHeightLayoutRate, bottomBoxHeightLayoutRate);
 
             // 메인 카메라를 게임 카메라로 사용
             Camera gameCam = Camera.main;
 
-            // 게임월드높이와 레터박스 월드높이의 합을 camH라고 할 떄
-            // camH : _Height = _refDeviceHeightRatio : gameHeightRatio
-            float camH = (_refDeviceHeightRatio / gameHeightRatio) * _Height;
+            // 게임월드높이와 상하 레터박스 월드높이의 합을 camH라고 할 때
+            // camH : _Height = 1 : gameHeightLayoutRate
+            float camH = (1f / gameHeightLayoutRate) * _Height;
             gameCam.orthographicSize = camH / 2.0f;
 
-            float diffH = camH - _Height;
+            float diffH = camH * (bottomBoxHeightLayoutRate - topBoxHeightLayoutRate);
             Vector3 camPos = gameCam.transform.position;
             camPos.y = -1.0f * diffH / 2.0f;
             gameCam.transform.position = camPos;
