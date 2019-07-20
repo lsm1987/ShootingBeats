@@ -99,14 +99,4 @@ public class UIWindow : MonoBehaviour
     {
         return CompareBySiblingIndex(a, b) * -1;
     }
-
-    protected void AddHeaderPanel(string title, UnityEngine.Events.UnityAction onBackClicked)
-    {
-        Object prefab = Resources.Load(Define._uiHeaderPanel);
-        GameObject obj = Instantiate(prefab) as GameObject;
-        UIHeaderPanel header = obj.GetComponent<UIHeaderPanel>();
-        header._Trans.SetParent(_Trans, false);
-        header._RectTrans.localScale = Vector3.one;
-        header.Initialize(title, onBackClicked);
-    }
 }

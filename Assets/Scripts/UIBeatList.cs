@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using System;
 
 // 노래 목록 UI
-public class UIBeatList : UIWindow
+public class UIBeatList : UIPage
 {
     [SerializeField]
     private RectTransform _transContents = null;

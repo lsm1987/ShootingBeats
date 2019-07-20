@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using System.Text;
 
 // About 창
-public class UIAbout : UIWindow
+public class UIAbout : UIPage
 {
     private const string _uiTitle = "About";
 

@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 // 옵션창
-public class UIOption : UIWindow
+public class UIOption : UIPage
 {
     [SerializeField]
     private Slider _moveSensitivitySlider = null; // 이동 민감도

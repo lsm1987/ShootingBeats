@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UIBeatReady : UIWindow
+public class UIBeatReady : UIPage
 {
     [SerializeField]
     private Image _albumArt = null;
