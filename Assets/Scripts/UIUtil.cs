@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public static class UIUtil
 {
     /*
+     * (0, 0)이 좌하단임에 주의
+     * 
      * - 아이폰X
      * Screen w:1125, h:2436
      * SafeArea x:0, y:102, w:1125, h:2202
@@ -15,7 +17,7 @@ public static class UIUtil
      * SafeArea x:0, y:84, w:1080, h:1752
      * - 안드로이드, Corner Cutout, Tall Cutout, Full
      * ScreenSize w:1080, h:1920
-     * SafeArea x:0, y:0, w:1080, h:1794 // y가 왜 0인가?
+     * SafeArea x:0, y:0, w:1080, h:1794
      */
 
     public static Rect SafeArea

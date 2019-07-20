@@ -267,7 +267,7 @@ namespace Game
             float layoutAspect = Mathf.Min(refDeviceAspect, screenAspect);  // 세로가 더 긴쪽을 레이아웃 종횡비로 사용
 
             float gameHeightLayoutRate = layoutAspect * (_Height / _Width); // 레이아웃 가로가 가득 차도록 게임화면을 배치했을 때 세로 비중
-            float topBoxHeightLayoutRate = _topBoxMinHeightScreenRate + (UIUtil.SafeArea.y / Screen.height);
+            float topBoxHeightLayoutRate = _topBoxMinHeightScreenRate + ((Screen.height - UIUtil.SafeArea.y - UIUtil.SafeArea.height) / Screen.height);
             float bottomBoxHeightLayoutRate = 1.0f - gameHeightLayoutRate - topBoxHeightLayoutRate;
 
             // 레터박스는 기준 화면비보다 가로가 길 때 발생
