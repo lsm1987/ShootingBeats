@@ -11,6 +11,9 @@ namespace Game
         private RectTransform _rightBox = null;
         private RectTransform _RightBox { get { return _rightBox; } }
         [SerializeField]
+        private RectTransform _centerBox = null;
+        private RectTransform _CenterBox { get { return _centerBox; } }
+        [SerializeField]
         private RectTransform _topBox = null;
         private RectTransform _TopBox { get { return _topBox; } }
         [SerializeField]
@@ -20,20 +23,21 @@ namespace Game
         private RectTransform _gameArea = null;
         public RectTransform _GameArea { get { return _gameArea; } }
 
-        public void Initialize(float gameAreaWidth, float topBoxHeightRate, float bottomBoxHeightRate)
+        public void Initialize(float centerBoxWidthRate, float topBoxHeightRate, float bottomBoxHeightRate)
         {
-            _TopBox.anchorMin = new Vector2(0.5f, 1f - topBoxHeightRate);
-            UIUtil.SetWidth(_TopBox, gameAreaWidth);
+            float sideBoxRate = (1f - centerBoxWidthRate) / 2f;
+            _LeftBox.anchorMax = new Vector2(sideBoxRate, 1f);
+            _RightBox.anchorMin = new Vector2(1f - sideBoxRate, 0f);
 
-            _BottomBox.anchorMax = new Vector2(0.5f, bottomBoxHeightRate);
-            UIUtil.SetWidth(_BottomBox, gameAreaWidth);
+            _CenterBox.anchorMin = new Vector2(sideBoxRate, 0f);
+            _CenterBox.anchorMax = new Vector2(1f - sideBoxRate, 1f);
 
-            _LeftBox.offsetMax = new Vector2(-gameAreaWidth / 2.0f, 0.0f);
-            _RightBox.offsetMin = new Vector2(gameAreaWidth / 2.0f, 0.0f);
+            _TopBox.anchorMin = new Vector2(0f, 1f - topBoxHeightRate);
 
-            _GameArea.anchorMax = new Vector2(0.5f, 1f - topBoxHeightRate);
-            _GameArea.anchorMin = new Vector2(0.5f, bottomBoxHeightRate);
-            UIUtil.SetWidth(_GameArea, gameAreaWidth);
+            _BottomBox.anchorMax = new Vector2(1f, bottomBoxHeightRate);
+
+            _GameArea.anchorMin = new Vector2(0f, bottomBoxHeightRate);
+            _GameArea.anchorMax = new Vector2(1f, 1f - topBoxHeightRate);
         }
     }
 }

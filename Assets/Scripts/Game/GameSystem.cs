@@ -270,10 +270,10 @@ namespace Game
             float topBoxHeightLayoutRate = _topBoxMinHeightScreenRate + (UIUtil.SafeArea.y / Screen.height);
             float bottomBoxHeightLayoutRate = 1.0f - gameHeightLayoutRate - topBoxHeightLayoutRate;
 
-            float refResolutionHeight = _UISystem._CanvasScaler.referenceResolution.y;
-            float gameAreaLayoutWidth = refResolutionHeight * layoutAspect;
+            // 레터박스는 기준 화면비보다 가로가 길 때 발생
+            float centerBoxWidthRate = (screenAspect > refDeviceAspect) ? refDeviceAspect / screenAspect :  1.0f;
 
-            _Layout.Initialize(gameAreaLayoutWidth, topBoxHeightLayoutRate, bottomBoxHeightLayoutRate);
+            _Layout.Initialize(centerBoxWidthRate, topBoxHeightLayoutRate, bottomBoxHeightLayoutRate);
 
             // 메인 카메라를 게임 카메라로 사용
             Camera gameCam = Camera.main;
