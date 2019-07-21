@@ -22,8 +22,9 @@ public static class UIUtil
 
     public static Rect SafeArea
     {
-        //get { return Screen.safeArea; }
+        get { return Screen.safeArea; }
 
+        /*
         // 테스트용
         get
         {
@@ -36,6 +37,7 @@ public static class UIUtil
                 return Screen.safeArea;
             }
         }
+        */
     }
 
     public static void SetDefaultScale(RectTransform trans)
