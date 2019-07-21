@@ -274,6 +274,8 @@ namespace Game
             float centerBoxWidthRate = (screenAspect > refDeviceAspect) ? refDeviceAspect / screenAspect :  1.0f;
 
             _Layout.Initialize(centerBoxWidthRate, topBoxHeightLayoutRate, bottomBoxHeightLayoutRate);
+            _PauseInputArea.SetArea(topBoxHeightLayoutRate);
+            _MoveInputArea.SetArea(1.0f - topBoxHeightLayoutRate);
 
             // 메인 카메라를 게임 카메라로 사용
             Camera gameCam = Camera.main;

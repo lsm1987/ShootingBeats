@@ -128,5 +128,17 @@ namespace Game
                 _area.SetActive(visible);
             }
         }
+
+        public void SetArea(float heightRate)
+        {
+            var rectTrans = GetComponent<RectTransform>();
+
+            if (rectTrans)
+            {
+                float safeAreaAnchorMinY = UIUtil.SafeArea.y / Screen.height;
+                rectTrans.anchorMin = new Vector2(0.0f, safeAreaAnchorMinY);
+                rectTrans.anchorMax = new Vector2(1.0f, heightRate);
+            }
+        }
     }
 }
