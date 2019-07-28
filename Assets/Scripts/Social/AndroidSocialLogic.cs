@@ -4,6 +4,8 @@ using GooglePlayGames;
 
 public class AndroidSocialLogic : ISocialLogic
 {
+    public string GameIDsFileName { get { return "GameIDs_Android"; } }
+
     public void OnBeforeAuthenticate()
     {
         PlayGamesPlatform.Activate();

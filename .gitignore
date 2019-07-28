@@ -31,7 +31,9 @@ Assets/GooglePlayGames/GameInfo.cs.meta
 Assets/GooglePlayGames/Plugins/Android/GooglePlayGamesManifest.plugin/AndroidManifest.xml
 Assets/GooglePlayGames/Plugins/Android/GooglePlayGamesManifest.plugin/AndroidManifest.xml.meta
 ProjectSettings/GooglePlayGameSettings.txt
-Assets/Resources/GameIDs.txt
-Assets/Resources/GameIDs.txt.meta
+Assets/Resources/GameIDs_Android.txt
+Assets/Resources/GameIDs_Android.txt.meta
+Assets/Resources/GameIDs_iOS.txt
+Assets/Resources/GameIDs_iOS.txt.meta
 Assets/Scripts/GPGSIds.cs
 Assets/Scripts/GPGSIds.cs.meta

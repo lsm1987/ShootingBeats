@@ -33,6 +33,8 @@ public class SocialSystem
     {
 #if UNITY_ANDROID
         return new AndroidSocialLogic();
+#elif UNITY_IOS
+        return new IosSocialLogic();
 #else
         return new GeneralSocialLogic();
 #endif
@@ -127,7 +129,7 @@ public class SocialSystem
         if (_gameIDs == null)
         {
             _gameIDs = new Dictionary<string, string>();
-            CSVReader csv = new CSVReader("GameIDs");
+            CSVReader csv = new CSVReader(_logic.GameIDsFileName);
             while (true)
             {
                 string[] line = csv.ReadLine();
