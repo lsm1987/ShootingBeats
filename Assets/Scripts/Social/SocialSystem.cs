@@ -160,4 +160,55 @@ public class SocialSystem
             return null;
         }
     }
+
+    public void ShowAchievementsUI()
+    {
+        if (_IsAuthenticated)
+        {
+            // 로그인 되어있을 때만
+            Social.ShowAchievementsUI();
+        }
+        else
+        {
+            Debug.LogWarning("[SocialSystem] ShowAchievementsUI - Not signed in.");
+        }
+    }
+
+    public void ReportScore(long score, string board)
+    {
+        Social.ReportScore(score, board, success =>
+        {
+            string text = "[SocialSystem] ";
+            text += success ? "Reported score successfully" : "Failed to report score";
+            text += ("(board: " + board + " score:" + score.ToString() + ")");
+
+            if (success)
+            {
+                Debug.Log(text);
+            }
+            else
+            {
+                Debug.LogError(text);
+            }
+        });
+    }
+
+    public void ReportProgress(string achievementID, double progress)
+    {
+        Social.ReportProgress(achievementID, progress, success =>
+        {
+            string text = "[SocialSystem] ";
+            text += success ? "Reported achievement successfully" : "Failed to report achievement";
+            text += ("(achievementID: " + achievementID + " progress:" + progress.ToString() + ")");
+
+            if (success)
+            {
+                Debug.Log(text);
+            }
+            else
+            {
+                Debug.LogError(text);
+            }
+        });
+    }
 }

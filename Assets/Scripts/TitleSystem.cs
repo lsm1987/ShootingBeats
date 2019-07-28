@@ -197,11 +197,7 @@ public class TitleSystem : SceneSystem
 
     public void OnAchievementClicked()
     {
-        if (SocialSystem._Instance._IsAuthenticated)
-        {
-            // 로그인 되어있을 때만
-            Social.ShowAchievementsUI();
-        }
+        SocialSystem._Instance.ShowAchievementsUI();
     }
 
     public void OnQuitClicked()

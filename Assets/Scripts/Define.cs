@@ -151,21 +151,10 @@ public static class Define
     public static void ReportScoreToSongLeaderboard(BeatInfo beatInfo, int score)
     {
         string id = GetSongLeaderboardID(beatInfo);
-        Social.ReportScore(score, id
-            , success =>
-            {
-                string text = success ? "Reported score successfully" : "Failed to report score";
-                text += ("(song: " + beatInfo._namespace + " score:" + score.ToString() + ")");
-
-                if (success)
-                {
-                    Debug.Log(text);
-                }
-                else
-                {
-                    Debug.LogError(text);
-                }
-            });
+        if (SocialSystem._Instance != null)
+        {
+            SocialSystem._Instance.ReportScore(score, id);
+        }
     }
 
     /// <summary>
@@ -190,21 +179,11 @@ public static class Define
     public static void ReportAchievementProgress(string key, double progress)
     {
         string id = GetAchievementID(key);
-        Social.ReportProgress(id, progress
-            , success =>
-            {
-                string text = success ? "Reported achievement successfully" : "Failed to report achievement";
-                text += ("(key: " + key + " progress:" + progress.ToString() + ")");
 
-                if (success)
-                {
-                    Debug.Log(text);
-                }
-                else
-                {
-                    Debug.LogError(text);
-                }
-            });
+        if (SocialSystem._Instance != null)
+        {
+            SocialSystem._Instance.ReportProgress(id, progress);
+        }
     }
 
     private static string GetAlbumArtPath(BeatInfo beatInfo)
