@@ -41,7 +41,7 @@ public class UIBeatReady : UIPage
         }
         _difficulty.SetDifficulty(beatInfo._difficulty);
         _length.text = Define.ConverBeatLength(_beatInfo._length);
-        _leaderboard.interactable = (GlobalSystem._Instance != null && GlobalSystem._Instance._IsAuthenticated); // 로그인 되었을 때만 사용가능
+        _leaderboard.interactable = (SocialSystem._Instance != null && SocialSystem._Instance._IsAuthenticated); // 로그인 되었을 때만 사용가능
         _leaderboard.GetComponent<MaterialUI.RippleConfig>().enabled = _leaderboard.interactable;
 
         // 활성화
@@ -74,10 +74,7 @@ public class UIBeatReady : UIPage
     // 게임 씬으로 이동
     public void OnPlayClicked()
     {
-        if (GlobalSystem._Instance == null)
-        {
-            GlobalSystem.CreateInstance();
-        }
+        Define.InitCommonSystems();
         GlobalSystem._Instance._LoadingBeatInfo = _beatInfo;
         SceneManager.LoadScene(SceneName._Stage);
     }
@@ -87,7 +84,7 @@ public class UIBeatReady : UIPage
     /// </summary>
     public void OnLeaderboardClicked()
     {
-        if (GlobalSystem._Instance != null && GlobalSystem._Instance._IsAuthenticated)
+        if (SocialSystem._Instance != null && SocialSystem._Instance._IsAuthenticated)
         {
             Define.OpenSongLeaderboard(_beatInfo);
         }

@@ -113,10 +113,7 @@ namespace Game
         {
             _instance = this;
             Define.SetFPS();
-            if (GlobalSystem._Instance == null)
-            {
-                GlobalSystem.CreateInstance();
-            }
+            Define.InitCommonSystems();
             //_shapePoolManager.RecordMaxCreatedCount();
             //_moverPoolManager.RecordMaxCreatedCount();
             _Players = new List<Player>();
@@ -751,14 +748,14 @@ namespace Game
                 }
 
                 // 업적 달성 여부는 로컬로 불러오지 않으므로 매번 시도
-                if (GlobalSystem._Instance._IsAuthenticated)
+                if (SocialSystem._Instance._IsAuthenticated)
                 {
                     Define.ReportAchievementProgress(_beatInfo._clearAchievementKey, 100.0);
                 }
             }
 
             // 리더보드 갱신 시도
-            if (GlobalSystem._Instance._IsAuthenticated)
+            if (SocialSystem._Instance._IsAuthenticated)
             {
                 Define.ReportScoreToSongLeaderboard(_beatInfo, _score);
             }

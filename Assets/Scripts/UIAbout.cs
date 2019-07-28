@@ -17,7 +17,7 @@ public class UIAbout : UIPage
         Dev_ShowDebugInfo();
 
         // 업적 시도
-        if (GlobalSystem._Instance._IsAuthenticated)
+        if (SocialSystem._Instance._IsAuthenticated)
         {
             Define.ReportAchievementProgress(AchievementKey._openAbout, 100.0);
         }

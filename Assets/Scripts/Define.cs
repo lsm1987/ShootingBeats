@@ -56,6 +56,20 @@ public static class Define
     public const string _uiHeaderPanel = "UI/UIHeaderPanel";
     public const string _albumArtRoot = "AlbumArts";    // 앨범아트 스프라이트 경로
 
+
+    public static void InitCommonSystems()
+    {
+        if (GlobalSystem._Instance == null)
+        {
+            GlobalSystem.CreateInstance();
+        }
+
+        if (SocialSystem._Instance == null)
+        {
+            SocialSystem.CreateInstance();
+        }
+    }
+
     /// <summary>
     /// 음악 클리어 여부 저장용 Key 구하기
     /// </summary>
@@ -110,9 +124,9 @@ public static class Define
     private static string GetSongLeaderboardID(BeatInfo beatInfo)
     {
         string key = ("leaderboard" + beatInfo._namespace);
-        if (GlobalSystem._Instance != null)
+        if (SocialSystem._Instance != null)
         {
-            return GlobalSystem._Instance.GetGameID(key);
+            return SocialSystem._Instance.GetGameID(key);
         }
         else
         {
@@ -160,9 +174,9 @@ public static class Define
     private static string GetAchievementID(string key)
     {
         key = ("achievement" + key);
-        if (GlobalSystem._Instance != null)
+        if (SocialSystem._Instance != null)
         {
-            return GlobalSystem._Instance.GetGameID(key);
+            return SocialSystem._Instance.GetGameID(key);
         }
         else
         {

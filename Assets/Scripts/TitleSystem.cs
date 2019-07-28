@@ -20,15 +20,12 @@ public class TitleSystem : SceneSystem
     {
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         Define.SetFPS();
-        if (GlobalSystem._Instance == null)
-        {
-            GlobalSystem.CreateInstance();
-        }
+        Define.InitCommonSystems();
 
         // 로그인 관련
-        if (GlobalSystem._Instance.IsAutoSignInSet()
-            && !GlobalSystem._Instance._IsAuthenticated
-            && !GlobalSystem._Instance._IsAuthenticating)
+        if (SocialSystem._Instance.IsAutoSignInSet()
+            && !SocialSystem._Instance._IsAuthenticated
+            && !SocialSystem._Instance._IsAuthenticating)
         {
             // 자동로그인 지정되어있다면 로그인 시도
             TrySignIn();
@@ -94,7 +91,7 @@ public class TitleSystem : SceneSystem
     /// </summary>
     private void TrySignIn()
     {
-        GlobalSystem._Instance.Authenticate(OnSignInResult);
+        SocialSystem._Instance.Authenticate(OnSignInResult);
         RefreshUIBySignInState();
     }
 
@@ -103,7 +100,7 @@ public class TitleSystem : SceneSystem
     /// </summary>
     private void OnSignInResult(bool success)
     {
-        GlobalSystem._Instance.SetAutoSignIn(true);    // 로그인 성공하면 자동로그인 지정
+        SocialSystem._Instance.SetAutoSignIn(true);    // 로그인 성공하면 자동로그인 지정
         RefreshUIBySignInState();
     }
 
@@ -113,10 +110,10 @@ public class TitleSystem : SceneSystem
     private void RefreshUIBySignInState()
     {
         // 시작 버튼
-        _btnStart.interactable = !GlobalSystem._Instance._IsAuthenticating; // 시도 중이 아닐 때 가능
+        _btnStart.interactable = !SocialSystem._Instance._IsAuthenticating; // 시도 중이 아닐 때 가능
 
         // 로그인 버튼
-        if (GlobalSystem._Instance._IsAuthenticating)
+        if (SocialSystem._Instance._IsAuthenticating)
         {
             // 로그인 시도 중
             _btnSignIn.interactable = false;
@@ -125,7 +122,7 @@ public class TitleSystem : SceneSystem
         else
         {
             _btnSignIn.interactable = true;
-            if (GlobalSystem._Instance._IsAuthenticated)
+            if (SocialSystem._Instance._IsAuthenticated)
             {
                 // 로그인 됨
                 _btnTextSignIn.text = _textSignOut; // 로그아웃 텍스트로 변경
@@ -138,18 +135,18 @@ public class TitleSystem : SceneSystem
         }
 
         // 업적 버튼
-        _btnAchievement.interactable = GlobalSystem._Instance._IsAuthenticated; // 로그인 되었을 때 가능
+        _btnAchievement.interactable = SocialSystem._Instance._IsAuthenticated; // 로그인 되었을 때 가능
     }
 
     #region UI Event
     public void OnStartClicked()
     {
-        if (GlobalSystem._Instance._IsAuthenticating)
+        if (SocialSystem._Instance._IsAuthenticating)
         {
             // 로그인 시도 중이면 반응하지 않음
             return;
         }
-        else if (!GlobalSystem._Instance._IsAuthenticated)
+        else if (!SocialSystem._Instance._IsAuthenticated)
         {
             // 로그인되어있지 않으면 알림
             UIMessageBox box = _UISystem.OpenMessageBox();
@@ -175,12 +172,12 @@ public class TitleSystem : SceneSystem
 
     public void OnSignInClicked()
     {
-        if (GlobalSystem._Instance._IsAuthenticating)
+        if (SocialSystem._Instance._IsAuthenticating)
         {
             // 이미 로그인 도중
             return;
         }
-        else if (!GlobalSystem._Instance._IsAuthenticated)
+        else if (!SocialSystem._Instance._IsAuthenticated)
         {
             // 로그인 시도
             TrySignIn();
@@ -188,15 +185,15 @@ public class TitleSystem : SceneSystem
         else
         {
             // 로그아웃
-            GlobalSystem._Instance.SignOut();
-            GlobalSystem._Instance.SetAutoSignIn(false);   // 유저가 직접 로그아웃 수행 시 자동로그인 해제
+            SocialSystem._Instance.SignOut();
+            SocialSystem._Instance.SetAutoSignIn(false);   // 유저가 직접 로그아웃 수행 시 자동로그인 해제
             RefreshUIBySignInState();
         }
     }
 
     public void OnAchievementClicked()
     {
-        if (GlobalSystem._Instance._IsAuthenticated)
+        if (SocialSystem._Instance._IsAuthenticated)
         {
             // 로그인 되어있을 때만
             Social.ShowAchievementsUI();
