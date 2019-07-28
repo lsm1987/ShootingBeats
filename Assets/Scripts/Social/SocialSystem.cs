@@ -6,12 +6,13 @@ using System.Collections.Generic;
 public class SocialSystem
 {
     public static SocialSystem _Instance { get; private set; }
+    private ISocialLogic _logic;
     private Dictionary<string, string> _gameIDs = null; // GPG 에서 사용하는 ID들
     private const string _autoSignInPrefKey = "AutoSignIn"; // 자동 로그인 Pref 키
 
     public SocialSystem()
     {
-
+        _logic = CreateLogic();
     }
 
     public static SocialSystem CreateInstance()
@@ -26,6 +27,15 @@ public class SocialSystem
             _Instance = new SocialSystem();
             return _Instance;
         }
+    }
+
+    private static ISocialLogic CreateLogic()
+    {
+#if UNITY_ANDROID
+        return new AndroidSocialLogic();
+#else
+        return new GeneralSocialLogic();
+#endif
     }
 
     /// <summary>
@@ -55,12 +65,11 @@ public class SocialSystem
     {
         if (_IsAuthenticated || _IsAuthenticating)
         {
-            Debug.LogWarning("Ignoring repeated call to Authenticate().");
+            Debug.LogWarning("[SocialSystem] Ignoring repeated call to Authenticate().");
             return;
         }
 
-#if UNITY_ANDROID
-        PlayGamesPlatform.Activate();
+        _logic.OnBeforeAuthenticate();
 
         _IsAuthenticating = true;
         Social.localUser.Authenticate((bool success) =>
@@ -68,14 +77,14 @@ public class SocialSystem
             _IsAuthenticating = false;
             if (success)
             {
-                Debug.Log("Login successful!");
+                Debug.Log("[SocialSystem] Login successful!");
 
                 // 로그인 성공시 추가로 할 일
                 LoadGameIDs();
             }
             else
             {
-                Debug.LogWarning("Failed to sign in with Google Play Games.");
+                Debug.LogWarning("[SocialSystem] Failed to sign in.");
             }
 
             // 결과 발생시 호출부에서 실행할 내용
@@ -84,9 +93,6 @@ public class SocialSystem
                 callback(success);
             }
         });
-#else
-        Debug.LogWarning("Authenticate - Not implemented for this platform");
-#endif // UNITY_ANDROID
     }
 
     /// <summary>
@@ -94,11 +100,7 @@ public class SocialSystem
     /// </summary>
     public void SignOut()
     {
-#if UNITY_ANDROID
-        ((PlayGamesPlatform)Social.Active).SignOut();
-#else
-        Debug.LogWarning("SignOut - Not implemented for this platform");
-#endif // UNITY_ANDROID
+        _logic.SignOut();
     }
 
     /// <summary>

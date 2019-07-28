@@ -100,7 +100,11 @@ public class TitleSystem : SceneSystem
     /// </summary>
     private void OnSignInResult(bool success)
     {
-        SocialSystem._Instance.SetAutoSignIn(true);    // 로그인 성공하면 자동로그인 지정
+        if (success)
+        {
+            SocialSystem._Instance.SetAutoSignIn(true);    // 로그인 성공하면 자동로그인 지정
+        }
+
         RefreshUIBySignInState();
     }
 
