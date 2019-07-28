@@ -15,5 +15,10 @@ public class AndroidSocialLogic : ISocialLogic
     {
         ((PlayGamesPlatform)Social.Active).SignOut();
     }
+
+    public void ShowLeaderboardUI(string leaderboardID)
+    {
+        PlayGamesPlatform.Instance.ShowLeaderboardUI(leaderboardID);
+    }
 }
 #endif // UNITY_ANDROID

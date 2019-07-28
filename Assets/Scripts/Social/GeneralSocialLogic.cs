@@ -13,4 +13,9 @@ public class GeneralSocialLogic : ISocialLogic
     {
         Debug.LogWarning("[GeneralSocialLogic] SignOut - Not implemented for this platform");
     }
+
+    public void ShowLeaderboardUI(string leaderboardID)
+    {
+        Debug.LogWarning("[GeneralSocialLogic] ShowLeaderboardUI - Not implemented for this platform");
+    }
 }

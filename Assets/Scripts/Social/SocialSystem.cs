@@ -176,6 +176,18 @@ public class SocialSystem
         }
     }
 
+    public void ShowLeaderboardUI(string leaderboardID)
+    {
+        if (_IsAuthenticated)
+        {
+            _logic.ShowLeaderboardUI(leaderboardID);
+        }
+        else
+        {
+            Debug.LogWarning("[SocialSystem] ShowLeaderboardUI - Not signed in.");
+        }
+    }
+
     public void ReportScore(long score, string board)
     {
         Social.ReportScore(score, board, success =>

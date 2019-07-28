@@ -4,4 +4,5 @@
 
     void OnBeforeAuthenticate();
     void SignOut();
+    void ShowLeaderboardUI(string leaderboardID);
 }

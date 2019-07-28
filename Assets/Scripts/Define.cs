@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using GooglePlayGames;
 
 public static class SceneName
 {
@@ -139,10 +138,11 @@ public static class Define
     /// </summary>
     public static void OpenSongLeaderboard(BeatInfo beatInfo)
     {
-#if UNITY_ANDROID
         string id = GetSongLeaderboardID(beatInfo);
-        PlayGamesPlatform.Instance.ShowLeaderboardUI(id);
-#endif // UNITY_ANDROID
+        if (SocialSystem._Instance != null)
+        {
+            SocialSystem._Instance.ShowLeaderboardUI(id);
+        }
     }
 
     /// <summary>
