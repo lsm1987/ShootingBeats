@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿#if UNITY_IOS
+using UnityEngine;
 using UnityEngine.SocialPlatforms.GameCenter;
 
 public class IosSocialLogic : ISocialLogic
@@ -20,3 +21,4 @@ public class IosSocialLogic : ISocialLogic
         GameCenterPlatform.ShowLeaderboardUI(leaderboardID, UnityEngine.SocialPlatforms.TimeScope.AllTime);
     }
 }
+#endif // UNITY_IOS
