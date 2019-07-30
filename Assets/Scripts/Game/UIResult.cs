@@ -41,7 +41,7 @@ namespace Game
             _score.text = score.ToString();
             _highScore.text = highScore.ToString();
             _newRecord.SetActive(isNewRecord);
-            _leaderboard.interactable = (SocialSystem._Instance != null && SocialSystem._Instance._IsAuthenticated); // 로그인 되었을 때만 사용가능
+            _leaderboard.interactable = (EGSocial._IsAuthenticated); // 로그인 되었을 때만 사용가능
         }
 
         public void Open()
@@ -59,7 +59,7 @@ namespace Game
         /// </summary>
         public void OnLeaderboardClicked()
         {
-            if (SocialSystem._Instance != null && SocialSystem._Instance._IsAuthenticated)
+            if (EGSocial._IsAuthenticated)
             {
                 Define.OpenSongLeaderboard(_beatInfo);
             }

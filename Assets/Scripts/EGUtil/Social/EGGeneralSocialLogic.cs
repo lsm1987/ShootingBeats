@@ -1,12 +1,8 @@
 ﻿using UnityEngine;
 
-public class GeneralSocialLogic : ISocialLogic
+public class EGGeneralSocialLogic : IEGSocialLogic
 {
-    public string _GameIDsFileName { get { return "GameIDs_Example"; } }
-
-    public bool _IsAutoSignInSet { get { return false; } }
-
-    public void Initialize()
+    public void Activate()
     {
         // Do nothing
     }

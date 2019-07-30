@@ -41,7 +41,7 @@ public class UIBeatReady : UIPage
         }
         _difficulty.SetDifficulty(beatInfo._difficulty);
         _length.text = Define.ConverBeatLength(_beatInfo._length);
-        _leaderboard.interactable = (SocialSystem._Instance != null && SocialSystem._Instance._IsAuthenticated); // 로그인 되었을 때만 사용가능
+        _leaderboard.interactable = (EGSocial._IsAuthenticated); // 로그인 되었을 때만 사용가능
         _leaderboard.GetComponent<MaterialUI.RippleConfig>().enabled = _leaderboard.interactable;
 
         // 활성화
@@ -84,7 +84,7 @@ public class UIBeatReady : UIPage
     /// </summary>
     public void OnLeaderboardClicked()
     {
-        if (SocialSystem._Instance != null && SocialSystem._Instance._IsAuthenticated)
+        if (EGSocial._IsAuthenticated)
         {
             Define.OpenSongLeaderboard(_beatInfo);
         }

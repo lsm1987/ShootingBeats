@@ -2,13 +2,9 @@
 using UnityEngine;
 using GooglePlayGames;
 
-public class AndroidSocialLogic : ISocialLogic
+public class EGAndroidSocialLogic : IEGSocialLogic
 {
-    public string _GameIDsFileName { get { return "GameIDs_Android"; } }
-
-    public bool _IsAutoSignInSet { get { return true; } }
-
-    public void Initialize()
+    public void Activate()
     {
         PlayGamesPlatform.Activate();
     }

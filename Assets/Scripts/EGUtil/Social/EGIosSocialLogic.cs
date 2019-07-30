@@ -2,13 +2,9 @@
 using UnityEngine;
 using UnityEngine.SocialPlatforms.GameCenter;
 
-public class IosSocialLogic : ISocialLogic
+public class EGIosSocialLogic : IEGSocialLogic
 {
-    public string _GameIDsFileName { get { return "GameIDs_iOS"; } }
-
-    public bool _IsAutoSignInSet { get { return true; } }
-
-    public void Initialize()
+    public void Activate()
     {
         GameCenterPlatform.ShowDefaultAchievementCompletionBanner(true);
     }

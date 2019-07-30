@@ -86,7 +86,7 @@ public class UIOption : UIPage
         // 최대값 지정 시 업적 시도
         if (value == Config._moveSensitivityMax)
         {
-            if (SocialSystem._Instance._IsAuthenticated)
+            if (EGSocial._IsAuthenticated)
             {
                 Define.ReportAchievementProgress(AchievementKey._changeMoveSensitivity, 100.0);
             }

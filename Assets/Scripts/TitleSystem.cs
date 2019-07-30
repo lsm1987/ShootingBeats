@@ -24,8 +24,8 @@ public class TitleSystem : SceneSystem
 
         // 로그인 관련
         if (SocialSystem._Instance.IsAutoSignInSet()
-            && !SocialSystem._Instance._IsAuthenticated
-            && !SocialSystem._Instance._IsAuthenticating)
+            && !EGSocial._IsAuthenticated
+            && !EGSocial._IsAuthenticating)
         {
             // 자동로그인 지정되어있다면 로그인 시도
             TrySignIn();
@@ -91,7 +91,7 @@ public class TitleSystem : SceneSystem
     /// </summary>
     private void TrySignIn()
     {
-        SocialSystem._Instance.Authenticate(OnSignInResult);
+        EGSocial.Authenticate(OnSignInResult);
         RefreshUIBySignInState();
     }
 
@@ -109,10 +109,10 @@ public class TitleSystem : SceneSystem
     private void RefreshUIBySignInState()
     {
         // 시작 버튼
-        _btnStart.interactable = !SocialSystem._Instance._IsAuthenticating; // 시도 중이 아닐 때 가능
+        _btnStart.interactable = !EGSocial._IsAuthenticating; // 시도 중이 아닐 때 가능
 
         // 로그인 버튼
-        if (SocialSystem._Instance._IsAuthenticating)
+        if (EGSocial._IsAuthenticating)
         {
             // 로그인 시도 중
             _btnSignIn.interactable = false;
@@ -121,7 +121,7 @@ public class TitleSystem : SceneSystem
         else
         {
             _btnSignIn.interactable = true;
-            if (SocialSystem._Instance._IsAuthenticated)
+            if (EGSocial._IsAuthenticated)
             {
                 // 로그인 됨
                 _btnTextSignIn.text = _textSignOut; // 로그아웃 텍스트로 변경
@@ -134,18 +134,18 @@ public class TitleSystem : SceneSystem
         }
 
         // 업적 버튼
-        _btnAchievement.interactable = SocialSystem._Instance._IsAuthenticated; // 로그인 되었을 때 가능
+        _btnAchievement.interactable = EGSocial._IsAuthenticated; // 로그인 되었을 때 가능
     }
 
     #region UI Event
     public void OnStartClicked()
     {
-        if (SocialSystem._Instance._IsAuthenticating)
+        if (EGSocial._IsAuthenticating)
         {
             // 로그인 시도 중이면 반응하지 않음
             return;
         }
-        else if (!SocialSystem._Instance._IsAuthenticated)
+        else if (!EGSocial._IsAuthenticated)
         {
             // 로그인되어있지 않으면 알림
             UIMessageBox box = _UISystem.OpenMessageBox();
@@ -171,12 +171,12 @@ public class TitleSystem : SceneSystem
 
     public void OnSignInClicked()
     {
-        if (SocialSystem._Instance._IsAuthenticating)
+        if (EGSocial._IsAuthenticating)
         {
             // 이미 로그인 도중
             return;
         }
-        else if (!SocialSystem._Instance._IsAuthenticated)
+        else if (!EGSocial._IsAuthenticated)
         {
             // 로그인 시도
             TrySignIn();
@@ -184,14 +184,14 @@ public class TitleSystem : SceneSystem
         else
         {
             // 로그아웃
-            SocialSystem._Instance.SignOut();
+            EGSocial.SignOut();
             RefreshUIBySignInState();
         }
     }
 
     public void OnAchievementClicked()
     {
-        SocialSystem._Instance.ShowAchievementsUI();
+        EGSocial.ShowAchievementsUI();
     }
 
     public void OnQuitClicked()

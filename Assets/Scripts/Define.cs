@@ -139,10 +139,7 @@ public static class Define
     public static void OpenSongLeaderboard(BeatInfo beatInfo)
     {
         string id = GetSongLeaderboardID(beatInfo);
-        if (SocialSystem._Instance != null)
-        {
-            SocialSystem._Instance.ShowLeaderboardUI(id);
-        }
+        EGSocial.ShowLeaderboardUI(id);
     }
 
     /// <summary>
@@ -151,10 +148,7 @@ public static class Define
     public static void ReportScoreToSongLeaderboard(BeatInfo beatInfo, int score)
     {
         string id = GetSongLeaderboardID(beatInfo);
-        if (SocialSystem._Instance != null)
-        {
-            SocialSystem._Instance.ReportScore(score, id);
-        }
+        EGSocial.ReportScore(score, id);
     }
 
     /// <summary>
@@ -179,11 +173,7 @@ public static class Define
     public static void ReportAchievementProgress(string key, double progress)
     {
         string id = GetAchievementID(key);
-
-        if (SocialSystem._Instance != null)
-        {
-            SocialSystem._Instance.ReportProgress(id, progress);
-        }
+        EGSocial.ReportProgress(id, progress);
     }
 
     private static string GetAlbumArtPath(BeatInfo beatInfo)
