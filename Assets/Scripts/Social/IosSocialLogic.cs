@@ -4,9 +4,11 @@ using UnityEngine.SocialPlatforms.GameCenter;
 
 public class IosSocialLogic : ISocialLogic
 {
-    public string GameIDsFileName { get { return "GameIDs_iOS"; } }
+    public string _GameIDsFileName { get { return "GameIDs_iOS"; } }
 
-    public void OnBeforeAuthenticate()
+    public bool _IsAutoSignInSet { get { return true; } }
+
+    public void Initialize()
     {
         GameCenterPlatform.ShowDefaultAchievementCompletionBanner(true);
     }

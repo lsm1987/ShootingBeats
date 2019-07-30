@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using GooglePlayGames;
 using System;
 using System.Collections.Generic;
 
@@ -7,12 +6,13 @@ public class SocialSystem
 {
     public static SocialSystem _Instance { get; private set; }
     private ISocialLogic _logic;
-    private Dictionary<string, string> _gameIDs = null; // GPG 에서 사용하는 ID들
-    private const string _autoSignInPrefKey = "AutoSignIn"; // 자동 로그인 Pref 키
+    private Dictionary<string, string> _gameIDs = null; // 리더보드, 업적에서 사용하는 ID들
 
     public SocialSystem()
     {
         _logic = CreateLogic();
+        _logic.Initialize();
+        LoadGameIDs();
     }
 
     public static SocialSystem CreateInstance()
@@ -71,8 +71,6 @@ public class SocialSystem
             return;
         }
 
-        _logic.OnBeforeAuthenticate();
-
         _IsAuthenticating = true;
         Social.localUser.Authenticate((bool success) =>
         {
@@ -80,9 +78,6 @@ public class SocialSystem
             if (success)
             {
                 Debug.Log("[SocialSystem] Login successful!");
-
-                // 로그인 성공시 추가로 할 일
-                LoadGameIDs();
             }
             else
             {
@@ -106,30 +101,22 @@ public class SocialSystem
     }
 
     /// <summary>
-    /// 자동로그인 여부 기록
-    /// </summary>
-    public void SetAutoSignIn(bool set)
-    {
-        PlayerPrefs.SetInt(_autoSignInPrefKey, (set ? 1 : 0));
-    }
-
-    /// <summary>
     /// 자동로그인이 지정되어있는가?
     /// </summary>
     public bool IsAutoSignInSet()
     {
-        return (PlayerPrefs.GetInt(_autoSignInPrefKey, 0) != 0);
+        return _logic._IsAutoSignInSet;
     }
 
     /// <summary>
-    /// GPG 용 ID 읽어들이기
+    /// 리더보드, 업적용 ID 읽어들이기
     /// </summary>
-    public void LoadGameIDs()
+    private void LoadGameIDs()
     {
         if (_gameIDs == null)
         {
             _gameIDs = new Dictionary<string, string>();
-            CSVReader csv = new CSVReader(_logic.GameIDsFileName);
+            CSVReader csv = new CSVReader(_logic._GameIDsFileName);
             while (true)
             {
                 string[] line = csv.ReadLine();

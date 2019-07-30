@@ -1,8 +1,9 @@
 ﻿public interface ISocialLogic
 {
-    string GameIDsFileName { get; }
+    string _GameIDsFileName { get; }
+    bool _IsAutoSignInSet { get; }
 
-    void OnBeforeAuthenticate();
+    void Initialize();
     void SignOut();
     void ShowLeaderboardUI(string leaderboardID);
 }

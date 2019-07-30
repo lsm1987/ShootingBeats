@@ -2,9 +2,11 @@
 
 public class GeneralSocialLogic : ISocialLogic
 {
-    public string GameIDsFileName { get { return "GameIDs_Example"; } }
+    public string _GameIDsFileName { get { return "GameIDs_Example"; } }
 
-    public void OnBeforeAuthenticate()
+    public bool _IsAutoSignInSet { get { return false; } }
+
+    public void Initialize()
     {
         // Do nothing
     }

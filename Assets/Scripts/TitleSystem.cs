@@ -100,11 +100,6 @@ public class TitleSystem : SceneSystem
     /// </summary>
     private void OnSignInResult(bool success)
     {
-        if (success)
-        {
-            SocialSystem._Instance.SetAutoSignIn(true);    // 로그인 성공하면 자동로그인 지정
-        }
-
         RefreshUIBySignInState();
     }
 
@@ -190,7 +185,6 @@ public class TitleSystem : SceneSystem
         {
             // 로그아웃
             SocialSystem._Instance.SignOut();
-            SocialSystem._Instance.SetAutoSignIn(false);   // 유저가 직접 로그아웃 수행 시 자동로그인 해제
             RefreshUIBySignInState();
         }
     }

@@ -4,9 +4,11 @@ using GooglePlayGames;
 
 public class AndroidSocialLogic : ISocialLogic
 {
-    public string GameIDsFileName { get { return "GameIDs_Android"; } }
+    public string _GameIDsFileName { get { return "GameIDs_Android"; } }
 
-    public void OnBeforeAuthenticate()
+    public bool _IsAutoSignInSet { get { return true; } }
+
+    public void Initialize()
     {
         PlayGamesPlatform.Activate();
     }
