@@ -95,6 +95,15 @@ public class UISystem : MonoBehaviour
     /// <summary>
     /// 메시지 박스 열기
     /// </summary>
+    /// <example>
+    /// 로그인 상태 아닐 때 경고 메시지 박스 띄우는 예
+    /// <code>
+    /// UIMessageBox box = _UISystem.OpenMessageBox();
+    /// box.SetText("Not signed in Google play.\nHigh score will not recorded at leaderboard and cannot unlock achievement.");
+    /// box.SetButton(0, "OK", LoadBeatListScene);  // 진행
+    /// box.SetButton(1, "Cancel", null);   // 중지
+    /// </code>
+    /// </example>
     public UIMessageBox OpenMessageBox()
     {
         return OpenWindow(Define._uiMessageBoxPath) as UIMessageBox;
