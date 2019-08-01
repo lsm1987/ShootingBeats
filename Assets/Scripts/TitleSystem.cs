@@ -7,6 +7,10 @@ public class TitleSystem : SceneSystem
     [SerializeField]
     private Button _btnStart = null;
     [SerializeField]
+    private Text _btnTextStart = null;
+    private const string _textStart = "Start";  // 게임 시작
+    private const string _textSignInDoing = "Sign In...";   // 로그인 도중
+    [SerializeField]
     private Button _btnAchievement = null;
 
     protected override void OnAwake()
@@ -75,6 +79,8 @@ public class TitleSystem : SceneSystem
     {
         // 시작 버튼
         _btnStart.interactable = !EGSocial._IsAuthenticating; // 시도 중이 아닐 때 가능
+        _btnTextStart.text = EGSocial._IsAuthenticating ? _textSignInDoing : _textStart;
+
         // 업적 버튼
         _btnAchievement.interactable = EGSocial._IsAuthenticated; // 로그인 되었을 때 가능
     }

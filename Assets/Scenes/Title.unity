@@ -1381,8 +1381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _btnStart: {fileID: 35233788}
-  _btnSignIn: {fileID: 0}
-  _btnTextSignIn: {fileID: 0}
+  _btnTextStart: {fileID: 35233786}
   _btnAchievement: {fileID: 2075666076}
 --- !u!1 &2075666074
 GameObject:
