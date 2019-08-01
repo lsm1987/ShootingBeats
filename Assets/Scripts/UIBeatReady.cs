@@ -18,6 +18,13 @@ public class UIBeatReady : UIPage
     private Text _length = null;
     [SerializeField]
     private Button _leaderboard = null;
+    [SerializeField]
+    private Text _leaderboardText = null;
+    [SerializeField]
+    private Color _leaderboardTextEnabledColor = Color.black;
+    [SerializeField]
+    private Color _leaderboardTextDisabledColor = Color.gray;
+
     private BeatInfo _beatInfo;
     private const string _uiTitle = "Beat Ready";
 
@@ -43,6 +50,7 @@ public class UIBeatReady : UIPage
         _length.text = Define.ConverBeatLength(_beatInfo._length);
         _leaderboard.interactable = (EGSocial._IsAuthenticated); // 로그인 되었을 때만 사용가능
         _leaderboard.GetComponent<MaterialUI.RippleConfig>().enabled = _leaderboard.interactable;
+        _leaderboardText.color = (_leaderboard.interactable) ? _leaderboardTextEnabledColor : _leaderboardTextDisabledColor;
 
         // 활성화
         _Go.SetActive(true);
