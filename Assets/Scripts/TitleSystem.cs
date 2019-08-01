@@ -16,11 +16,12 @@ public class TitleSystem : SceneSystem
         Define.InitCommonSystems();
 
         // 로그인 관련
-        if (SocialSystem._Instance.IsAutoSignInSet()
+        if (!SocialSystem._Instance._IsAutoSignInTried
             && !EGSocial._IsAuthenticated
             && !EGSocial._IsAuthenticating)
         {
-            // 자동로그인 지정되어있다면 로그인 시도
+            // 로그인 되어있지 않고, 자동로그인을 한번도 시도하지 않았다면
+            SocialSystem._Instance._IsAutoSignInTried = true;
             TrySignIn();
         }
         else

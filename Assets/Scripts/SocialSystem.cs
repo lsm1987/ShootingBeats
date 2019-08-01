@@ -5,6 +5,7 @@ public class SocialSystem
 {
     public static SocialSystem _Instance { get; private set; }
     private Dictionary<string, string> _gameIDs = null; // 리더보드, 업적에서 사용하는 ID들
+    public bool _IsAutoSignInTried { get; set; } // 자동 로그인을 시도한 적이 있는가?
 
     public SocialSystem()
     {
@@ -24,14 +25,6 @@ public class SocialSystem
             _Instance = new SocialSystem();
             return _Instance;
         }
-    }
-
-    /// <summary>
-    /// 자동로그인이 지정되어있는가?
-    /// </summary>
-    public bool IsAutoSignInSet()
-    {
-        return true;
     }
 
     private string _GameIDsFileName
