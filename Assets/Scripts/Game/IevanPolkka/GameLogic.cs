@@ -124,7 +124,11 @@ namespace Game
 
                 yield return new WaitForFrames(60 * 4);
                 // 야바린간
-                _uiStageText.SetText("Back button\nalso can pause");
+#if UNITY_ANDROID
+                _uiStageText.SetText("You can also pause\n with the Back button");
+#else
+                _uiStageText.SetActive(false);
+#endif
                 _coroutineManager.StartCoroutine(SideAim(3, 0.02f, 60, 8));
 
                 // 맀빠린단
@@ -297,10 +301,9 @@ namespace Game
             private string RandomTip()
             {
                 string[] tips = {
-                    "Do not play game while walking",
-                    "Do not play game\nwhile working",
-                    "Check volume\nat public place",
-                    "Check source code of\nthis game at GitHub",
+                    "Don't play game\nwhile walking",
+                    "Don't play game\nwhile working",
+                    "Please check the volume\nin public place",
                 };
                 return tips[Random.Range(0, tips.Length)];
             }
