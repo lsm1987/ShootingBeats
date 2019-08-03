@@ -33,6 +33,21 @@ namespace Game
             GameSystem._Instance.PoolStackMover<Shot>(36);
         }
 
+        protected Vector2 _PlayerSpawnPosition
+        {
+            get
+            {
+                if (GameSystem._Instance._TestInfo != null && GameSystem._Instance._TestInfo._IsValidPlayerSpawnPos)
+                {
+                    return GameSystem._Instance._TestInfo._PlayerSpawnPos;
+                }
+                else
+                {
+                    return new Vector2(0.0f, -0.7f);
+                }
+            }
+        }
+
         #region Util
         static public float CalcluatePointToPointAngle(float x1, float y1, float x2, float y2)
         {

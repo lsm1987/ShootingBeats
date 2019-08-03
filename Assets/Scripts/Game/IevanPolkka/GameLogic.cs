@@ -72,7 +72,8 @@ namespace Game
             {
                 // 플레이어 생성
                 PlayerAlive player = GameSystem._Instance.CreatePlayer<PlayerAlive>();
-                player.Init("Common/Player_Black", 0.0f, -0.7f, 0.0f);
+                Vector2 PlayerSpawnPos = _PlayerSpawnPosition;
+                player.Init("Common/Player_Black", PlayerSpawnPos.x, PlayerSpawnPos.y, 0.0f);
 
                 yield return new WaitForAbsFrames(300);
                 _uiStageText.SetAlign(TextAnchor.MiddleCenter);

@@ -303,7 +303,7 @@ namespace Game
             _srcSong.Play();
             if (_TestInfo != null && _TestInfo._StartFrame > 0)
             {
-                _srcSong.time = _TestInfo._StartFrame / Define._fps;
+                _srcSong.time = (float)_TestInfo._StartFrame / Define._fps;
             }
 
             // 진행 초기화
@@ -323,6 +323,10 @@ namespace Game
                 if (Input.GetButtonDown(ButtonName._start) || Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Menu))
                 {
                     StartPause();
+                }
+                else if (Input.GetButtonDown(ButtonName._screenshot))
+                {
+                    Define.CaptureScreenshot();
                 }
             }
             if (_isPaused)
@@ -389,6 +393,11 @@ namespace Game
                 )
             {
                 DoResult();
+            }
+
+            if (_TestInfo != null && _TestInfo._ForScreenshot)
+            {
+                StartPause();
             }
         }
 
@@ -686,7 +695,12 @@ namespace Game
                 _timeScaleBeforePause = Time.timeScale;
                 Time.timeScale = 0.0f;
                 _isPaused = true;
-                _UIPause.Open();
+
+                // 스크린샷 촬영을 위한 정지시에는 UI 열지 않음
+                if (_TestInfo == null || !_TestInfo._ForScreenshot)
+                {
+                    _UIPause.Open();
+                }
             }
         }
 

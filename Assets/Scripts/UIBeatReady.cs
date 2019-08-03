@@ -62,6 +62,10 @@ public class UIBeatReady : UIPage
         {
             Close();
         }
+        else if (Input.GetButtonDown(ButtonName._screenshot))
+        {
+            Define.CaptureScreenshot();
+        }
         return true;
     }
 

@@ -10,6 +10,7 @@ public static class SceneName
 public static class ButtonName
 {
     public const string _start = "Start";
+    public const string _screenshot = "Screenshot";
 }
 
 public enum Difficulty
@@ -184,5 +185,17 @@ public static class Define
     public static Sprite GetAlbumArtSprite(BeatInfo beatInfo)
     {
         return Resources.Load<Sprite>(GetAlbumArtPath(beatInfo));
+    }
+
+    private static string GenerateScreenshotFileName()
+    {
+        return string.Format("ShootingBeats_{0}.png", System.DateTime.Now.ToString("yyyyMMddHHmmss"));
+    }
+
+    public static void CaptureScreenshot()
+    {
+        string fileName = GenerateScreenshotFileName();
+        ScreenCapture.CaptureScreenshot(fileName);
+        Debug.Log("Screenshot captured. fileName: " + fileName);
     }
 }

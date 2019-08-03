@@ -74,6 +74,10 @@ public class UIBeatList : UIPage
         {
             LoadTitleScene();
         }
+        else if (Input.GetButtonDown(ButtonName._screenshot))
+        {
+            Define.CaptureScreenshot();
+        }
         return true;
     }
 
