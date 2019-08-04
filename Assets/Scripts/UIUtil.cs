@@ -9,9 +9,15 @@ public static class UIUtil
     /*
      * (0, 0)이 좌하단임에 주의
      * 
-     * - 아이폰X
+     * - 아이폰 X
      * Screen w:1125, h:2436
      * SafeArea x:0, y:102, w:1125, h:2202
+     * - 아이폰 Xs Max
+     * Screen w:1242, h:2688
+     * SafeArea x:0, y:102, w:1242, h:2454
+     * - 아이패드 Pro 3rd Gen.
+     * Screen w:2048, h:2732
+     * SafeArea x:0, y:40, w:2048, h:2692
      * - 안드로이드, Dobule Cutout, Full
      * Screen w:1080, h:1920
      * SafeArea x:0, y:84, w:1080, h:1752
@@ -30,7 +36,18 @@ public static class UIUtil
         {
             if (Screen.width == 1125 && Screen.height == 2436)
             {
+                // 아이폰 X
                 return new Rect(0f, 102f, 1125f, 2202f);
+            }
+            else if (Screen.width == 1242 && Screen.height == 2688)
+            {
+                // 아이폰 Xs Max
+                return new Rect(0f, 102f, 1242f, 2454f);
+            }
+            else if (Screen.width == 2048 && Screen.height == 2732)
+            {
+                // 아이패드 Pro 3rd Gen.
+                return new Rect(0f, 40f, 2048f, 2692f);
             }
             else
             {
