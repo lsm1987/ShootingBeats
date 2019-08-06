@@ -6,3 +6,5 @@ Shooting Beats!
  * https://www.youtube.com/watch?v=v2521Lo-OZg
 * Google Play
  * https://play.google.com/store/apps/details?id=com.lsm1987.ShootingBeats
+* App Store
+ * https://apps.apple.com/app/id1474525871
