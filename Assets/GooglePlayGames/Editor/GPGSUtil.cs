@@ -445,7 +445,11 @@ namespace GooglePlayGames.Editor
         public static string GetAndroidSdkPath()
         {
             string sdkPath = EditorPrefs.GetString("AndroidSdkRoot");
+            /* SB begin
 #if UNITY_2019
+            */
+#if UNITY_2019 || UNITY_2020
+            /* SB end */
             // Unity 2019.x added installation of the Android SDK in the AndroidPlayer directory
             // so fallback to searching for it there.
             if (string.IsNullOrEmpty(sdkPath) || EditorPrefs.GetBool("SdkUseEmbedded"))
