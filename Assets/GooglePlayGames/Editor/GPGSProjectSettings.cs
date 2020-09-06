@@ -20,10 +20,11 @@ namespace GooglePlayGames.Editor
 {
     using System.Collections.Generic;
     using System.IO;
-#if UNITY_2017_1_OR_NEWER
+#if UNITY_2017_3_OR_NEWER
     using UnityEngine.Networking;
 #else
     using UnityEngine;
+
 #endif
 
     public class GPGSProjectSettings
@@ -55,11 +56,11 @@ namespace GooglePlayGames.Editor
 
             // read the settings file, this list is all the locations it can be in order of precedence.
             string[] fileLocations =
-                {
-                    mFile,
-                    GPGSUtil.SlashesToPlatformSeparator(Path.Combine(GPGSUtil.RootPath, "Editor/projsettings.txt")),
-                    GPGSUtil.SlashesToPlatformSeparator("Assets/Editor/projsettings.txt")
-                };
+            {
+                mFile,
+                GPGSUtil.SlashesToPlatformSeparator(Path.Combine(GPGSUtil.RootPath, "Editor/projsettings.txt")),
+                GPGSUtil.SlashesToPlatformSeparator("Assets/Editor/projsettings.txt")
+            };
 
             foreach (string f in fileLocations)
             {
@@ -82,7 +83,7 @@ namespace GooglePlayGames.Editor
                     }
 
                     line = line.Trim();
-                    string[] p = line.Split(new char[] { '=' }, 2);
+                    string[] p = line.Split(new char[] {'='}, 2);
                     if (p.Length >= 2)
                     {
                         mDict[p[0].Trim()] = p[1].Trim();
@@ -101,7 +102,7 @@ namespace GooglePlayGames.Editor
             }
             else if (mDict.ContainsKey(key))
             {
-#if UNITY_2017_1_OR_NEWER
+#if UNITY_2017_3_OR_NEWER
                 return UnityWebRequest.UnEscapeURL(mDict[key]);
 #else
                 return WWW.UnEscapeURL(mDict[key]);
@@ -117,7 +118,7 @@ namespace GooglePlayGames.Editor
         {
             if (mDict.ContainsKey(key))
             {
-#if UNITY_2017_1_OR_NEWER
+#if UNITY_2017_3_OR_NEWER
                 return UnityWebRequest.UnEscapeURL(mDict[key]);
 #else
                 return WWW.UnEscapeURL(mDict[key]);
@@ -146,7 +147,7 @@ namespace GooglePlayGames.Editor
 
         public void Set(string key, string val)
         {
-#if UNITY_2017_1_OR_NEWER
+#if UNITY_2017_3_OR_NEWER
             string escaped = UnityWebRequest.EscapeURL(val);
 #else
             string escaped = WWW.EscapeURL(val);
@@ -188,7 +189,7 @@ namespace GooglePlayGames.Editor
             mDirty = false;
         }
 
-        public static void Reload ()
+        public static void Reload()
         {
             sInstance = new GPGSProjectSettings();
         }
