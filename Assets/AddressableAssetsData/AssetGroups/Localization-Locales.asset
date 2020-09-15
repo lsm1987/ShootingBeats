@@ -16,8 +16,28 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 975ddf507c5e4364bb03d11dc207ebd5
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 651a695012dee8b46a980fe85f92d0bd
+    m_Address: English (en)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    m_mainAssetType: UnityEngine.Localization.Locale, Unity.Localization, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 11400000, guid: 651a695012dee8b46a980fe85f92d0bd, type: 2}
+    m_TargetAsset: {fileID: 11400000, guid: 651a695012dee8b46a980fe85f92d0bd, type: 2}
+  - m_GUID: d1c4cef75ee431c41ba9d1895e15e428
+    m_Address: Korean (ko)
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale
+    m_mainAssetType: UnityEngine.Localization.Locale, Unity.Localization, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+    m_MainAsset: {fileID: 11400000, guid: d1c4cef75ee431c41ba9d1895e15e428, type: 2}
+    m_TargetAsset: {fileID: 11400000, guid: d1c4cef75ee431c41ba9d1895e15e428, type: 2}
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 5146449957a39ef4685a41018b1d281b, type: 2}
   m_SchemaSet:
-    m_Schemas: []
+    m_Schemas:
+    - {fileID: 11400000, guid: 7d11e2752a17bc349a8d7d226f90c23d, type: 2}
+    - {fileID: 11400000, guid: 6892374180683ca4d9d53bb8f0af28b1, type: 2}
