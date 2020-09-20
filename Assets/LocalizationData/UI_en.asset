@@ -17,6 +17,22 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 07619ddd358444f4b918308558ee90fa, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 241199906816
+    m_Localized: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 521329082368
+    m_Localized: Achievement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 913752358912
+    m_Localized: Option
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1018618347520
+    m_Localized: About
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

@@ -13,8 +13,24 @@ MonoBehaviour:
   m_Name: UI Shared Data
   m_EditorClassIdentifier: 
   m_TableCollectionName: UI
-  m_TableCollectionNameGuidString: 00000000000000000000000000000000
-  m_Entries: []
+  m_TableCollectionNameGuidString: 07619ddd358444f4b918308558ee90fa
+  m_Entries:
+  - m_Id: 241199906816
+    m_Key: Menu_Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 521329082368
+    m_Key: Menu_Achievement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 913752358912
+    m_Key: Menu_Option
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1018618347520
+    m_Key: Menu_About
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
