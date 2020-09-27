@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 241199906816
-    m_Localized: Play
+    m_Localized: Start
     m_Metadata:
       m_Items: []
   - m_Id: 521329082368
@@ -32,6 +32,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1018618347520
     m_Localized: About
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2553906267848704
+    m_Localized: Sign In...
     m_Metadata:
       m_Items: []
   references:
