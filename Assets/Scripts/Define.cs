@@ -1,4 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Tables;
+
+public static class StringTableName
+{
+    public static readonly TableReference _ui = "UI";
+}
 
 public static class SceneName
 {
