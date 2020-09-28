@@ -35,6 +35,18 @@ MonoBehaviour:
     m_Key: Menu_SignIn
     m_Metadata:
       m_Items: []
+  - m_Id: 2896701348282368
+    m_Key: Option_MoveSensitivity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2896810119168000
+    m_Key: Option_ResetSettings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2896926855036928
+    m_Key: Option_Reset
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

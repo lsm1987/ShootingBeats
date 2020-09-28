@@ -38,5 +38,17 @@ MonoBehaviour:
     m_Localized: Sign In...
     m_Metadata:
       m_Items: []
+  - m_Id: 2896701348282368
+    m_Localized: Move Sensitivity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2896810119168000
+    m_Localized: Reset Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2896926855036928
+    m_Localized: Reset
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
