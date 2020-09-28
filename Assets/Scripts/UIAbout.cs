@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
 using System.Text;
 
 // About 창
 public class UIAbout : UIPage
 {
-    private const string _uiTitle = "About";
+    private readonly TableEntryReference _strKeyTitle = "About_Header";
 
     [SerializeField]
     private Text _debugInfo = null;
@@ -13,7 +14,7 @@ public class UIAbout : UIPage
     protected override void OnAwake()
     {
         base.OnAwake();
-        AddHeaderPanel(_uiTitle, OnBackClicked);
+        AddHeaderPanel(_strKeyTitle, OnBackClicked);
         Dev_ShowDebugInfo();
 
         // 업적 시도

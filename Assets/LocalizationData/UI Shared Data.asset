@@ -47,6 +47,22 @@ MonoBehaviour:
     m_Key: Option_Reset
     m_Metadata:
       m_Items: []
+  - m_Id: 2898577292689408
+    m_Key: Option_Header
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2901081459949568
+    m_Key: About_Header
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2901162103832576
+    m_Key: BeatList_Header
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2901302143254528
+    m_Key: BeatReady_Header
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

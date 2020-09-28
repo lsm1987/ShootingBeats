@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Tables;
 
 // 화면 전체를 차지하는 윈도우
 public class UIPage : UIWindow
@@ -47,11 +48,11 @@ public class UIPage : UIWindow
         }
     }
 
-    protected void AddHeaderPanel(string title, UnityEngine.Events.UnityAction onBackClicked)
+    protected void AddHeaderPanel(TableEntryReference strKeyTitle, UnityEngine.Events.UnityAction onBackClicked)
     {
         if (!_safeRect)
         {
-            Debug.LogWarning("Cannot add header. Safe Rect is not exist. title: " + title);
+            Debug.LogWarning("Cannot add header. Safe Rect is not exist. title: " + strKeyTitle.Key);
             return;
         }
 
@@ -60,6 +61,6 @@ public class UIPage : UIWindow
         UIHeaderPanel header = obj.GetComponent<UIHeaderPanel>();
         header._Trans.SetParent(_safeRect, false);
         header._RectTrans.localScale = Vector3.one;
-        header.Initialize(title, onBackClicked);
+        header.Initialize(strKeyTitle, onBackClicked);
     }
 }

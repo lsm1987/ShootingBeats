@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Tables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -26,12 +27,12 @@ public class UIBeatReady : UIPage
     private Color _leaderboardTextDisabledColor = Color.gray;
 
     private BeatInfo _beatInfo;
-    private const string _uiTitle = "Beat Ready";
+    private readonly TableEntryReference _strKeyTitle = "BeatReady_Header";
 
     protected override void OnAwake()
     {
         base.OnAwake();
-        AddHeaderPanel(_uiTitle, OnBackClicked);
+        AddHeaderPanel(_strKeyTitle, OnBackClicked);
     }
 
     public void Open(BeatInfo beatInfo)

@@ -50,5 +50,21 @@ MonoBehaviour:
     m_Localized: Reset
     m_Metadata:
       m_Items: []
+  - m_Id: 2898577292689408
+    m_Localized: Option
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2901081459949568
+    m_Localized: About
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2901162103832576
+    m_Localized: Beat List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2901302143254528
+    m_Localized: Beat Title
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

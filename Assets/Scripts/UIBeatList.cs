@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Tables;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using System;
 
 // 노래 목록 UI
@@ -13,13 +13,13 @@ public class UIBeatList : UIPage
 
     private BeatInfo[] _beatInfos; // 정렬된 정보들
     public delegate void InfoSelectedHandler(int index); // 정보 선택되었을 때 호출될 함수 형식
-    private const string _uiTitle = "Beat List";
+    private readonly TableEntryReference _strKeyTitle = "BeatList_Header";
     private const float _firstItemYOffset = -15.0f; // 첫 항목 상단 여백
 
     protected override void OnAwake()
     {
         base.OnAwake();
-        AddHeaderPanel(_uiTitle, OnBackClicked);
+        AddHeaderPanel(_strKeyTitle, OnBackClicked);
         BuildList();
     }
 

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
 
 // 옵션창
@@ -9,12 +10,12 @@ public class UIOption : UIPage
     [SerializeField]
     private Text _moveSensitivityValue = null;
 
-    private const string _uiTitle = "Option";
+    private readonly TableEntryReference _strKeyTitle = "Option_Header";
 
     protected override void OnAwake()
     {
         base.OnAwake();
-        AddHeaderPanel(_uiTitle, OnBackClicked);
+        AddHeaderPanel(_strKeyTitle, OnBackClicked);
         InitMoveSensitivity();
     }
 

@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
 
 public class UIHeaderPanel : MonoBehaviour
 {
     [SerializeField]
-    private Text _title = null;
+    private LocalizeStringEvent _strEvtTitle = null;
     [SerializeField]
     private Button _backButton = null;
 
@@ -13,9 +15,9 @@ public class UIHeaderPanel : MonoBehaviour
     private RectTransform _rectTrans;
     public RectTransform _RectTrans { get { if (_rectTrans == null) { _rectTrans = GetComponent<RectTransform>(); } return _rectTrans; } }
 
-    public void Initialize(string title, UnityEngine.Events.UnityAction onBackClicked)
+    public void Initialize(TableEntryReference strKeyTitle, UnityEngine.Events.UnityAction onBackClicked)
     {
-        _title.text = title;
+        _strEvtTitle.StringReference.SetReference(StringTableName._ui, strKeyTitle);
 
         if (onBackClicked != null)
         {
