@@ -63,7 +63,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2901302143254528
-    m_Localized: "\uBE44\uD2B8 \uD0C0\uC774\uD2C0"
+    m_Localized: "\uBE44\uD2B8 \uC900\uBE44"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2909545670279168
+    m_Localized: "\uC5B8\uC5B4"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2909681452482560
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2910232449810432
+    m_Localized: Korean
     m_Metadata:
       m_Items: []
   references:

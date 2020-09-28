@@ -63,6 +63,18 @@ MonoBehaviour:
     m_Key: BeatReady_Header
     m_Metadata:
       m_Items: []
+  - m_Id: 2909545670279168
+    m_Key: Option_Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2909681452482560
+    m_Key: Option_English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2910232449810432
+    m_Key: Option_Korean
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -63,7 +63,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2901302143254528
-    m_Localized: Beat Title
+    m_Localized: Beat Ready
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2909545670279168
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2909681452482560
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2910232449810432
+    m_Localized: Korean
     m_Metadata:
       m_Items: []
   references:
