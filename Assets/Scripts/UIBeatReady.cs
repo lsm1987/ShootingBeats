@@ -15,6 +15,8 @@ public class UIBeatReady : UIPage
     [SerializeField]
     private Text _highScore = null;
     [SerializeField]
+    private GameObject _cleared = null;
+    [SerializeField]
     private UIDifficultyIcon _difficulty = null;
     [SerializeField]
     private Text _length = null;
@@ -44,10 +46,7 @@ public class UIBeatReady : UIPage
         _strEvtTitle.StringReference = beatInfo._titleString;
         _strEvtAuthor.StringReference = beatInfo._authorString;
         _highScore.text = string.Format("High Score: {0}", Define.GetSongHighScore(beatInfo)); // 한꺼번에 가운데 정렬 위해 텍스트를 둘로 나누지 않음
-        if (!Define.IsSongCleared(beatInfo))
-        {
-            _highScore.text += " (Not Cleared)";
-        }
+        _cleared.SetActive(Define.IsSongCleared(beatInfo));
         _difficulty.SetDifficulty(beatInfo._difficulty);
         _length.text = Define.ConverBeatLength(_beatInfo._length);
         _leaderboard.interactable = (EGSocial._IsAuthenticated); // 로그인 되었을 때만 사용가능
