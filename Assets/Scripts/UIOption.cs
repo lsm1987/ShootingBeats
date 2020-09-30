@@ -12,9 +12,8 @@ public class UIOption : UIPage
     private Slider _moveSensitivitySlider = null; // 이동 민감도
     [SerializeField]
     private Text _moveSensitivityValue = null;
-
     [SerializeField]
-    private Dropdown _languageDropdown;
+    private Dropdown _languageDropdown = null;
 
     private readonly TableEntryReference _strKeyTitle = "Option_Header";
 
