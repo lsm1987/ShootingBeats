@@ -1469,6 +1469,7 @@ MonoBehaviour:
   _useBottomSafeArea: 0
   _moveSensitivitySlider: {fileID: 11485856}
   _moveSensitivityValue: {fileID: 11484136}
+  _languageDropdown: {fileID: 5371131521881058111}
 --- !u!1 &167948
 GameObject:
   m_ObjectHideFlags: 0
@@ -2793,7 +2794,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: English
+  m_Text: 
 --- !u!1 &4450337803436104298
 GameObject:
   m_ObjectHideFlags: 0
@@ -3110,11 +3111,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: English
-      m_Image: {fileID: 0}
-    - m_Text: Korean
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

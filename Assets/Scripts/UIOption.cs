@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Localization.Settings;
 using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
 
@@ -10,6 +13,9 @@ public class UIOption : UIPage
     [SerializeField]
     private Text _moveSensitivityValue = null;
 
+    [SerializeField]
+    private Dropdown _languageDropdown;
+
     private readonly TableEntryReference _strKeyTitle = "Option_Header";
 
     protected override void OnAwake()
@@ -17,6 +23,7 @@ public class UIOption : UIPage
         base.OnAwake();
         AddHeaderPanel(_strKeyTitle, OnBackClicked);
         InitMoveSensitivity();
+        StartCoroutine(InitLanguage());
     }
 
     public override bool OnKeyInput()
@@ -94,6 +101,37 @@ public class UIOption : UIPage
         }
     }
     #endregion MoveSensitivity
+
+    #region Language
+    private IEnumerator InitLanguage()
+    {
+        yield return LocalizationSettings.InitializationOperation;
+
+        var options = new List<Dropdown.OptionData>();
+        int selected = 0;
+        
+        for (int i = 0; i < LocalizationSettings.AvailableLocales.Locales.Count; ++i)
+        {
+            var locale = LocalizationSettings.AvailableLocales.Locales[i];
+
+            if (LocalizationSettings.SelectedLocale == locale)
+            {
+                selected = i;
+            }
+            
+            options.Add(new Dropdown.OptionData(locale.name));
+        }
+        
+        _languageDropdown.options = options;
+        _languageDropdown.value = selected;
+        _languageDropdown.onValueChanged.AddListener(OnLanguageSelected);
+    }
+
+    private static void OnLanguageSelected(int localeIndex)
+    {
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[localeIndex];
+    }
+    #endregion Language
 
     #region ResetConfig
     /// <summary>
