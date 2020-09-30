@@ -70,13 +70,5 @@ MonoBehaviour:
     m_Localized: "\uC5B8\uC5B4"
     m_Metadata:
       m_Items: []
-  - m_Id: 2909681452482560
-    m_Localized: English
-    m_Metadata:
-      m_Items: []
-  - m_Id: 2910232449810432
-    m_Localized: Korean
-    m_Metadata:
-      m_Items: []
   references:
     version: 1
