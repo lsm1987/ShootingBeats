@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1bb1838fe8befb0429646b938e757ff3, type: 3}
-  m_Name: Korean (ko)
+  m_Name: Korean
   m_EditorClassIdentifier: 
   m_Identifier:
     m_Code: ko
