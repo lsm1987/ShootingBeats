@@ -47,6 +47,66 @@ MonoBehaviour:
     m_Key: Beat_Calc_Author
     m_Metadata:
       m_Items: []
+  - m_Id: 96956548546560
+    m_Key: IevanPolkka_Text_Tutorial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97069782171648
+    m_Key: IevanPolkka_Text_With
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97224312913920
+    m_Key: IevanPolkka_Text_TutorialReady
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97508028219392
+    m_Key: IevanPolkka_Text_TutorialStart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97781794635776
+    m_Key: IevanPolkka_Text_Dodge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98147688939520
+    m_Key: IevanPolkka_Text_MoveArea
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98673096818688
+    m_Key: IevanPolkka_Text_PauseArea
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98902848208896
+    m_Key: IevanPolkka_Text_BackButtom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99520069402624
+    m_Key: IevanPolkka_Text_BeatCore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99884080463872
+    m_Key: IevanPolkka_Text_Score
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100131171106816
+    m_Key: IevanPolkka_Text_LastTip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100281482379264
+    m_Key: IevanPolkka_Text_Tip1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100478438506496
+    m_Key: IevanPolkka_Text_Tip2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101059949395968
+    m_Key: IevanPolkka_Text_Tip3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101388669583360
+    m_Key: IevanPolkka_Text_SpinReady
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

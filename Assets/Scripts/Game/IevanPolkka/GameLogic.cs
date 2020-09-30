@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
+using UnityEngine.Localization.Settings;
+using UnityEngine.Localization.Tables;
 
 namespace Game
 {
@@ -57,6 +59,9 @@ namespace Game
                 GameSystem._Instance._MoveInputArea.SetVisible(false);
                 GameSystem._Instance._PauseInputArea.SetVisible(false);
 
+                // 리소스
+                yield return LocalizationSettings.StringDatabase.GetTableAsync(StringTableName._contents);
+
                 // 코루틴
                 _coroutineManager.StopAllCoroutines();
                 _coroutineManager.RegisterCoroutine(Main());    // 메인 코루틴 등록
@@ -78,17 +83,17 @@ namespace Game
                 yield return new WaitForAbsFrames(300);
                 _uiStageText.SetAlign(TextAnchor.MiddleCenter);
                 _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
-                _uiStageText.SetText("Shooting Beats! Tutorial");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_Tutorial");
                 _uiStageText.SetActive(true);
 
                 yield return new WaitForAbsFrames(540);
-                _uiStageText.SetText("with Ievan Polkka");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_With");
 
                 yield return new WaitForAbsFrames(700);
-                _uiStageText.SetText("Are you ready?");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_TutorialReady");
 
                 yield return new WaitForAbsFrames(900);
-                _uiStageText.SetText("Let's start!");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_TutorialStart");
 
                 yield return new WaitForAbsFrames(960);
                 _uiStageText.SetActive(false);
@@ -98,7 +103,7 @@ namespace Game
                 _uiStageText.SetAlign(TextAnchor.MiddleRight);
                 _uiStageText.SetAnchorPoistion(0.9f, 0.5f);
                 _uiStageText.SetSize(_stageTextDefaultWidth * 0.6f, _stageTextDefaultHeight * 2.0f);
-                _uiStageText.SetText("Dodge bullets\nby touch and drag");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_Dodge");
                 _uiStageText.SetActive(true);
                 _coroutineManager.StartCoroutine(SideAim(0, 0.02f, 60, 16));
 
@@ -106,7 +111,7 @@ namespace Game
 
                 yield return new WaitForFrames(60 * 4 * 2);
                 // 야바린간
-                _uiStageText.SetText("Colored rectangle is\nmove touch area");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_MoveArea");
                 GameSystem._Instance._MoveInputArea.SetVisible(true);
 
                 yield return new WaitForFrames(60 * 4);
@@ -115,7 +120,7 @@ namespace Game
 
                 yield return new WaitForAbsFrames(1986);
                 // 아야챠챠
-                _uiStageText.SetText("Colored rectangle is\npause touch area");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_PauseArea");
                 GameSystem._Instance._PauseInputArea.SetVisible(true);
                 _coroutineManager.StartCoroutine(SideAim(2, 0.02f, 60, 8));
 
@@ -126,7 +131,7 @@ namespace Game
                 yield return new WaitForFrames(60 * 4);
                 // 야바린간
 #if UNITY_ANDROID
-                _uiStageText.SetText("You can also pause\n with the Back button");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_BackButtom");
 #else
                 _uiStageText.SetActive(false);
 #endif
@@ -143,7 +148,7 @@ namespace Game
 
                 yield return new WaitForAbsFrames(3906);
                 // YO!
-                _uiStageText.SetText("Each beat has\nthe Beat Core");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_BeatCore");
                 _uiStageText.SetActive(true);
                 // 보스 생성
                 Boss boss = GameSystem._Instance.CreateEnemy<Boss>();
@@ -151,20 +156,20 @@ namespace Game
 
                 yield return new WaitForAbsFrames(4386);
                 // 간주(야바린간)
-                _uiStageText.SetText("Shooting Beat Core\nwill increase score");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_Score");
 
                 yield return new WaitForAbsFrames(4866);
                 // 아야챠챠
                 _uiStageText.SetAlign(TextAnchor.MiddleCenter);
                 _uiStageText.SetAnchorPoistion(0.5f, 0.5f);
-                _uiStageText.SetText("And the last tip:");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_LastTip");
                 _coroutineManager.StartCoroutine(SideAim(0, 0.02f, 60, 4));
                 yield return new WaitForFrames(60 * 4);
                 // 마바 리빠빠
-                _uiStageText.SetText(RandomTip());
+                _uiStageText.SetTextStringKey(RandomTipStringKey());
                 _coroutineManager.StartCoroutine(SideAim(2, 0.02f, 60, 4));
                 yield return new WaitForFrames(60 * 4);
-                _uiStageText.SetText("Ready");
+                _uiStageText.SetTextStringKey("IevanPolkka_Text_SpinReady");
                 _coroutineManager.StartCoroutine(SideAim(3, 0.02f, 60, 4));
 
                 yield return new WaitForAbsFrames(5586);
@@ -299,14 +304,14 @@ namespace Game
             /// 무작위 팁 문자열 리턴
             /// </summary>
             /// <returns></returns>
-            private string RandomTip()
+            private TableEntryReference RandomTipStringKey()
             {
-                string[] tips = {
-                    "Don't play game\nwhile walking",
-                    "Don't play game\nwhile working",
-                    "Please check the volume\nin public place",
+                string[] tipStringKeys = {
+                    "IevanPolkka_Text_Tip1",
+                    "IevanPolkka_Text_Tip2",
+                    "IevanPolkka_Text_Tip3",
                 };
-                return tips[Random.Range(0, tips.Length)];
+                return tipStringKeys[Random.Range(0, tipStringKeys.Length)];
             }
         } // GameLogic
     } // Ievan Polkka

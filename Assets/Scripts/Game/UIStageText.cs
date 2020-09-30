@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Components;
+using UnityEngine.Localization.Tables;
 using UnityEngine.UI;
 
 /// <summary>
@@ -10,6 +12,8 @@ public class UIStageText : MonoBehaviour
     private RectTransform _rectTrans = null;
     [SerializeField]
     private Text _text = null;
+    [SerializeField]
+    private LocalizeStringEvent _strEvtText = null;
 
     private GameObject _go;
     protected GameObject _Go { get { if (_go == null) { _go = gameObject; } return _go; } }
@@ -89,7 +93,14 @@ public class UIStageText : MonoBehaviour
 
     public void SetText(string text)
     {
+        _strEvtText.enabled = false;
         _text.text = text;
+    }
+
+    public void SetTextStringKey(TableEntryReference strKey)
+    {
+        _strEvtText.StringReference.SetReference(StringTableName._contents, strKey);
+        _strEvtText.enabled = true;
     }
 
     public void SetActive(bool active)

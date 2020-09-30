@@ -50,5 +50,83 @@ MonoBehaviour:
     m_Localized: OneRoom, ft. Hatsune Miku
     m_Metadata:
       m_Items: []
+  - m_Id: 96956548546560
+    m_Localized: Shooting Beats! Tutorial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97069782171648
+    m_Localized: with Ievan Polkka
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97224312913920
+    m_Localized: Are you ready?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97508028219392
+    m_Localized: Let's start!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 97781794635776
+    m_Localized: 'Dodge bullets
+
+      by touch and drag'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98147688939520
+    m_Localized: 'Colored rectangle is
+
+      move touch area'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98673096818688
+    m_Localized: 'Colored rectangle is
+
+      pause touch area'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 98902848208896
+    m_Localized: 'You can also pause
+
+      with the Back button'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99520069402624
+    m_Localized: 'Each beat has
+
+      the Beat Core'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 99884080463872
+    m_Localized: 'Shooting Beat Core
+
+      will increase score'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100131171106816
+    m_Localized: 'And the last tip:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100281482379264
+    m_Localized: 'Don''t play game
+
+      while walking'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 100478438506496
+    m_Localized: 'Don''t play game
+
+      while working'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101059949395968
+    m_Localized: 'Please check the volume
+
+      in public place'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 101388669583360
+    m_Localized: Ready
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
