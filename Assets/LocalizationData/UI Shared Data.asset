@@ -67,6 +67,10 @@ MonoBehaviour:
     m_Key: Option_Language
     m_Metadata:
       m_Items: []
+  - m_Id: 3498598836895744
+    m_Key: Leaderboard
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

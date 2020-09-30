@@ -70,5 +70,9 @@ MonoBehaviour:
     m_Localized: Language
     m_Metadata:
       m_Items: []
+  - m_Id: 3498598836895744
+    m_Localized: Leaderboard
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
