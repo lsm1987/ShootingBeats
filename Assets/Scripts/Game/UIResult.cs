@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -13,7 +14,7 @@ namespace Game
         [SerializeField]
         private Text _result = null;
         [SerializeField]
-        private Text _songTitle = null;
+        private LocalizeStringEvent _strEvtSongTitle = null;
         [SerializeField]
         private Text _score = null;
         [SerializeField]
@@ -37,7 +38,7 @@ namespace Game
         {
             _beatInfo = beatInfo;
             _result.text = cleared ? _resultClear : _resultGameOver;
-            _songTitle.text = _beatInfo._title;
+            _strEvtSongTitle.StringReference = _beatInfo._titleString;
             _score.text = score.ToString();
             _highScore.text = highScore.ToString();
             _newRecord.SetActive(isNewRecord);

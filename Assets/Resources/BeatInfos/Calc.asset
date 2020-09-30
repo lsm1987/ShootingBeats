@@ -20,14 +20,12 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 15625101672448
       m_Key: 
-  _title: Calc.
   _authorString:
     m_TableReference:
       m_TableCollectionName: GUID:afcff1b0beb526446ac132cec6d13789
     m_TableEntryReference:
       m_KeyId: 15697772183552
       m_Key: 
-  _author: Hatsune Miku, OneRoom
   _difficulty: 1
   _length: 169
   _clearAchievementKey: AsPlanned

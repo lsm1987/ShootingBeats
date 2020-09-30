@@ -14,14 +14,10 @@ public class BeatInfo : ScriptableObject
     /// </summary>
     public LocalizedString _titleString;
 
-    public string _title; // 노래 제목
-
     /// <summary>
     /// 저자
     /// </summary>
     public LocalizedString _authorString;
-
-    public string _author;  // 저자
 
     public Difficulty _difficulty;  // 난이도
     public int _length; // 노래 길이. 단위 초

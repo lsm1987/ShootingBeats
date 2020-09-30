@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.Localization.Tables;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,9 +9,9 @@ public class UIBeatReady : UIPage
     [SerializeField]
     private Image _albumArt = null;
     [SerializeField]
-    private Text _title = null;
+    private LocalizeStringEvent _strEvtTitle = null;
     [SerializeField]
-    private Text _author = null;
+    private LocalizeStringEvent _strEvtAuthor = null;
     [SerializeField]
     private Text _highScore = null;
     [SerializeField]
@@ -40,8 +41,8 @@ public class UIBeatReady : UIPage
         // 정보 채우기
         _beatInfo = beatInfo;
         _albumArt.sprite = Define.GetAlbumArtSprite(_beatInfo);
-        _title.text = _beatInfo._title;
-        _author.text = _beatInfo._author;
+        _strEvtTitle.StringReference = beatInfo._titleString;
+        _strEvtAuthor.StringReference = beatInfo._authorString;
         _highScore.text = string.Format("High Score: {0}", Define.GetSongHighScore(beatInfo)); // 한꺼번에 가운데 정렬 위해 텍스트를 둘로 나누지 않음
         if (!Define.IsSongCleared(beatInfo))
         {

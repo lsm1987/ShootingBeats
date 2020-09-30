@@ -20,14 +20,12 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 12749625262080
       m_Key: 
-  _title: Turkish March
   _authorString:
     m_TableReference:
       m_TableCollectionName: GUID:afcff1b0beb526446ac132cec6d13789
     m_TableEntryReference:
       m_KeyId: 12960921714688
       m_Key: 
-  _author: W.A. Mozart, Ingrid Haebler
   _difficulty: 0
   _length: 153
   _clearAchievementKey: ItsOvero

@@ -20,14 +20,12 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 11472967204864
       m_Key: 
-  _title: Ievan Polkka (Tutorial)
   _authorString:
     m_TableReference:
       m_TableCollectionName: GUID:afcff1b0beb526446ac132cec6d13789
     m_TableEntryReference:
       m_KeyId: 11587203268608
       m_Key: 
-  _author: Hatsune Miku, Otomania
   _difficulty: 0
   _length: 150
   _clearAchievementKey: LeekSpinner

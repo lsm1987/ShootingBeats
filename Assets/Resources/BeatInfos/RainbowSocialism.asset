@@ -20,14 +20,12 @@ MonoBehaviour:
     m_TableEntryReference:
       m_KeyId: 12216709578752
       m_Key: 
-  _title: Rainbow Socialism
   _authorString:
     m_TableReference:
       m_TableCollectionName: GUID:afcff1b0beb526446ac132cec6d13789
     m_TableEntryReference:
       m_KeyId: 12668872327168
       m_Key: 
-  _author: (-_-)a
   _difficulty: 0
   _length: 110
   _clearAchievementKey: SocialismParadise
