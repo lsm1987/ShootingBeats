@@ -87,6 +87,10 @@ MonoBehaviour:
     m_Key: Menu_ReturnToGame
     m_Metadata:
       m_Items: []
+  - m_Id: 3612843389911040
+    m_Key: Result_NewRecord
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -90,5 +90,9 @@ MonoBehaviour:
     m_Localized: Return to Game
     m_Metadata:
       m_Items: []
+  - m_Id: 3612843389911040
+    m_Localized: New Record!
+    m_Metadata:
+      m_Items: []
   references:
     version: 1

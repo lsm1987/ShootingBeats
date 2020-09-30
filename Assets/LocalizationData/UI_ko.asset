@@ -90,5 +90,9 @@ MonoBehaviour:
     m_Localized: "\uB3CC\uC544\uAC00\uAE30"
     m_Metadata:
       m_Items: []
+  - m_Id: 3612843389911040
+    m_Localized: "\uC2E0\uAE30\uB85D!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
