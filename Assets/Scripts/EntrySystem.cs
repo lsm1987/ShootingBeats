@@ -17,7 +17,7 @@ public class EntrySystem : MonoBehaviour
     {
         Debug.Log("[Entry] LoadEssentialStringTables");
         
-        TableReference[] tableRefs = new TableReference[] { StringTableName._ui };
+        TableReference[] tableRefs = new TableReference[] { StringTableName._ui, StringTableName._contents };
 
         foreach (TableReference tableRef in tableRefs)
         {
