@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.Localization;
 
 // 노래 하나의 정보
 public class BeatInfo : ScriptableObject
@@ -8,8 +8,21 @@ public class BeatInfo : ScriptableObject
 
     public string _namespace;   // 문자열 구분자. 코드 음악파일명, namespace 등으로 사용
     public int _listPriority = 0;  // 리스트 목록 우선순위. 낮을수록 앞에 위치
+
+    /// <summary>
+    /// 노래 제목
+    /// </summary>
+    public LocalizedString _titleString;
+
     public string _title; // 노래 제목
+
+    /// <summary>
+    /// 저자
+    /// </summary>
+    public LocalizedString _authorString;
+
     public string _author;  // 저자
+
     public Difficulty _difficulty;  // 난이도
     public int _length; // 노래 길이. 단위 초
     public string _clearAchievementKey; // 클리어시 달성할 업적 key

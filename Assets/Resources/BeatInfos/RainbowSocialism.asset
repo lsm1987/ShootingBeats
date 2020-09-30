@@ -3,8 +3,9 @@
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -13,7 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _namespace: RainbowSocialism
   _listPriority: 1
+  _titleString:
+    m_TableReference:
+      m_TableCollectionName: GUID:afcff1b0beb526446ac132cec6d13789
+    m_TableEntryReference:
+      m_KeyId: 12216709578752
+      m_Key: 
   _title: Rainbow Socialism
+  _authorString:
+    m_TableReference:
+      m_TableCollectionName: GUID:afcff1b0beb526446ac132cec6d13789
+    m_TableEntryReference:
+      m_KeyId: 12668872327168
+      m_Key: 
   _author: (-_-)a
   _difficulty: 0
   _length: 110

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Localization.Components;
 using UnityEngine.UI;
 
 // 노래 목록의 한 요소
@@ -7,7 +8,7 @@ public class UIBeatListItem : MonoBehaviour
     [SerializeField]
     private Image _albumArt = null;
     [SerializeField]
-    private Text _title = null;
+    private LocalizeStringEvent _strEvtTitle = null;
     [SerializeField]
     private UIDifficultyIcon _difficulty = null;
     [SerializeField]
@@ -23,7 +24,7 @@ public class UIBeatListItem : MonoBehaviour
         _selectedHandler = selectedHandler_;
 
         _albumArt.sprite = Define.GetAlbumArtSprite(beatInfo);
-        _title.text = beatInfo._title;
+        _strEvtTitle.StringReference = beatInfo._titleString;
         _difficulty.SetDifficulty(beatInfo._difficulty);
         _length.text = Define.ConverBeatLength(beatInfo._length);
         _cleared.SetActive(Define.IsSongCleared(beatInfo));
