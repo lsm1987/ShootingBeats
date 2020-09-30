@@ -68,7 +68,23 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3498598836895744
-    m_Key: Leaderboard
+    m_Key: Menu_Leaderboard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3500418317582336
+    m_Key: Pause_Header
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3500514044182528
+    m_Key: Menu_Retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3500612962648064
+    m_Key: Menu_BeatList
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3500862708285440
+    m_Key: Menu_ReturnToGame
     m_Metadata:
       m_Items: []
   m_Metadata:

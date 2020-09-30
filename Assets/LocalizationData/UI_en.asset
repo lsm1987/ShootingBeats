@@ -74,5 +74,21 @@ MonoBehaviour:
     m_Localized: Leaderboard
     m_Metadata:
       m_Items: []
+  - m_Id: 3500418317582336
+    m_Localized: Pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3500514044182528
+    m_Localized: Retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3500612962648064
+    m_Localized: Beat List
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3500862708285440
+    m_Localized: Return to Game
+    m_Metadata:
+      m_Items: []
   references:
     version: 1
