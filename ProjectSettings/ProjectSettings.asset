@@ -125,7 +125,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.05
+  bundleVersion: 0.06
   preloadedAssets:
   - {fileID: 11400000, guid: 0a3a7f75cca7044489492222eb7b584f, type: 2}
   metroInputSource: 0
@@ -176,7 +176,7 @@ PlayerSettings:
     tvOS: com.lsm1987.ShootingBeats
   buildNumber:
     iPhone: 5
-  AndroidBundleVersionCode: 5
+  AndroidBundleVersionCode: 6
   AndroidMinSdkVersion: 19
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
