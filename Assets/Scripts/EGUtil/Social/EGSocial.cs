@@ -81,14 +81,6 @@ public static class EGSocial
         });
     }
 
-    /// <summary>
-    /// 로그아웃 수행
-    /// </summary>
-    public static void SignOut()
-    {
-        _Logic.SignOut();
-    }
-
     public static void ShowAchievementsUI()
     {
         if (!_IsAuthenticated)

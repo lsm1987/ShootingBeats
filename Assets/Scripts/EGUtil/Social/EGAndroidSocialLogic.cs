@@ -9,11 +9,6 @@ public class EGAndroidSocialLogic : IEGSocialLogic
         PlayGamesPlatform.Activate();
     }
 
-    public void SignOut()
-    {
-        ((PlayGamesPlatform)Social.Active).SignOut();
-    }
-
     public void ShowLeaderboardUI(string leaderboardID)
     {
         PlayGamesPlatform.Instance.ShowLeaderboardUI(leaderboardID);

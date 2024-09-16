@@ -9,11 +9,6 @@ public class EGIosSocialLogic : IEGSocialLogic
         GameCenterPlatform.ShowDefaultAchievementCompletionBanner(true);
     }
 
-    public void SignOut()
-    {
-        Debug.LogWarning("[IosSocialLogic] SignOut - Not implemented for this platform");
-    }
-
     public void ShowLeaderboardUI(string leaderboardID)
     {
         GameCenterPlatform.ShowLeaderboardUI(leaderboardID, UnityEngine.SocialPlatforms.TimeScope.AllTime);
