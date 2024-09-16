@@ -19,22 +19,17 @@ MonoBehaviour:
   m_SerializeEntries:
   - m_GUID: 07619ddd358444f4b918308558ee90fa
     m_Address: UI Shared Data
-    m_ReadOnly: 0
+    m_ReadOnly: 1
     m_SerializedLabels: []
-    m_mainAssetType: UnityEngine.Localization.Tables.SharedTableData, Unity.Localization,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: afcff1b0beb526446ac132cec6d13789
     m_Address: Contents Shared Data
-    m_ReadOnly: 0
+    m_ReadOnly: 1
     m_SerializedLabels: []
-    m_mainAssetType: 
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 5146449957a39ef4685a41018b1d281b, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: a4383c2a5b287ef4ebd23bdb0e256a5a, type: 2}
     - {fileID: 11400000, guid: 3b37ce18bcacc3d499a3eb76a6dc5edc, type: 2}
+    - {fileID: 11400000, guid: a4383c2a5b287ef4ebd23bdb0e256a5a, type: 2}

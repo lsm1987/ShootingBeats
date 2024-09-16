@@ -16,44 +16,10 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 176f0201b2aed80499b8f56e8d86874d
-  m_SerializeEntries:
-  - m_GUID: 31a269a7566b119458dbbe8a71b2ceff
-    m_Address: Contents_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    m_mainAssetType: 
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: 956ce511dfc4d1744b1388c4216a4a3b
-    m_Address: UI_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    m_mainAssetType: UnityEngine.Localization.Tables.StringTable, Unity.Localization,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: e08fe9753740d324d884a29cfbd0ddc9
-    m_Address: UI_ko
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-ko
-    m_mainAssetType: UnityEngine.Localization.Tables.StringTable, Unity.Localization,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
-  - m_GUID: eda2a0ef4ca301f4cae666a4f70f8bf1
-    m_Address: Contents_ko
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-ko
-    m_mainAssetType: 
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 5146449957a39ef4685a41018b1d281b, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 10ad550c5deec944092591cc1bb8db1b, type: 2}
     - {fileID: 11400000, guid: a1ea7cfb74bd34249b02996c9b8b2177, type: 2}
+    - {fileID: 11400000, guid: 10ad550c5deec944092591cc1bb8db1b, type: 2}
