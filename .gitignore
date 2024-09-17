@@ -72,10 +72,9 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 #Google Play Game 플러그인에서 Android Setting 으로 변경된 파일들은 개인정보 노출 방지 위해 커밋하지 않음
-Assets/GooglePlayGames/GameInfo.cs
-Assets/GooglePlayGames/GameInfo.cs.meta
-Assets/GooglePlayGames/Plugins/Android/GooglePlayGamesManifest.plugin/AndroidManifest.xml
-Assets/GooglePlayGames/Plugins/Android/GooglePlayGamesManifest.plugin/AndroidManifest.xml.meta
+Assets/GooglePlayGames/com.google.play.games/Runtime/Scripts/GameInfo.cs
+Assets/GooglePlayGames/com.google.play.games/Runtime/Scripts/GameInfo.cs.meta
+Assets/Plugins/Android/GooglePlayGamesManifest.androidlib/AndroidManifest.xml
 ProjectSettings/GooglePlayGameSettings.txt
 Assets/Resources/GameIDs_Android.txt
 Assets/Resources/GameIDs_Android.txt.meta
