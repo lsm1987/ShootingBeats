@@ -82,3 +82,7 @@ Assets/Resources/GameIDs_iOS.txt
 Assets/Resources/GameIDs_iOS.txt.meta
 Assets/Scripts/GPGSIds.cs
 Assets/Scripts/GPGSIds.cs.meta
+
+#Addressables 관련 커밋 불필요 파일
+Assets/AddressableAssetsData/link.xml
+Assets/AddressableAssetsData/link.xml.meta
