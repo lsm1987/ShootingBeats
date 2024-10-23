@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using GooglePlayGames;
-using System;
-using System.Collections.Generic;
 
 // 전역적으로 관리되어야 하는 정보
 public class GlobalSystem
