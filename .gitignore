@@ -47,6 +47,7 @@ ExportedObj/
 *.opendb
 *.VC.db
 .vsconfig
+.vscode/
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -86,3 +87,6 @@ Assets/Scripts/GPGSIds.cs.meta
 #Addressables 관련 커밋 불필요 파일
 Assets/AddressableAssetsData/link.xml
 Assets/AddressableAssetsData/link.xml.meta
+
+#Mac 관련 커밋 불필요 파일
+.DS_Store
